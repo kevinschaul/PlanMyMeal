@@ -2,6 +2,7 @@ package com.csci5115.group2.planmymeal;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,10 +15,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-
 public class HomeActivity extends Activity implements OnClickListener, OnEditorActionListener {
-
-    private Context context;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,33 +43,19 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 	@Override
 	public void onClick(View v) {
 		int viewId = v.getId();
-		CharSequence text = null;
-		Context context = getApplicationContext();
 
 		switch(viewId) {
 			case R.id.buttonSettings: {
-				text = "Settings is not yet implemented.";
-				break;
-			}
-			case R.id.buttonCookbook: {
-				text = "Community Cookbook is not yet implemented.";
-				break;
-			}
-			case R.id.buttonNewRecipe: {
-				text = "New recipe is not yet implemented.";
-				break;
-			}
-			case R.id.buttonNewMeal: {
-				text = "New meal is not yet implemented.";
+				onClickButtonSettings(v);
 				break;
 			}
 			default: {
-				text = "Unknown button";
+				Context context = getApplicationContext();
+				CharSequence text = "Not yet implemented";
+				Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+				toast.show();
 			}
 		}
-		
-		Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-		toast.show();
 	}
     
 	@Override
@@ -88,6 +72,11 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 		}
 		
 		return handled;
+	}
+	
+	private void onClickButtonSettings(View v) {	
+		Intent intent = new Intent(this, SettingsActivity.class);
+		startActivity(intent);
 	}
 
 }
