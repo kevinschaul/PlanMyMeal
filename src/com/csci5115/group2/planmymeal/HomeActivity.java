@@ -6,22 +6,73 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 
-public class HomeActivity extends Activity implements OnEditorActionListener {
+public class HomeActivity extends Activity implements OnClickListener, OnEditorActionListener {
 
-    @Override
+    private Context context;
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         
-        TextView search = (TextView) findViewById(R.id.search);
+        // Register button listeners
+        Button settingsButton = (Button) findViewById(R.id.buttonSettings);
+        settingsButton.setOnClickListener(this);
+        
+        Button cookbookButton = (Button) findViewById(R.id.buttonCookbook);
+        cookbookButton.setOnClickListener(this);
+        
+        Button newRecipeButton = (Button) findViewById(R.id.buttonNewRecipe);
+        newRecipeButton.setOnClickListener(this);
+        
+        Button newMealButton = (Button) findViewById(R.id.buttonNewMeal);
+        newMealButton.setOnClickListener(this);
+        
+        // Register text listener
+        EditText search = (EditText) findViewById(R.id.search);
 		search.setOnEditorActionListener(this);
     }
+    
+	@Override
+	public void onClick(View v) {
+		int viewId = v.getId();
+		CharSequence text = null;
+		Context context = getApplicationContext();
+
+		switch(viewId) {
+			case R.id.buttonSettings: {
+				text = "Settings is not yet implemented.";
+				break;
+			}
+			case R.id.buttonCookbook: {
+				text = "Community Cookbook is not yet implemented.";
+				break;
+			}
+			case R.id.buttonNewRecipe: {
+				text = "New recipe is not yet implemented.";
+				break;
+			}
+			case R.id.buttonNewMeal: {
+				text = "New meal is not yet implemented.";
+				break;
+			}
+			default: {
+				text = "Unknown button";
+			}
+		}
+		
+		Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+		toast.show();
+	}
     
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -38,41 +89,5 @@ public class HomeActivity extends Activity implements OnEditorActionListener {
 		
 		return handled;
 	}
-    
-    public void openSettings(View view) {
-    	Context context = getApplicationContext();
-    	CharSequence text = "Settings is not yet implemented.";
-    	int duration = Toast.LENGTH_SHORT;
-    	
-    	Toast toast = Toast.makeText(context, text, duration);
-    	toast.show();
-    }
-    
-    public void openCookbook(View view) {
-    	Context context = getApplicationContext();
-    	CharSequence text = "Community Cookbook is not yet implemented.";
-    	int duration = Toast.LENGTH_SHORT;
-    	
-    	Toast toast = Toast.makeText(context, text, duration);
-    	toast.show();
-    }
-    
-    public void newRecipe(View view) {
-    	Context context = getApplicationContext();
-    	CharSequence text = "New recipe is not yet implemented.";
-    	int duration = Toast.LENGTH_SHORT;
-    	
-    	Toast toast = Toast.makeText(context, text, duration);
-    	toast.show();
-    }
-    
-    public void newMeal(View view) {
-    	Context context = getApplicationContext();
-    	CharSequence text = "New meal is not yet implemented.";
-    	int duration = Toast.LENGTH_SHORT;
-    	
-    	Toast toast = Toast.makeText(context, text, duration);
-    	toast.show();
-    }
-    
+
 }
