@@ -33,28 +33,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Settings" />
+            android:text="Settings"
+            android:onClick="openSettings" />
 
         <Button
             android:id="@+id/buttonCookbook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Community Cookbook" />
+            android:text="Community Cookbook"
+            android:onClick="openCookbook" />
 
         <Button
             android:id="@+id/buttonNewRecipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="New recipe" />
+            android:text="New recipe"
+            android:onClick="newRecipe" />
 
         <Button
             android:id="@+id/buttonNewMeal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="New meal" />
+            android:text="New meal"
+            android:onClick="newMeal" />
     </LinearLayout>
 
     <LinearLayout
