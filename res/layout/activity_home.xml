@@ -69,17 +69,18 @@
         android:layout_centerHorizontal="true"
         android:orientation="horizontal" >
 
-	    <MultiAutoCompleteTextView
+	    <EditText
 	        android:id="@+id/search"
 	        android:layout_width="wrap_content"
 	        android:layout_height="match_parent"
-	        android:hint="Search by title, tags or ingredients" />
+	        android:hint="Search by title, tags or ingredients"
+	        android:inputType="text"
+	        android:imeOptions="actionSearch" />
 
 	    <LinearLayout
 	        android:id="@+id/searchCheckBoxWrapper"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_centerHorizontal="true"
 	        android:orientation="vertical" >
 
 		    <CheckBox
