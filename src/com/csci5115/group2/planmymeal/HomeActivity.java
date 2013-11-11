@@ -17,6 +17,10 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class HomeActivity extends Activity implements OnClickListener, OnEditorActionListener {
+	
+	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
+	
+	private final String TAG = "HomeActivity";
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
