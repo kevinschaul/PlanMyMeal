@@ -2,11 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:focusableInTouchMode="true"
     tools:context=".HomeActivity" >
 
     <TextView
@@ -21,10 +21,45 @@
         android:textSize="42sp" />
 
     <LinearLayout
+        android:id="@+id/searchWrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textTitle"
+        android:orientation="horizontal" >
+
+	    <EditText
+	        android:id="@+id/search"
+	        android:layout_width="623dp"
+	        android:layout_height="match_parent"
+	        android:hint="Search by title, tags or ingredients"
+	        android:imeOptions="actionSearch"
+	        android:inputType="text" />
+
+	    <LinearLayout
+	        android:id="@+id/searchCheckBoxWrapper"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+
+		    <CheckBox
+		        android:id="@+id/checkBoxMeals"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Meals" />
+		
+		    <CheckBox
+		        android:id="@+id/CheckBoxRecipes"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Recipes" />
+	    </LinearLayout>
+    </LinearLayout>
+    
+    <LinearLayout
         android:id="@+id/buttonsWrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/textTitle"
         android:orientation="vertical" >
 
@@ -57,49 +92,14 @@
             android:text="New meal" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/searchWrapper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textTitle"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal" >
-
-	    <EditText
-	        android:id="@+id/search"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:hint="Search by title, tags or ingredients"
-	        android:inputType="text"
-	        android:imeOptions="actionSearch" />
-
-	    <LinearLayout
-	        android:id="@+id/searchCheckBoxWrapper"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="vertical" >
-
-		    <CheckBox
-		        android:id="@+id/checkBoxMeals"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="Meals" />
-		
-		    <CheckBox
-		        android:id="@+id/CheckBoxRecipes"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="Recipes" />
-	    </LinearLayout>
-
-    </LinearLayout>
-
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/searchWrapper"
+        android:layout_alignRight="@+id/searchWrapper"
         android:layout_below="@+id/searchWrapper"
-        android:layout_toRightOf="@+id/buttonsWrapper" >
+        android:layout_marginTop="42dp" >
 
     </ListView>
 
