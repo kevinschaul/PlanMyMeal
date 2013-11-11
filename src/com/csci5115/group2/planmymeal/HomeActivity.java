@@ -9,8 +9,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -38,6 +40,25 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
         // Register text listener
         EditText search = (EditText) findViewById(R.id.search);
 		search.setOnEditorActionListener(this);
+		
+		// Set up list view
+		String[] stringArray = {
+			"Beef Stew",
+			"Olivia's Favorite",
+			"Beef Stew",
+			"Olivia's Favorite",
+			"Beef Stew",
+			"Olivia's Favorite",
+			"Beef Stew",
+			"Olivia's Favorite",
+			"Beef Stew",
+			"Olivia's Favorite",
+			"Beef Stew",
+			"Olivia's Favorite",
+		};
+		ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stringArray);
+		ListView listView = (ListView) findViewById(R.id.listView1);
+		listView.setAdapter(adapter);
     }
     
 	@Override
