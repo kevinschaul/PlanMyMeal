@@ -10,7 +10,7 @@
     tools:context=".HomeActivity" >
 
     <TextView
-        android:id="@+id/textTitle"
+        android:id="@+id/home_textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -21,14 +21,14 @@
         android:textSize="42sp" />
 
     <LinearLayout
-        android:id="@+id/searchWrapper"
+        android:id="@+id/home_searchWrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textTitle"
+        android:layout_below="@id/home_textTitle"
         android:orientation="horizontal" >
 
 	    <EditText
-	        android:id="@+id/search"
+	        android:id="@+id/home_search"
 	        android:layout_width="623dp"
 	        android:layout_height="match_parent"
 	        android:hint="Search by title, tags or ingredients"
@@ -36,19 +36,19 @@
 	        android:inputType="text" />
 
 	    <LinearLayout
-	        android:id="@+id/searchCheckBoxWrapper"
+	        android:id="@+id/home_searchCheckBoxWrapper"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical" >
 
 		    <CheckBox
-		        android:id="@+id/checkBoxMeals"
+		        android:id="@+id/home_checkBoxMeals"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="Meals" />
 		
 		    <CheckBox
-		        android:id="@+id/CheckBoxRecipes"
+		        android:id="@+id/home_CheckBoxRecipes"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="Recipes" />
@@ -56,36 +56,36 @@
     </LinearLayout>
     
     <LinearLayout
-        android:id="@+id/buttonsWrapper"
+        android:id="@+id/home_buttonsWrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textTitle"
+        android:layout_below="@id/home_textTitle"
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/buttonSettings"
+            android:id="@+id/home_buttonSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Settings" />
 
         <Button
-            android:id="@+id/buttonCookbook"
+            android:id="@+id/home_buttonCookbook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Community Cookbook" />
 
         <Button
-            android:id="@+id/buttonNewRecipe"
+            android:id="@+id/home_buttonNewRecipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="New recipe" />
 
         <Button
-            android:id="@+id/buttonNewMeal"
+            android:id="@+id/home_buttonNewMeal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -93,12 +93,12 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/home_mealListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/searchWrapper"
-        android:layout_alignRight="@+id/searchWrapper"
-        android:layout_below="@+id/searchWrapper"
+        android:layout_alignLeft="@id/home_searchWrapper"
+        android:layout_alignRight="@id/home_searchWrapper"
+        android:layout_below="@id/home_searchWrapper"
         android:layout_marginTop="42dp" >
 
     </ListView>

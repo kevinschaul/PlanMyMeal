@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -25,40 +24,37 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
         setContentView(R.layout.activity_home);
         
         // Register button listeners
-        Button settingsButton = (Button) findViewById(R.id.buttonSettings);
+        Button settingsButton = (Button) findViewById(R.id.home_buttonSettings);
         settingsButton.setOnClickListener(this);
         
-        Button cookbookButton = (Button) findViewById(R.id.buttonCookbook);
+        Button cookbookButton = (Button) findViewById(R.id.home_buttonCookbook);
         cookbookButton.setOnClickListener(this);
         
-        Button newRecipeButton = (Button) findViewById(R.id.buttonNewRecipe);
+        Button newRecipeButton = (Button) findViewById(R.id.home_buttonNewRecipe);
         newRecipeButton.setOnClickListener(this);
         
-        Button newMealButton = (Button) findViewById(R.id.buttonNewMeal);
+        Button newMealButton = (Button) findViewById(R.id.home_buttonNewMeal);
         newMealButton.setOnClickListener(this);
         
         // Register text listener
-        EditText search = (EditText) findViewById(R.id.search);
+        EditText search = (EditText) findViewById(R.id.home_search);
 		search.setOnEditorActionListener(this);
 		
 		// Set up list view
-		String[] stringArray = {
-			"Beef Stew",
-			"Olivia's Favorite",
-			"Beef Stew",
-			"Olivia's Favorite",
-			"Beef Stew",
-			"Olivia's Favorite",
-			"Beef Stew",
-			"Olivia's Favorite",
-			"Beef Stew",
-			"Olivia's Favorite",
-			"Beef Stew",
-			"Olivia's Favorite",
-		};
-		ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stringArray);
-		ListView listView = (ListView) findViewById(R.id.listView1);
-		listView.setAdapter(adapter);
+		// TODO Use a database call to populate this list view
+		Meal[] mealArray = new Meal[10];
+		
+		for (int i = 0; i < 10; i++) {
+			if (i % 2 == 0) {
+				mealArray[i] = new Meal("Beef Stew", "1:18:00");
+			} else {
+				mealArray[i] = new Meal("Olivia's Favorite", "1:40:22");
+			}
+		}
+
+		MealArrayAdapter mealAdapter = new MealArrayAdapter(this, mealArray);
+		ListView listView = (ListView) findViewById(R.id.home_mealListView);
+		listView.setAdapter(mealAdapter);
     }
     
 	@Override
@@ -66,7 +62,7 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 		int viewId = v.getId();
 
 		switch(viewId) {
-			case R.id.buttonSettings: {
+			case R.id.home_buttonSettings: {
 				onClickButtonSettings(v);
 				break;
 			}
