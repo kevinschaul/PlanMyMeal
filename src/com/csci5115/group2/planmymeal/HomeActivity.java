@@ -3,7 +3,6 @@ package com.csci5115.group2.planmymeal;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,7 +26,6 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        
         
         // Register button listeners
         Button settingsButton = (Button) findViewById(R.id.home_buttonSettings);

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MealArrayAdapter extends ArrayAdapter<Meal> {
+	
 	private final Context context;
 	private final Meal[] values;
 
@@ -47,10 +48,6 @@ public class MealArrayAdapter extends ArrayAdapter<Meal> {
 		Button deleteButton = (Button) rowView.findViewById(R.id.row_meal_buttonDelete);
 		deleteButton.setOnClickListener(new RowButtonOnClickListener(meal));
 		deleteButton.setTypeface(fontAwesome);
-        
-        
-	   
-        
 	    return rowView;
 	}
 	
