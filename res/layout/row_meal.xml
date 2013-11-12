@@ -25,20 +25,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/row_meal_buttonEdit"
-        android:text="Cook" />
+        android:text="@string/icon_play" />
 
     <Button
         android:id="@+id/row_meal_buttonEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/row_meal_buttonDelete"
-        android:text="Edit" />
+        android:text="@string/icon_edit" />
 
     <Button
         android:id="@+id/row_meal_buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="Delete" />
+        android:text="@string/icon_delete" />
 
 </RelativeLayout>

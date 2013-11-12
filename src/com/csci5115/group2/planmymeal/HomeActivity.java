@@ -3,6 +3,7 @@ package com.csci5115.group2.planmymeal;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,11 +18,16 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class HomeActivity extends Activity implements OnClickListener, OnEditorActionListener {
+	
+	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
+	
+	private final String TAG = "HomeActivity";
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        
         
         // Register button listeners
         Button settingsButton = (Button) findViewById(R.id.home_buttonSettings);
