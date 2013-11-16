@@ -1,8 +1,10 @@
 package com.csci5115.group2.planmymeal;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Typeface;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -71,6 +73,10 @@ public class MealArrayAdapter extends ArrayAdapter<Meal> {
 					onClickButtonEdit(v, meal);
 					break;
 				}
+				case R.id.row_meal_buttonDelete: {
+					onClickButtonDelete(v, meal);
+					break;
+				}
 				default: {
 					Context context = v.getContext();
 					CharSequence text = "Not yet implemented";
@@ -94,5 +100,20 @@ public class MealArrayAdapter extends ArrayAdapter<Meal> {
 		Intent intent = new Intent(context, EditMealActivity.class);
 		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getName());
 		context.startActivity(intent);
+	}
+	
+	private void onClickButtonDelete(View v, Meal meal) {
+		Context context = v.getContext();
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle("Delete meal?");
+		builder.setMessage("Delete " + meal.getName() + "?");
+		builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				
+			}
+		});
+		builder.setNegativeButton("Cancel", null);
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 }
