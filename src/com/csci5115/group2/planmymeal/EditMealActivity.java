@@ -3,6 +3,7 @@ package com.csci5115.group2.planmymeal;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class EditMealActivity extends Activity {
@@ -15,7 +16,7 @@ public class EditMealActivity extends Activity {
 		Intent intent = getIntent();
 		String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
 		
-		TextView mealNameTextView = (TextView) findViewById(R.id.edit_meal_mealName);
+		EditText mealNameTextView = (EditText) findViewById(R.id.edit_meal_mealName);
 		mealNameTextView.setText(mealName);
 	}
 
