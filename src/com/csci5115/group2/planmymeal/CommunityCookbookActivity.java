@@ -24,9 +24,9 @@ public class CommunityCookbookActivity extends Activity {
 		
 		for (int i = 0; i < 10; i++) {
 			if (i % 2 == 0) {
-				mealArray[i] = new Meal("Beef Stew", "1:18:00");
+				mealArray[i] = new Meal("Beef Stew", 1.18);
 			} else {
-				mealArray[i] = new Meal("Olivia's Favorite", "1:40:22");
+				mealArray[i] = new Meal("Olivia's Favorite", 1.40);
 			}
 		}
 

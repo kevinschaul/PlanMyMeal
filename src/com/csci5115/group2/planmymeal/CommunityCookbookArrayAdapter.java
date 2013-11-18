@@ -29,7 +29,7 @@ public class CommunityCookbookArrayAdapter extends ArrayAdapter<Meal> {
 	    
 	    Meal meal = values[position];
 	    mealName.setText(meal.getName());
-	    mealTime.setText(meal.getTime());
+	    mealTime.setText(Double.toString(meal.getTime()));
 	    
 	    return rowView;
 	}
