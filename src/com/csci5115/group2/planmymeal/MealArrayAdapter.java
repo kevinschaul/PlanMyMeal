@@ -1,5 +1,7 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.LinkedList;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,9 +19,9 @@ import android.widget.Toast;
 public class MealArrayAdapter extends ArrayAdapter<Meal> {
 	
 	private final Context context;
-	private final Meal[] values;
+	private final LinkedList<Meal> values;
 
-	public MealArrayAdapter(Context context, Meal[] values) {
+	public MealArrayAdapter(Context context, LinkedList<Meal> values) {
 		super(context, R.layout.row_meal, values);
 		this.context = context;
 		this.values = values;
@@ -35,9 +37,9 @@ public class MealArrayAdapter extends ArrayAdapter<Meal> {
 	    TextView mealName = (TextView) rowView.findViewById(R.id.row_meal_listMealName);
 	    TextView mealTime = (TextView) rowView.findViewById(R.id.row_meal_listMealTime);
 	    
-	    Meal meal = values[position];
+	    Meal meal = values.get(position);
 	    mealName.setText(meal.getName());
-	    mealTime.setText(meal.getTime());
+	    mealTime.setText(Double.toString(meal.getTime()));
 	    
 		Button cookButton = (Button) rowView.findViewById(R.id.row_meal_buttonCook);
 		cookButton.setOnClickListener(new RowButtonOnClickListener(meal));

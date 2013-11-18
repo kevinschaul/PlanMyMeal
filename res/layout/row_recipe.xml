@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" >
+
+    <CheckBox
+        android:id="@+id/add_recipe_to_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/row_recipe_recipeName"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:text="CheckBox" />
+
+    <TextView
+        android:id="@+id/row_recipe_time"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:text="Recipe Time"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/row_recipe_recipeName"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:text="Recipe Name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

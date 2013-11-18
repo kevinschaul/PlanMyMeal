@@ -8,11 +8,16 @@ public class Recipe {
 	private List<Ingredient> ingredients;
 	private List<Tag> tags;
 	private List<RecipeStep> steps;
-	private String time;
+	private double time;
 	// TODO Don't use String to represent time
 	
 	public Recipe(){
 		//default Constructor
+	}
+	
+	public Recipe(String name, double time){
+		this.name = name;
+		this.time = time;
 	}
 	
 	public String getName() {
@@ -45,10 +50,10 @@ public class Recipe {
 	public void setSteps(List<RecipeStep> steps) {
 		this.steps = steps;
 	}
-	public String getTime() {
+	public double getTime() {
 		return time;
 	}
-	public void setTime(String time) {
+	public void setTime(double time) {
 		this.time = time;
 	}
 	
