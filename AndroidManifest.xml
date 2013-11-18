@@ -19,24 +19,29 @@
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.csci5115.group2.planmymeal.SettingsActivity"
-            android:parentActivityName="com.csci5115.group2.planmymeal.HomeActivity"
             android:label="@string/title_activity_settings"
+            android:parentActivityName="com.csci5115.group2.planmymeal.HomeActivity"
             android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.csci5115.group2.planmymeal.CookActivity"
-            android:parentActivityName="com.csci5115.group2.planmymeal.HomeActivity"
-            android:label="@string/title_activity_cook" >
+            android:label="@string/title_activity_cook"
+            android:parentActivityName="com.csci5115.group2.planmymeal.HomeActivity" >
         </activity>
         <activity
             android:name="com.csci5115.group2.planmymeal.EditMealActivity"
-            android:parentActivityName="com.csci5115.group2.planmymeal.HomeActivity"
-            android:label="@string/title_activity_edit_meal" >
+            android:label="@string/title_activity_edit_meal"
+            android:parentActivityName="com.csci5115.group2.planmymeal.HomeActivity" >
+        </activity>
+        <activity
+            android:name="com.csci5115.group2.planmymeal.CommunityCookbookActivity"
+            android:label="@string/title_activity_community_cookbook" >
         </activity>
     </application>
 

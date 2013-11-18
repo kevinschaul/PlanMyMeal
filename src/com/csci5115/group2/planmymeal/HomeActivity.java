@@ -70,6 +70,10 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 				onClickButtonSettings(v);
 				break;
 			}
+			case R.id.home_buttonCookbook: {
+				onClickButtonCookbook(v);
+				break;
+			}
 			default: {
 				Context context = getApplicationContext();
 				CharSequence text = "Not yet implemented";
@@ -97,6 +101,11 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 	
 	private void onClickButtonSettings(View v) {	
 		Intent intent = new Intent(this, SettingsActivity.class);
+		startActivity(intent);
+	}
+	
+	private void onClickButtonCookbook(View v) {	
+		Intent intent = new Intent(this, CommunityCookbookActivity.class);
 		startActivity(intent);
 	}
 
