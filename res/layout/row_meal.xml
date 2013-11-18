@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
         android:text="Meal name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -17,27 +18,29 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_toLeftOf="@+id/row_meal_buttonCook"
+        android:gravity="center_vertical"
         android:text="Meal time"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/row_meal_buttonCook"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@+id/row_meal_buttonEdit"
         android:text="@string/icon_play" />
 
     <Button
         android:id="@+id/row_meal_buttonEdit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_toLeftOf="@+id/row_meal_buttonDelete"
         android:text="@string/icon_edit" />
 
     <Button
         android:id="@+id/row_meal_buttonDelete"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
         android:text="@string/icon_delete" />
 
