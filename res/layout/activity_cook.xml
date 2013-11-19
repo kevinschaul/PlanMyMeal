@@ -8,13 +8,49 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".CookActivity" >
 
-    <TextView
-        android:id="@+id/cook_meal_mealName"
+    <CheckedTextView
+        android:id="@+id/checkedTextView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
-        android:text="TextView" />
+        android:layout_marginTop="27dp" />
+
+    
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkedTextView1"
+        android:layout_marginRight="132dp"
+        android:layout_marginTop="0dp"
+
+        <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recipe 1"
+            android:textAppearance="?android:attr/textAppearanceLarge" >
+        </TextView>
+		        
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="300dp"
+            android:layout_height="500dp"
+            android:layout_below="@+id/checkedTextView1"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_toRightOf="@+id/checkedTextView1"
+            android:background="#008080" >
+        </ListView>
+    </LinearLayout>
+    </HorizontalScrollView>
 
 </RelativeLayout>
