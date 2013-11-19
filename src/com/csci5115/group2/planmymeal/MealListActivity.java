@@ -61,7 +61,6 @@ public class MealListActivity extends FragmentActivity implements
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 			Bundle arguments = new Bundle();
-			Log.v("FRAG", id);
 			arguments.putString(MealDetailFragment.ARG_ITEM_ID, id);
 			MealDetailFragment fragment = new MealDetailFragment();
 			fragment.setArguments(arguments);

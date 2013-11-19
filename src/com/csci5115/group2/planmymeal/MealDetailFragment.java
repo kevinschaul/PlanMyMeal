@@ -40,8 +40,9 @@ public class MealDetailFragment extends Fragment {
 			// Load the dummy content specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			Log.v("FRAG", ARG_ITEM_ID);
-			meal = GlobalData.findUserMealByName(ARG_ITEM_ID);
+			String id = getArguments().getString(ARG_ITEM_ID);
+			Log.v("FRAG", id);
+			meal = GlobalData.findUserMealByName(id);
 		}
 	}
 
