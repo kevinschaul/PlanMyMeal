@@ -19,8 +19,10 @@ public class CookActivity extends Activity {
 		Intent intent = getIntent();
 		String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
 		
+		/*
 		TextView mealNameTextView = (TextView) findViewById(R.id.cook_meal_mealName);
 		mealNameTextView.setText(mealName);
+		*/
 		
         Button settingsButton = (Button) findViewById(R.id.home_buttonSettings);
         settingsButton.setOnClickListener((OnClickListener) this);

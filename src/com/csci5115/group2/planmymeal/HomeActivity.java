@@ -1,6 +1,5 @@
 package com.csci5115.group2.planmymeal;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 import android.app.Activity;
