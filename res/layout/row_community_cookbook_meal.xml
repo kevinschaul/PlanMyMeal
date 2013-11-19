@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" >
+
+    <TextView
+        android:id="@+id/row_communityCookbookMeal_listMealName"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:text="Meal name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/row_communityCookbookMeal_listMealTime"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:text="Meal time"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

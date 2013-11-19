@@ -1,11 +1,16 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -46,20 +51,32 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 		
 		// Set up list view
 		// TODO Use a database call to populate this list view
-		Meal[] mealArray = new Meal[10];
+		LinkedList<Meal> meals = GlobalData.userMeals;
 		
-		for (int i = 0; i < 10; i++) {
-			if (i % 2 == 0) {
-				mealArray[i] = new Meal("Beef Stew", "1:18:00");
-			} else {
-				mealArray[i] = new Meal("Olivia's Favorite", "1:40:22");
-			}
-		}
 
-		MealArrayAdapter mealAdapter = new MealArrayAdapter(this, mealArray);
+		MealArrayAdapter mealAdapter = new MealArrayAdapter(this, meals);
 		ListView listView = (ListView) findViewById(R.id.home_mealListView);
 		listView.setAdapter(mealAdapter);
     }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.community_cookbook, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+	        case R.id.action_settings:
+	    		Intent intent = new Intent(this, SettingsActivity.class);
+	    		startActivity(intent);
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
     
 	@Override
 	public void onClick(View v) {
@@ -68,6 +85,10 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 		switch(viewId) {
 			case R.id.home_buttonSettings: {
 				onClickButtonSettings(v);
+				break;
+			}
+			case R.id.home_buttonCookbook: {
+				onClickButtonCookbook(v);
 				break;
 			}
 			default: {
@@ -97,6 +118,11 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 	
 	private void onClickButtonSettings(View v) {	
 		Intent intent = new Intent(this, SettingsActivity.class);
+		startActivity(intent);
+	}
+	
+	private void onClickButtonCookbook(View v) {	
+		Intent intent = new Intent(this, CommunityCookbookActivity.class);
 		startActivity(intent);
 	}
 

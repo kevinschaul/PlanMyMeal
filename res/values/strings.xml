@@ -11,5 +11,6 @@
     <string name="icon_delete">&#xf014;</string>
     <string name="title_activity_cook">CookActivity</string>
     <string name="title_activity_edit_meal">EditMealActivity</string>
+    <string name="title_activity_community_cookbook">CommunityCookbookActivity</string>
 
 </resources>
