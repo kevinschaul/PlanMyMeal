@@ -21,5 +21,30 @@
 
     <string name="title_meal_list">Meals</string>
     <string name="title_meal_detail">Meal Detail</string>
+    
+    <string-array name="settings_cooking_alerts_next_step_reminder_time">
+        <item>15 sec</item>
+        <item>30 sec</item>
+        <item>1 min</item>
+    </string-array>
+    <string name="settings_cooking_alerts_next_step_reminder_time_text"> Next Step Remainder Time </string>
+    <string-array name="reminder_alarm_type">
+        <item>Ding</item>
+        <item>Beep</item>
+        <item>Quack</item>
+        
+        </string-array>
+    <string-array name="start_step_alarm_type">
+        <item>Ding</item>
+        <item>Beep</item>
+        <item>Quack</item>
+        
+        </string-array>
+    <string-array name="number_appliances"><item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 
 </resources>

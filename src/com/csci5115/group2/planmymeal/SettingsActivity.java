@@ -32,19 +32,22 @@ public class SettingsActivity extends Activity implements OnClickListener, OnEdi
 		
 		// Set up list view
 		// TODO Use a database call to populate this list view
-		Tags[] tagArray = new Tags[6];
+		Tag[] tagArray = new Tag[6];
 		
 		for (int i = 0; i < 6; i++) {
 			if (i % 2 == 0) {
-				tagArray[i] = new Tags("Dairy");
+				Tag newtag= new Tag();
+				newtag.setName("Dairy");
+				tagArray[i] = newtag;
+				
 			} else {
-				tagArray[i] = new Tags("Olivia Likes");
+				Tag newtag= new Tag();
+				newtag.setName("Olivia Likes");
+				tagArray[i] = newtag;
 			}
 		}
 
-		TagArrayAdapter tagAdapter = new TagArrayAdapter(this, tagArray);
-		//ListView listView = (ListView) findViewById(R.id.settings_tags);
-		//listView.setAdapter(tagAdapter);
+		
     }
 
 	@Override
