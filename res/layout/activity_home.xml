@@ -27,7 +27,7 @@
         android:layout_below="@id/home_textTitle"
         android:orientation="horizontal" >
 
-	    <EditText
+	    <AutoCompleteTextView
 	        android:id="@+id/home_search"
 	        android:layout_width="623dp"
 	        android:layout_height="match_parent"

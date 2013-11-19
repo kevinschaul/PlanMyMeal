@@ -12,11 +12,14 @@
     <string name="title_activity_cook">CookActivity</string>
     <string name="title_activity_edit_meal">EditMealActivity</string>
     <string name="title_activity_community_cookbook">CommunityCookbookActivity</string>
-    
+
     <string-array name="tags_array">
         <item>Spicy</item>
         <item>Smooth</item>
         <item>Saucy</item>
     </string-array>
+
+    <string name="title_meal_list">Meals</string>
+    <string name="title_meal_detail">Meal Detail</string>
 
 </resources>
