@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -45,13 +47,15 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
         newMealButton.setOnClickListener(this);
         
         // Register text listener
-        EditText search = (EditText) findViewById(R.id.home_search);
+		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
+		String[] tags = getResources().getStringArray(R.array.tags_array);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags);
+		search.setAdapter(adapter);
 		search.setOnEditorActionListener(this);
 		
 		// Set up list view
 		// TODO Use a database call to populate this list view
 		LinkedList<Meal> meals = GlobalData.userMeals;
-		
 
 		MealArrayAdapter mealAdapter = new MealArrayAdapter(this, meals);
 		ListView listView = (ListView) findViewById(R.id.home_mealListView);
