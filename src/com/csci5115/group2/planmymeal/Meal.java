@@ -16,17 +16,17 @@ public class Meal {
 		this.recipes = new LinkedList<Recipe>();
 	}
 	
-	public Meal(String name, double time){
+	public Meal(String name, double time, LinkedList<Tag> tags){
 		this.name = name;
 		this.time = time;
-		this.tags = new LinkedList<Tag>();
+		this.tags = tags;
 		this.recipes = new LinkedList<Recipe>();
 	}
 	
-	public Meal(String name, double time, LinkedList<Recipe> recipes){
+	public Meal(String name, double time, LinkedList<Tag> tags, LinkedList<Recipe> recipes){
 		this.name = name;
 		this.time = time;
-		this.tags = new LinkedList<Tag>();
+		this.tags = tags;
 		this.recipes = recipes;
 	}
 	
@@ -64,6 +64,28 @@ public class Meal {
 		if(this.recipes.contains(recipe)){
 			this.recipes.remove(recipe);
 		}
+	}
+	
+	public List<Tag> getAllMealTags(){
+		LinkedList<Tag> allMealTags = new LinkedList<Tag>();
+		allMealTags.addAll(this.tags);
+		
+		for(Recipe recipe : this.recipes)
+		{
+			for(Tag tag : recipe.getTags())
+			{
+				if(allMealTags.contains(tag))
+				{
+					//do nothing
+				}
+				else
+				{
+					allMealTags.add(tag);
+				}
+			}
+		}
+		
+		return allMealTags;
 	}
 	
 	public boolean isRecipeInMeal(Recipe recipe){

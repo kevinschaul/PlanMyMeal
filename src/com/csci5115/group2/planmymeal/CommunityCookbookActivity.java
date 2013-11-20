@@ -1,5 +1,7 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.LinkedList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,9 +26,9 @@ public class CommunityCookbookActivity extends Activity {
 		
 		for (int i = 0; i < 10; i++) {
 			if (i % 2 == 0) {
-				mealArray[i] = new Meal("Beef Stew", 1.18);
+				mealArray[i] = new Meal("Beef Stew", 1.18, new LinkedList<Tag>());
 			} else {
-				mealArray[i] = new Meal("Olivia's Favorite", 1.40);
+				mealArray[i] = new Meal("Olivia's Favorite", 1.40, new LinkedList<Tag>());
 			}
 		}
 

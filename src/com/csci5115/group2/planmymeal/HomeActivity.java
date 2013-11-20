@@ -47,11 +47,11 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
         newMealButton.setOnClickListener(this);
         
         // Register text listener
-		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
+		/*AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
 		String[] tags = getResources().getStringArray(R.array.tags_array);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags);
 		search.setAdapter(adapter);
-		search.setOnEditorActionListener(this);
+		search.setOnEditorActionListener(this);*/
 		
 		// Set up list view
 		// TODO Use a database call to populate this list view

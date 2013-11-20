@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/view1" >
+            android:layout_toLeftOf="@+id/view1"
+            android:layout_weight="1" >
 
             <EditText
                 android:id="@+id/edit_meal_mealName"
@@ -49,60 +49,24 @@
                 android:text="New Meal Tag"
                 android:textSize="20sp" />
 
-            <AutoCompleteTextView
-                android:id="@+id/autoComplete_tags"
+            <EditText
+                android:id="@+id/edit_meal_newTagName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/edit_meal_addTag"
                 android:layout_below="@+id/edit_meal_addTag"
                 android:layout_toLeftOf="@+id/addTagButton"
                 android:ems="10"
-                android:text="New Tag Name" />
+                android:hint="New Tag Name" />
 
             <TextView
                 android:id="@+id/edit_mealTags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/autoComplete_tags"
+                android:layout_alignLeft="@+id/edit_meal_newTagName"
                 android:layout_below="@+id/addTagButton"
                 android:text="My Meal Tags"
                 android:textSize="20sp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="227dp" >
-
-                <Button
-                    android:id="@+id/button4"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="23dp"
-                    android:text="Tag4" />
-
-                <Button
-                    android:id="@+id/button1"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tag1" />
-
-                <Button
-                    android:id="@+id/button3"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tag3" />
-
-                <Button
-                    android:id="@+id/button2"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="26dp"
-                    android:text="Tag2" />
-            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView1"
@@ -130,13 +94,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/edit_meal_mealName"
-                android:layout_alignTop="@+id/autoComplete_tags"
+                android:layout_alignTop="@+id/edit_meal_newTagName"
                 android:text="Add Tag" />
+
+            <HorizontalScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/addTagButton"
+                android:layout_below="@+id/edit_mealTags" >
+
+                <LinearLayout
+                    android:id="@+id/edit_meal_tag_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"

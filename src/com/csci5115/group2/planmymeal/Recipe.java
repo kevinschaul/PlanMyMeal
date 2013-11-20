@@ -1,5 +1,6 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Recipe {
@@ -18,6 +19,9 @@ public class Recipe {
 	public Recipe(String name, double time){
 		this.name = name;
 		this.time = time;
+		this.tags = new LinkedList<Tag>();
+		this.ingredients = new LinkedList<Ingredient>();
+		this.steps = new LinkedList<RecipeStep>();
 	}
 	
 	public String getName() {
