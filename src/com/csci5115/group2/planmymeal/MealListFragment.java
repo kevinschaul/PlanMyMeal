@@ -1,12 +1,15 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
+
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 /**
  * A list fragment representing a list of Meals. This fragment also supports
@@ -35,6 +38,9 @@ public class MealListFragment extends ListFragment {
 	 * The current activated item position. Only used on tablets.
 	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
+	
+	// Databases
+	private DataSourceManager datasource;
 
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -45,7 +51,7 @@ public class MealListFragment extends ListFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(String id);
+		public void onItemSelected(long l);
 	}
 
 	/**
@@ -54,7 +60,7 @@ public class MealListFragment extends ListFragment {
 	 */
 	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(String id) {
+		public void onItemSelected(long l) {
 		}
 	};
 
@@ -69,7 +75,19 @@ public class MealListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setListAdapter(new MealArrayAdapterSplit(getActivity(), GlobalData.userMeals));	
+		Context context = this.getActivity().getApplicationContext();
+		datasource = new DataSourceManager(context);
+		datasource.open();
+		
+		List<Meal> meals = datasource.getAllMeals();
+		setListAdapter(new MealArrayAdapterSplit(getActivity(), meals));	
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		datasource.close();
 	}
 
 	@Override
@@ -112,7 +130,8 @@ public class MealListFragment extends ListFragment {
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected(GlobalData.userMeals.get(position).getName());
+		Meal meal = (Meal) listView.getItemAtPosition(position);
+		mCallbacks.onItemSelected(meal.getId());
 	}
 
 	@Override

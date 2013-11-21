@@ -1,6 +1,6 @@
 package com.csci5115.group2.planmymeal;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 public class MealArrayAdapterSplit extends ArrayAdapter<Meal> {
 	
 	private final Context context;
-	private final LinkedList<Meal> values;
+	private final List<Meal> values;
 
-	public MealArrayAdapterSplit(Context context, LinkedList<Meal> values) {
+	public MealArrayAdapterSplit(Context context, List<Meal> values) {
 		super(context, R.layout.row_meal_split, values);
 		this.context = context;
 		this.values = values;
