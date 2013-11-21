@@ -44,15 +44,6 @@
             android:label="@string/title_activity_community_cookbook" >
         </activity>
         <activity
-            android:name="com.csci5115.group2.planmymeal.MealListActivity"
-            android:label="@string/title_meal_list" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.csci5115.group2.planmymeal.MealDetailActivity"
             android:label="@string/title_meal_detail"
             android:parentActivityName=".MealListActivity" >

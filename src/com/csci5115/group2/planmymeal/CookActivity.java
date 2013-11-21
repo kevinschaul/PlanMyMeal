@@ -17,15 +17,12 @@ public class CookActivity extends Activity {
 		setContentView(R.layout.activity_cook);
 		
 		Intent intent = getIntent();
-		String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
+		//String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
 		
 		/*
 		TextView mealNameTextView = (TextView) findViewById(R.id.cook_meal_mealName);
 		mealNameTextView.setText(mealName);
 		*/
-		
-        Button settingsButton = (Button) findViewById(R.id.home_buttonSettings);
-        settingsButton.setOnClickListener((OnClickListener) this);
 	}
 	
 	@Override

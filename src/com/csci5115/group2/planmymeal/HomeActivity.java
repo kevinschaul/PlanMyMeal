@@ -1,115 +1,65 @@
 package com.csci5115.group2.planmymeal;
 
-import java.util.LinkedList;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-public class HomeActivity extends Activity implements OnClickListener, OnEditorActionListener {
-	
-	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
-	
-	private final String TAG = "HomeActivity";
+public class HomeActivity extends FragmentActivity implements
+		MealListFragment.Callbacks, OnEditorActionListener {
 
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        
-        // Register button listeners
-        Button settingsButton = (Button) findViewById(R.id.home_buttonSettings);
-        settingsButton.setOnClickListener(this);
-        
-        Button cookbookButton = (Button) findViewById(R.id.home_buttonCookbook);
-        cookbookButton.setOnClickListener(this);
-        
-        Button newRecipeButton = (Button) findViewById(R.id.home_buttonNewRecipe);
-        newRecipeButton.setOnClickListener(this);
-        
-        Button newMealButton = (Button) findViewById(R.id.home_buttonNewMeal);
-        newMealButton.setOnClickListener(this);
-        
-        /*
-        // Register text listener
-		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
-		//String[] tags = getResources().getStringArray(R.array.tags_array);
-		String[] mealTitles = new String[GlobalData.userMeals.size()];
-		Meal[] mealsArray = (Meal[]) GlobalData.userMeals.toArray();
-		for (int i = 0; i < mealsArray.length; i++) {
-			mealTitles[i] = mealsArray[i].getName() + " (Meal)";
-		}
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mealTitles);
-		search.setAdapter(adapter);
-		search.setOnEditorActionListener(this);
-		*/
-		
-		// Set up list view
-		// TODO Use a database call to populate this list view
-		LinkedList<Meal> meals = GlobalData.userMeals;
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_home);
 
-		MealArrayAdapter mealAdapter = new MealArrayAdapter(this, meals);
-		ListView listView = (ListView) findViewById(R.id.home_mealListView);
-		listView.setAdapter(mealAdapter);
-    }
+		// List items should be given the 'activated' state when touched.
+		((MealListFragment) getSupportFragmentManager().findFragmentById(
+				R.id.home_meal_list)).setActivateOnItemClick(true);
+
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.community_cookbook, menu);
+		getMenuInflater().inflate(R.menu.home, menu);
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+	    // Handle item selection
+		Intent intent;
+	    switch (item.getItemId()) {
+	        case R.id.action_community_cookbook:
+	    		intent = new Intent(this, CommunityCookbookActivity.class);
+	    		startActivity(intent);
+	            return true;
+	        case R.id.action_new_meal:
+	    		intent = new Intent(this, EditMealActivity.class);
+	    		startActivity(intent);
+	            return true;
+	        case R.id.action_new_recipe:
+	    		intent = new Intent(this, EditMealActivity.class);
+	    		startActivity(intent);
+	            return true;
 	        case R.id.action_settings:
-	    		Intent intent = new Intent(this, SettingsActivity.class);
+	    		intent = new Intent(this, SettingsActivity.class);
 	    		startActivity(intent);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-    
-	@Override
-	public void onClick(View v) {
-		int viewId = v.getId();
-
-		switch(viewId) {
-			case R.id.home_buttonSettings: {
-				onClickButtonSettings(v);
-				break;
-			}
-			case R.id.home_buttonCookbook: {
-				onClickButtonCookbook(v);
-				break;
-			}
-			default: {
-				Context context = getApplicationContext();
-				CharSequence text = "Not yet implemented";
-				Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-				toast.show();
-			}
-		}
-	}
-    
+	
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		boolean handled = false;
@@ -125,15 +75,16 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 		
 		return handled;
 	}
-	
-	private void onClickButtonSettings(View v) {	
-		Intent intent = new Intent(this, SettingsActivity.class);
-		startActivity(intent);
-	}
-	
-	private void onClickButtonCookbook(View v) {	
-		Intent intent = new Intent(this, CommunityCookbookActivity.class);
-		startActivity(intent);
-	}
 
+	@Override
+	public void onItemSelected(String id) {
+		// Show the detail view in this activity by adding or replacing the
+		// detail fragment using a fragment transaction.
+		Bundle arguments = new Bundle();
+		arguments.putString(MealDetailFragment.ARG_ITEM_ID, id);
+		MealDetailFragment fragment = new MealDetailFragment();
+		fragment.setArguments(arguments);
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.home_meal_detail_container, fragment).commit();
+	}
 }

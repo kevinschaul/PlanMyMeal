@@ -21,7 +21,8 @@ public class EditMealActivity extends Activity {
 		setContentView(R.layout.activity_edit_meal);
 		
 		Intent intent = getIntent();
-		String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
+		//String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
+		String mealName = "";
 		
 		meal = GlobalData.findUserMealByName(mealName);
 		
