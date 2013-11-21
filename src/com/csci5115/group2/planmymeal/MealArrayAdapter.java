@@ -1,6 +1,7 @@
 package com.csci5115.group2.planmymeal;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,12 +20,12 @@ import android.widget.Toast;
 public class MealArrayAdapter extends ArrayAdapter<Meal> {
 	
 	private final Context context;
-	private final LinkedList<Meal> values;
+	private final List<Meal> values;
 
-	public MealArrayAdapter(Context context, LinkedList<Meal> values) {
-		super(context, R.layout.row_meal, values);
+	public MealArrayAdapter(Context context, List<Meal> meals) {
+		super(context, R.layout.row_meal, meals);
 		this.context = context;
-		this.values = values;
+		this.values = meals;
 	}
 	
 	@Override
@@ -100,7 +101,7 @@ public class MealArrayAdapter extends ArrayAdapter<Meal> {
 	private void onClickButtonEdit(View v, Meal meal) {
 		Context context = v.getContext();
 		Intent intent = new Intent(context, EditMealActivity.class);
-		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getName());
+		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
 		context.startActivity(intent);
 	}
 	

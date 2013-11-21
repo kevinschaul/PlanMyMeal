@@ -2,6 +2,8 @@ package com.csci5115.group2.planmymeal;
 
 import java.util.LinkedList;
 
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ public class EditMealActivity extends Activity {
 	public Meal meal;
 	public EditMealActivity view;
 	public LinearLayout tagContainer;
+	private DataSourceManager datasource;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +32,17 @@ public class EditMealActivity extends Activity {
 		
 		view = this;
 		
-		Intent intent = getIntent();
-		String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
+		// Database Creation
+		datasource = new DataSourceManager(this);
+		datasource.open();
 		
-		meal = GlobalData.findUserMealByName(mealName);
+		Intent intent = getIntent();
+		long mealId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
+		
+		meal = datasource.getMealById(mealId);
 		
 		EditText mealNameTextView = (EditText) findViewById(R.id.edit_meal_mealName);
-		mealNameTextView.setText(mealName);
+		mealNameTextView.setText(meal.getName());
 		
 		// Set up recipes in meal list
 		LinkedList<Recipe> recipes = (LinkedList<Recipe>) meal.getRecipes();
@@ -54,7 +61,9 @@ public class EditMealActivity extends Activity {
 		// Set up tags
 		tagContainer = (LinearLayout)findViewById(R.id.edit_meal_tag_container);
 		
-		for(Tag tag : meal.getAllMealTags())
+		//Get tags for id
+		
+		for(Tag tag : datasource.getMealTags(mealId))
 		{
 			Button newTag = new Button(this);
 			//newTag.setLayoutParams(params);

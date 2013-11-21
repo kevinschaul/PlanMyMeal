@@ -1,6 +1,9 @@
 package com.csci5115.group2.planmymeal;
 
 import java.util.LinkedList;
+import java.util.List;
+
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,12 +30,36 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
 	
 	private final String TAG = "HomeActivity";
+	
+	// Databases
+	private DataSourceManager datasource;
+	
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         
+        // Database Creation
+        datasource = new DataSourceManager(this);
+        datasource.open();
+        
+        
+        // add initial meals
+        Meal meal1= datasource.createMeal("Sam's new Meal", 5.3, "My Description");
+        Tag meal1Tag1 = datasource.createTag("Spicy");
+        Tag meal1Tag2 = datasource.createTag("Yummy");
+        datasource.createMealTag(meal1.getId(), meal1Tag1.getId());
+        datasource.createMealTag(meal1.getId(), meal1Tag2.getId());
+        
+        Meal meal2 = datasource.createMeal("Sam's second Meal", 3.3, "Description 2");
+        
+        List<Meal> meals = datasource.getAllMeals();
+        
+        MealArrayAdapter mealAdapter = new MealArrayAdapter(this, meals);
+		ListView listView = (ListView) findViewById(R.id.home_mealListView);
+		listView.setAdapter(mealAdapter);
+		
         // Register button listeners
         Button settingsButton = (Button) findViewById(R.id.home_buttonSettings);
         settingsButton.setOnClickListener(this);
@@ -52,14 +79,6 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags);
 		search.setAdapter(adapter);
 		search.setOnEditorActionListener(this);*/
-		
-		// Set up list view
-		// TODO Use a database call to populate this list view
-		LinkedList<Meal> meals = GlobalData.userMeals;
-
-		MealArrayAdapter mealAdapter = new MealArrayAdapter(this, meals);
-		ListView listView = (ListView) findViewById(R.id.home_mealListView);
-		listView.setAdapter(mealAdapter);
     }
 	
 	@Override
@@ -128,5 +147,17 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 		Intent intent = new Intent(this, CommunityCookbookActivity.class);
 		startActivity(intent);
 	}
+	
+	 @Override
+	  protected void onResume() {
+	    datasource.open();
+	    super.onResume();
+	  }
+
+	  @Override
+	  protected void onPause() {
+		  datasource.close();
+	    super.onPause();
+	  }
 
 }
