@@ -13,6 +13,10 @@
     <string name="title_activity_edit_meal">EditMealActivity</string>
     <string name="title_activity_community_cookbook">CommunityCookbookActivity</string>
 
+    <string name="action_community_cookbook">Community Cookbook</string>
+    <string name="action_new_recipe">New Recipe</string>
+    <string name="action_new_meal">New Meal</string>
+    
     <string-array name="tags_array">
         <item>Spicy</item>
         <item>Smooth</item>

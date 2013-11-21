@@ -3,6 +3,8 @@ package com.csci5115.group2.planmymeal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 /**
  * An activity representing a list of Meals. This activity has different
@@ -47,6 +49,39 @@ public class MealListActivity extends FragmentActivity implements
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.home, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+		Intent intent;
+	    switch (item.getItemId()) {
+	        case R.id.action_community_cookbook:
+	    		intent = new Intent(this, CommunityCookbookActivity.class);
+	    		startActivity(intent);
+	            return true;
+	        case R.id.action_new_meal:
+	    		intent = new Intent(this, EditMealActivity.class);
+	    		startActivity(intent);
+	            return true;
+	        case R.id.action_new_recipe:
+	    		intent = new Intent(this, EditMealActivity.class);
+	    		startActivity(intent);
+	            return true;
+	        case R.id.action_settings:
+	    		intent = new Intent(this, SettingsActivity.class);
+	    		startActivity(intent);
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 	/**
