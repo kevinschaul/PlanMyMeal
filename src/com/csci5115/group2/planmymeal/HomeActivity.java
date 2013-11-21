@@ -1,6 +1,5 @@
 package com.csci5115.group2.planmymeal;
 
-import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

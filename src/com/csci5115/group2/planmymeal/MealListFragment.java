@@ -1,6 +1,8 @@
 package com.csci5115.group2.planmymeal;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
@@ -67,12 +69,7 @@ public class MealListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setListAdapter(new MealArrayAdapterSplit(getActivity(), GlobalData.userMeals));
-		/*
-		setListAdapter(new ArrayAdapter<Meal>(getActivity(),
-				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, GlobalData.userMeals));
-		*/
+		setListAdapter(new MealArrayAdapterSplit(getActivity(), GlobalData.userMeals));	
 	}
 
 	@Override

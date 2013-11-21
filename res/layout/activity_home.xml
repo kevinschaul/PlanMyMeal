@@ -25,7 +25,9 @@
         android:weightSum="4"
         android:baselineAligned="false"
         android:showDividers="middle"
-        android:divider="?android:attr/dividerHorizontal" >
+        android:divider="?android:attr/dividerHorizontal"
+        android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp" >
 	
 	    <LinearLayout
 	        android:id="@+id/home_column_0"
