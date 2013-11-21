@@ -1,15 +1,10 @@
 package com.csci5115.group2.planmymeal;
 
-import java.util.LinkedList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.csci5115.group2.planmymeal.dummy.DummyContent;
 
 /**
  * A list fragment representing a list of Meals. This fragment also supports

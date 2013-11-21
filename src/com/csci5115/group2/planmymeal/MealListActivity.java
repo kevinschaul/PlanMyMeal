@@ -3,7 +3,6 @@ package com.csci5115.group2.planmymeal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 /**
  * An activity representing a list of Meals. This activity has different
@@ -34,7 +33,7 @@ public class MealListActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_meal_list);
 
-		if (findViewById(R.id.meal_detail_container) != null) {
+		if (findViewById(R.id.home_meal_detail_container) != null) {
 			// The detail container view will be present only in the
 			// large-screen layouts (res/values-large and
 			// res/values-sw600dp). If this view is present, then the
@@ -44,7 +43,7 @@ public class MealListActivity extends FragmentActivity implements
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
 			((MealListFragment) getSupportFragmentManager().findFragmentById(
-					R.id.meal_list)).setActivateOnItemClick(true);
+					R.id.home_meal_list)).setActivateOnItemClick(true);
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
@@ -65,7 +64,7 @@ public class MealListActivity extends FragmentActivity implements
 			MealDetailFragment fragment = new MealDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.meal_detail_container, fragment).commit();
+					.replace(R.id.home_meal_detail_container, fragment).commit();
 
 		} else {
 			// In single-pane mode, simply start the detail activity
