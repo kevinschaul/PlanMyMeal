@@ -9,23 +9,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-public class HomeActivity extends Activity implements OnClickListener, OnEditorActionListener {
+// Samantha Oyen: This used to implement OnClickListener... had to take out.
+public class HomeActivity extends FragmentActivity implements OnEditorActionListener, MealListFragment.Callbacks {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
 	
@@ -34,7 +35,6 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 	// Databases
 	private DataSourceManager datasource;
 	
-
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +43,10 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
         // Database Creation
         datasource = new DataSourceManager(this);
         datasource.open();
+        
+     // List items should be given the 'activated' state when touched.
+     		((MealListFragment) getSupportFragmentManager().findFragmentById(
+     				R.id.home_meal_list)).setActivateOnItemClick(true);
         
         
         // add initial meals
@@ -56,22 +60,23 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
         
         List<Meal> meals = datasource.getAllMeals();
         
-        MealArrayAdapter mealAdapter = new MealArrayAdapter(this, meals);
-		ListView listView = (ListView) findViewById(R.id.home_mealListView);
-		listView.setAdapter(mealAdapter);
+        // TODO Samantha Oyen: Use meals list defined above for list on home page.
+        //MealArrayAdapter mealAdapter = new MealArrayAdapter(this, meals);
+		//ListView listView = (ListView) findViewById(R.id.home_mealListView);
+		//listView.setAdapter(mealAdapter);
 		
         // Register button listeners
-        Button settingsButton = (Button) findViewById(R.id.home_buttonSettings);
-        settingsButton.setOnClickListener(this);
+        //Button settingsButton = (Button) findViewById(R.id.home_buttonSettings);
+        //settingsButton.setOnClickListener(this);
         
-        Button cookbookButton = (Button) findViewById(R.id.home_buttonCookbook);
-        cookbookButton.setOnClickListener(this);
+        //Button cookbookButton = (Button) findViewById(R.id.home_buttonCookbook);
+        //cookbookButton.setOnClickListener(this);
         
-        Button newRecipeButton = (Button) findViewById(R.id.home_buttonNewRecipe);
-        newRecipeButton.setOnClickListener(this);
+        //Button newRecipeButton = (Button) findViewById(R.id.home_buttonNewRecipe);
+        //newRecipeButton.setOnClickListener(this);
         
-        Button newMealButton = (Button) findViewById(R.id.home_buttonNewMeal);
-        newMealButton.setOnClickListener(this);
+        //Button newMealButton = (Button) findViewById(R.id.home_buttonNewMeal);
+        //newMealButton.setOnClickListener(this);
         
         // Register text listener
 		/*AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
@@ -84,44 +89,36 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.community_cookbook, menu);
+		getMenuInflater().inflate(R.menu.home, menu);
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+	    // Handle item selection
+		Intent intent;
+	    switch (item.getItemId()) {
+	        case R.id.action_community_cookbook:
+	    		intent = new Intent(this, CommunityCookbookActivity.class);
+	    		startActivity(intent);
+	            return true;
+	        case R.id.action_new_meal:
+	    		intent = new Intent(this, EditMealActivity.class);
+	    		startActivity(intent);
+	            return true;
+	        case R.id.action_new_recipe:
+	    		intent = new Intent(this, EditMealActivity.class);
+	    		startActivity(intent);
+	            return true;
 	        case R.id.action_settings:
-	    		Intent intent = new Intent(this, SettingsActivity.class);
+	    		intent = new Intent(this, SettingsActivity.class);
 	    		startActivity(intent);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-    
-	@Override
-	public void onClick(View v) {
-		int viewId = v.getId();
-
-		switch(viewId) {
-			case R.id.home_buttonSettings: {
-				onClickButtonSettings(v);
-				break;
-			}
-			case R.id.home_buttonCookbook: {
-				onClickButtonCookbook(v);
-				break;
-			}
-			default: {
-				Context context = getApplicationContext();
-				CharSequence text = "Not yet implemented";
-				Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-				toast.show();
-			}
-		}
-	}
-    
+	
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		boolean handled = false;
@@ -136,6 +133,29 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 		}
 		
 		return handled;
+	}
+	
+	@Override
+	public void onItemSelected(String id) {
+		
+		LinearLayout.LayoutParams params;
+		LinearLayout homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
+		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
+		homeColumn0.setLayoutParams(params);
+		
+		
+		LinearLayout homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
+		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
+		homeColumn1.setLayoutParams(params);
+		
+		// Show the detail view in this activity by adding or replacing the
+		// detail fragment using a fragment transaction.
+		Bundle arguments = new Bundle();
+		arguments.putString(MealDetailFragment.ARG_ITEM_ID, id);
+		MealDetailFragment fragment = new MealDetailFragment();
+		fragment.setArguments(arguments);
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.home_meal_detail_container, fragment).commit();
 	}
 	
 	private void onClickButtonSettings(View v) {	
@@ -159,5 +179,4 @@ public class HomeActivity extends Activity implements OnClickListener, OnEditorA
 		  datasource.close();
 	    super.onPause();
 	  }
-
 }

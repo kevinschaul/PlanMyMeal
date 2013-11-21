@@ -91,18 +91,22 @@ public class MealArrayAdapter extends ArrayAdapter<Meal> {
 		
 	}
 	
-	private void onClickButtonCook(View v, Meal meal) {		
+	private void onClickButtonCook(View v, Meal meal) {
+		/*
 		Context context = v.getContext();
 		Intent intent = new Intent(context, CookActivity.class);
 		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getName());
 		context.startActivity(intent);
+		*/
 	}
 	
 	private void onClickButtonEdit(View v, Meal meal) {
+		/*
 		Context context = v.getContext();
 		Intent intent = new Intent(context, EditMealActivity.class);
 		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
 		context.startActivity(intent);
+		*/
 	}
 	
 	private void onClickButtonDelete(View v, Meal meal) {
