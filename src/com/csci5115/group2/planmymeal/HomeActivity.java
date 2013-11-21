@@ -1,5 +1,6 @@
 package com.csci5115.group2.planmymeal;
 
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -78,6 +81,17 @@ public class HomeActivity extends FragmentActivity implements
 
 	@Override
 	public void onItemSelected(String id) {
+		
+		LinearLayout.LayoutParams params;
+		LinearLayout homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
+		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
+		homeColumn0.setLayoutParams(params);
+		
+		
+		LinearLayout homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
+		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
+		homeColumn1.setLayoutParams(params);
+		
 		// Show the detail view in this activity by adding or replacing the
 		// detail fragment using a fragment transaction.
 		Bundle arguments = new Bundle();
