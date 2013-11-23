@@ -3,11 +3,8 @@ package com.csci5115.group2.planmymeal;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Meal
+public class Meal extends Cookable
 {
-	private long id;
-	private String name;
-	private double time;
 	private String description;
 	
 	// Need to generate using Tag_Meal_Lookup table
@@ -20,6 +17,7 @@ public class Meal
 		// default Constructor
 		this.tags = new LinkedList<Tag>();
 		this.recipes = new LinkedList<Recipe>();
+		this.type = "Meal";
 	}
 
 	public Meal(String name, double time, LinkedList<Tag> tags)
@@ -28,6 +26,7 @@ public class Meal
 		this.time = time;
 		this.tags = tags;
 		this.recipes = new LinkedList<Recipe>();
+		this.type = "Meal";
 	}
 
 	public Meal(String name, double time, LinkedList<Tag> tags,
@@ -37,36 +36,7 @@ public class Meal
 		this.time = time;
 		this.tags = tags;
 		this.recipes = recipes;
-	}
-	
-	public long getId()
-	{
-		return id;
-	}
-
-	public void setId(long id)
-	{
-		this.id = id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public double getTime()
-	{
-		return time;
-	}
-
-	public void setTime(double time)
-	{
-		this.time = time;
+		this.type = "Meal";
 	}
 
 	public List<Tag> getTags()

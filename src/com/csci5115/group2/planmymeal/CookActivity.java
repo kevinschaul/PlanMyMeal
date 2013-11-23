@@ -180,6 +180,8 @@ public class CookActivity extends Activity {
 	
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
+		
 		datasource.close();
 	}
 }
