@@ -12,6 +12,7 @@ public class Recipe extends Cookable {
 	
 	public Recipe(){
 		//default Constructor
+		this.type = "Recipe";
 	}
 	
 	public Recipe(String name, double time){
@@ -20,6 +21,7 @@ public class Recipe extends Cookable {
 		this.tags = new LinkedList<Tag>();
 		this.ingredients = new LinkedList<Ingredient>();
 		this.steps = new LinkedList<RecipeStep>();
+		this.type = "Recipe";
 	}
 	
 	public Integer getNumServings() {

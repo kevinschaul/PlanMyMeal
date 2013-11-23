@@ -17,6 +17,7 @@ public class Meal extends Cookable
 		// default Constructor
 		this.tags = new LinkedList<Tag>();
 		this.recipes = new LinkedList<Recipe>();
+		this.type = "Meal";
 	}
 
 	public Meal(String name, double time, LinkedList<Tag> tags)
@@ -25,6 +26,7 @@ public class Meal extends Cookable
 		this.time = time;
 		this.tags = tags;
 		this.recipes = new LinkedList<Recipe>();
+		this.type = "Meal";
 	}
 
 	public Meal(String name, double time, LinkedList<Tag> tags,
@@ -34,6 +36,7 @@ public class Meal extends Cookable
 		this.time = time;
 		this.tags = tags;
 		this.recipes = recipes;
+		this.type = "Meal";
 	}
 
 	public List<Tag> getTags()

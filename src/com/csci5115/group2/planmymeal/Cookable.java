@@ -4,6 +4,7 @@ public class Cookable {
 	protected long id;
 	protected String name;
 	protected double time;
+	protected String type;
 	
 	public Cookable() {
 		
@@ -12,6 +13,10 @@ public class Cookable {
 	public Cookable(String name, double time) {
 		this.name = name;
 		this.time = time;
+	}
+	
+	public String getType() {
+		return type;
 	}
 	
 	public long getId() {
