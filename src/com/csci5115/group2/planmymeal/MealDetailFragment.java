@@ -1,5 +1,7 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
@@ -71,21 +74,35 @@ public class MealDetailFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_meal_detail,
 				container, false);
+		
+		Context context = rootView.getContext();
 
 		// Show the dummy content as text in a TextView.
 		if (meal != null) {
 			((TextView) rootView.findViewById(R.id.fragment_meal_title))
 					.setText(meal.getName());
+			
+			ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
+			List<Recipe> recipes = meal.getRecipes();
+
+			Recipe r = new Recipe();
+			r.setName("Recipe 1");
+			r.setTime(20);
+			recipes.add(r);
+
+			RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
+			recipeListView.setAdapter(adapter);
+			
+			Button cook = (Button) rootView.findViewById(R.id.fragment_meal_button_cook);
+			cook.setOnClickListener(clickListener);
+			
+			Button edit = (Button) rootView.findViewById(R.id.fragment_meal_button_edit);
+			edit.setOnClickListener(clickListener);
+			
+			Button delete = (Button) rootView.findViewById(R.id.fragment_meal_button_delete);
+			delete.setOnClickListener(clickListener);
+			
 		}
-		
-		Button cook = (Button) rootView.findViewById(R.id.fragment_meal_button_cook);
-		cook.setOnClickListener(clickListener);
-		
-		Button edit = (Button) rootView.findViewById(R.id.fragment_meal_button_edit);
-		edit.setOnClickListener(clickListener);
-		
-		Button delete = (Button) rootView.findViewById(R.id.fragment_meal_button_delete);
-		delete.setOnClickListener(clickListener);
 
 		return rootView;
 	}
