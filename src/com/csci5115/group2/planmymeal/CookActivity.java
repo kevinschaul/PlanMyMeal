@@ -3,6 +3,8 @@ package com.csci5115.group2.planmymeal;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +21,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class CookActivity extends Activity {
+	
+	// Databases
+	private DataSourceManager datasource;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +31,17 @@ public class CookActivity extends Activity {
 		setContentView(R.layout.activity_cook);
 		
 		Intent intent = getIntent();
-		String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
+		Long mealId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
 		
-		//TextView mealNameTextView = (TextView) findViewById(R.id.recipeName);
-		//mealNameTextView.setText(mealme);
+        // Database Creation
+        datasource = new DataSourceManager(this);
+        datasource.open();
 		
+        Meal meal = datasource.getMealById(mealId);
 		
-		LinkedList<Meal> meals = GlobalData.userMeals;
-		//meals.getFirst();
-		Meal meal = GlobalData.findUserMealByName(mealName);
-		//String mealName = meal.getName();
 		List<Recipe> recipes = meal.getRecipes();
+		
+		/*
 		Recipe recipe = recipes.get(0);
 		Recipe recipessss = recipes.get(1);
 		String recipeName = recipe.getName();
@@ -128,7 +133,7 @@ public class CookActivity extends Activity {
 		
 		//HorizontalScrollView hSV = (HorizontalScrollView) findViewById(R.id.myListView);
 		//hSV.addView(myText, R.layout.row_cook_recipe_container);
-
+		 */
 	}
 	
 	@Override
@@ -149,5 +154,9 @@ public class CookActivity extends Activity {
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-
+	
+	@Override
+	public void onDestroy() {
+		datasource.close();
+	}
 }

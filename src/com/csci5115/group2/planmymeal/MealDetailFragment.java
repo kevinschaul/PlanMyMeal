@@ -1,15 +1,18 @@
 package com.csci5115.group2.planmymeal;
 
-import com.csci5115.group2.planmymeal.database.DataSourceManager;
-
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 /**
  * A fragment representing a single Meal detail screen. This fragment is either
@@ -73,7 +76,28 @@ public class MealDetailFragment extends Fragment {
 			((TextView) rootView.findViewById(R.id.fragment_meal_title))
 					.setText(meal.getName());
 		}
+		
+		Button cook = (Button) rootView.findViewById(R.id.fragment_meal_button_cook);
+		cook.setOnClickListener(clickListener);
 
 		return rootView;
 	}
+	
+	public View.OnClickListener clickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			Context context = v.getContext();
+			Intent intent;
+		    switch (v.getId()) {
+		        case R.id.fragment_meal_button_cook:
+		    		intent = new Intent(context, CookActivity.class);
+		    		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
+		    		startActivity(intent);
+		    		break;
+		        default:
+		            return;
+		    }
+		}
+	};
 }
