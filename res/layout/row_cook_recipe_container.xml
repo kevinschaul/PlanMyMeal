@@ -17,7 +17,6 @@
 			    android:layout_height="200dp"
 			    android:layout_centerVertical="true"
 			    android:layout_marginLeft="0dp"
-			    android:layout_toRightOf="@+id/linearLayout1"
 			    android:numColumns="2" 
 			    android:verticalSpacing="0dp">
 			</GridView>    
@@ -25,10 +24,8 @@
 	            android:id="@+id/recipeCookSteps"
 	            android:layout_width="300dp"
 	            android:layout_height="wrap_content"
-	            android:layout_below="@+id/checkedTextView1"
 	            android:layout_marginLeft="0dp"
 	            android:layout_marginTop="0dp"
-	            android:layout_toRightOf="@+id/checkedTextView1"
 	            android:background="#008080" >
 	        </ListView>  
 </RelativeLayout>

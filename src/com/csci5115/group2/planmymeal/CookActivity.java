@@ -24,6 +24,8 @@ public class CookActivity extends Activity {
 	
 	// Databases
 	private DataSourceManager datasource;
+	
+	public LinearLayout recipeContainer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,11 @@ public class CookActivity extends Activity {
 		
 		List<Recipe> recipes = meal.getRecipes();
 		
-		/*
-		Recipe recipe = recipes.get(0);
-		Recipe recipessss = recipes.get(1);
-		String recipeName = recipe.getName();
+		
+		Recipe recipe = new Recipe();
+		//Recipe recipessss = recipes.get(1);
+		//String recipeName = recipe.getName();
+		recipe.setName("Test Recipe");
 		LinkedList<Ingredient> ingredients = new LinkedList<Ingredient>();
 		
 		Ingredient egg = new Ingredient("Egg", 10.00, "test");
@@ -95,9 +98,11 @@ public class CookActivity extends Activity {
 		recipeList.add(recipe);
 		//recipeList.add(recipe);
 		
+		recipeContainer = (LinearLayout)findViewById(R.id.cookMealRecipeHolder);
+		
 		//ListView recipeContainer = (ListView) findViewById(R.id.myListView);
 		//CookMealRecipeArrayAdapter cMRArrayAdapter = new CookMealRecipeArrayAdapter(this, recipeList);
-		 //recipeContainer.setAdapter(cMRArrayAdapter);
+		//recipeContainersetAdapter(cMRArrayAdapter);
 		
 		//
 		//recipeContainer.setAdapter(cMRArrayAdapter);
@@ -112,28 +117,46 @@ public class CookActivity extends Activity {
 		//LinearLayout myLayout = (LinearLayout)View.inflate(getApplicationContext(), R.id.myLinearLayout, null); //root)findViewById(R.id.myLinearLayout);
 		//LinearLayout myContainer = (LinearLayout)findViewById(R.id.cookMealRecipeHolder);
 		
-		TextView myText = (TextView)findViewById(R.id.recipeCookName);
-		myText.setText(recipeName);
+		TextView myText = new TextView(this);
+		//TextView CookName = (TextView)findViewById(R.id.recipeCookName);
+		//myText.setLayoutParams(CookName.getLayoutParams());
+		myText.setText(recipe.getName());
 		//TextView mySecondText = (TextView)findViewById(R.id.recipeName);
 		//myText.setText("Recipe 1");
 		//mySecondText.setText("Recipe 2");
 		
 		IngredientArrayAdapter ingredientsAdapter = new IngredientArrayAdapter(this, ingredients);
-		GridView recipeIngredients = (GridView) findViewById(R.id.recipeCookIngredients);
+		GridView recipeIngredients = new GridView(this);
+	
+		GridView cookIngredients = (GridView) findViewById(R.id.recipeCookIngredients);
+		recipeIngredients.setNumColumns(2);
+		recipeIngredients.setLayoutParams(cookIngredients.getLayoutParams());
 		recipeIngredients.setAdapter(ingredientsAdapter);
 		
 		RecipeStepsArrayAdapter recipeStepAdapter = new RecipeStepsArrayAdapter(this, recipeSteps);
-		ListView recipeStepsListView = (ListView) findViewById(R.id.recipeCookSteps);
+		ListView secondRecipeStepsListView = new ListView(this);
+		ListView recipeStepsListView = new ListView(this);
+		ListView cookSteps =(ListView) findViewById(R.id.recipeCookSteps);
+		recipeStepsListView.setLayoutParams(cookSteps.getLayoutParams());
 		recipeStepsListView.setAdapter(recipeStepAdapter);
+		secondRecipeStepsListView.setLayoutParams(cookSteps.getLayoutParams());
+		secondRecipeStepsListView.setAdapter(recipeStepAdapter);
 		
-		IngredientArrayAdapter secondAdapter = new IngredientArrayAdapter(this, ingredients);
-		GridView secondRecipe = (GridView) findViewById(R.id.recipeCookIngredients);
-		secondRecipe.setAdapter(secondAdapter);
+		
+		
+		recipeContainer.addView(myText);
+		recipeContainer.addView(recipeIngredients);
+		recipeContainer.addView(recipeStepsListView);
+		recipeContainer.addView(secondRecipeStepsListView);
+		
+		//IngredientArrayAdapter secondAdapter = new IngredientArrayAdapter(this, ingredients);
+		//GridView secondRecipe = (GridView) findViewById(R.id.recipeCookIngredients);
+		//secondRecipe.setAdapter(secondAdapter);
 		
 		
 		//HorizontalScrollView hSV = (HorizontalScrollView) findViewById(R.id.myListView);
 		//hSV.addView(myText, R.layout.row_cook_recipe_container);
-		 */
+		
 	}
 	
 	@Override
