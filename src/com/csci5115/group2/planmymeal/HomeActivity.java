@@ -133,7 +133,6 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.home_col1_container, fragment).commit();
 		} else if (type == "Recipe") {
-			// TODO
 			Bundle arguments = new Bundle();
 			arguments.putLong(RecipeDetailFragment.ARG_ITEM_ID, id);
 			CookableListFragment fragment = new CookableListFragment();

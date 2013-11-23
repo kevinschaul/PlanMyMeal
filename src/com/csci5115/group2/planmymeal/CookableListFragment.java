@@ -83,9 +83,10 @@ public class CookableListFragment extends ListFragment {
 		List<Cookable> cookables = new LinkedList<Cookable>();
 		List<Meal> meals = datasource.getAllMeals();
 		cookables.addAll(meals);
-		// TODO When this method exists
-		//List<Recipe> recipes = datasource.getAllRecipes();
-		//cookables.addAll(recipes);
+		/*
+		List<Recipe> recipes = datasource.getAllRecipes();
+		cookables.addAll(recipes);
+		*/
 		setListAdapter(new CookableArrayAdapterSplit(getActivity(), cookables));	
 	}
 	

@@ -314,7 +314,7 @@ public class DataSourceManager
 				  		for(long recipeId : recipeIds)
 				  		{
 				  			Cursor cursor = database.query(TABLE_RECIPE,
-						  	        allTagColumns, COLUMN_ID + " = " + recipeId, null,
+						  	        allRecipeColumns, COLUMN_ID + " = " + recipeId, null,
 						  	        null, null, null);
 
 					  	    cursor.moveToFirst();

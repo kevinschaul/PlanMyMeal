@@ -3,12 +3,12 @@ package com.csci5115.group2.planmymeal;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -85,7 +85,7 @@ public class MealDetailFragment extends Fragment {
 					.setText(meal.getName());
 			
 			ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
-			List<Recipe> recipes = meal.getRecipes();
+			List<Recipe> recipes = datasource.getMealRecipes(meal.getId());
 
 			RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
 			recipeListView.setAdapter(adapter);
