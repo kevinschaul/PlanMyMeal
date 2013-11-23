@@ -169,6 +169,7 @@ public class DataSourceManager
 	  	    meal.setName(cursor.getString(1));
 	  	    meal.setTime(cursor.getLong(2));
 	  	    meal.setDescription(cursor.getString(3));
+	  	    meal.setType("Meal");
 	  	    meal.setRecipes(new LinkedList<Recipe>());
 	  	    meal.setTags(new LinkedList<Tag>());
 	  	    return meal;
@@ -347,6 +348,7 @@ public class DataSourceManager
 				  	    recipe.setName(cursor.getString(1));
 				  	    recipe.setTime(cursor.getLong(2));
 				  	    recipe.setDescription(cursor.getString(3));
+				  	    recipe.setType("Recipe");
 				  	    recipe.setSteps(new LinkedList<RecipeStep>());
 				  	    recipe.setIngredients(new LinkedList<Ingredient>());
 				  	    recipe.setTags(new LinkedList<Tag>());
