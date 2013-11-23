@@ -437,7 +437,7 @@ public class DataSourceManager
 	    long recipe1Id = database.insert(TABLE_RECIPE, null,
 	        values);
 	    
-	  //Recipe 1
+	    //Recipe 1
 	  	  values = new ContentValues();
 		    values.put(COLUMN_NAME, "Sam Initial Recipe 2");
 		    values.put(COLUMN_TIME, 2);
@@ -445,6 +445,20 @@ public class DataSourceManager
 		    values.put(COLUMN_RECIPE_NUM_SERVINGS, 6);
 		    long recipe2Id = database.insert(TABLE_RECIPE, null,
 		        values);
+		    
+		    //MealRecipe1
+		    values = new ContentValues();
+	  	    values.put(COLUMN_MEAL_ID, meal1Id);
+	  	  values.put(COLUMN_RECIPE_ID, recipe1Id);
+	  	    long mealRecipe1Id = database.insert(TABLE_MEAL_RECIPE_REL, null,
+	  	        values);
+	  	    
+	  	  //MealRecipe2
+		    values = new ContentValues();
+	  	    values.put(COLUMN_MEAL_ID, meal1Id);
+	  	  values.put(COLUMN_RECIPE_ID, recipe2Id);
+	  	    long mealRecipe2Id = database.insert(TABLE_MEAL_RECIPE_REL, null,
+	  	        values);
 	  }
 
 	  public static void onUpgrade(SQLiteDatabase database, int oldVersion,
