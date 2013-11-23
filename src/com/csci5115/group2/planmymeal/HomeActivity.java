@@ -110,6 +110,7 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	
 	@Override
 	public void onItemSelected(long id) {
+		/*
 		LinearLayout.LayoutParams params;
 		LinearLayout homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
 		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
@@ -118,6 +119,11 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 		LinearLayout homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
 		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
 		homeColumn1.setLayoutParams(params);
+		
+		LinearLayout homeColumn2 = (LinearLayout) findViewById(R.id.home_column_2);
+		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
+		homeColumn2.setLayoutParams(params);
+		*/
 		
 		// Show the detail view in this activity by adding or replacing the
 		// detail fragment using a fragment transaction.

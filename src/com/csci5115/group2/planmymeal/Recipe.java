@@ -3,13 +3,11 @@ package com.csci5115.group2.planmymeal;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Recipe {
-	private String name;
+public class Recipe extends Cookable {
 	private Integer numServings;
 	private List<Ingredient> ingredients;
 	private List<Tag> tags;
 	private List<RecipeStep> steps;
-	private double time;
 	// TODO Don't use String to represent time
 	
 	public Recipe(){
@@ -24,12 +22,6 @@ public class Recipe {
 		this.steps = new LinkedList<RecipeStep>();
 	}
 	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public Integer getNumServings() {
 		return numServings;
 	}
@@ -54,15 +46,5 @@ public class Recipe {
 	public void setSteps(List<RecipeStep> steps) {
 		this.steps = steps;
 	}
-	public double getTime() {
-		return time;
-	}
-	public void setTime(double time) {
-		this.time = time;
-	}
-	
-	
-
-	
 
 }
