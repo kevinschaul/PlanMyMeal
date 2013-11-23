@@ -135,7 +135,7 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 		} else if (type == "Recipe") {
 			// TODO
 			Bundle arguments = new Bundle();
-			arguments.putLong(MealDetailFragment.ARG_ITEM_ID, id);
+			arguments.putLong(RecipeDetailFragment.ARG_ITEM_ID, id);
 			CookableListFragment fragment = new CookableListFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
