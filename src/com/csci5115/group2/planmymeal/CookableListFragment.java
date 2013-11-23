@@ -1,5 +1,6 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
@@ -20,7 +21,7 @@ import com.csci5115.group2.planmymeal.database.DataSourceManager;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class MealListFragment extends ListFragment {
+public class CookableListFragment extends ListFragment {
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -51,7 +52,7 @@ public class MealListFragment extends ListFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(long l);
+		public void onItemSelected(String type, long id);
 	}
 
 	/**
@@ -60,7 +61,7 @@ public class MealListFragment extends ListFragment {
 	 */
 	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(long l) {
+		public void onItemSelected(String type, long id) {
 		}
 	};
 
@@ -68,7 +69,7 @@ public class MealListFragment extends ListFragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public MealListFragment() {
+	public CookableListFragment() {
 	}
 
 	@Override
@@ -79,8 +80,13 @@ public class MealListFragment extends ListFragment {
 		datasource = new DataSourceManager(context);
 		datasource.open();
 		
+		List<Cookable> cookables = new LinkedList<Cookable>();
 		List<Meal> meals = datasource.getAllMeals();
-		setListAdapter(new MealArrayAdapterSplit(getActivity(), meals));	
+		cookables.addAll(meals);
+		// TODO When this method exists
+		//List<Recipe> recipes = datasource.getAllRecipes();
+		//cookables.addAll(recipes);
+		setListAdapter(new CookableArrayAdapterSplit(getActivity(), cookables));	
 	}
 	
 	@Override
@@ -130,8 +136,8 @@ public class MealListFragment extends ListFragment {
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		Meal meal = (Meal) listView.getItemAtPosition(position);
-		mCallbacks.onItemSelected(meal.getId());
+		Cookable cookable = (Cookable) listView.getItemAtPosition(position);
+		mCallbacks.onItemSelected(cookable.getType(), cookable.getId());
 	}
 
 	@Override

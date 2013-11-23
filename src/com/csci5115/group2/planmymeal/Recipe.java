@@ -17,6 +17,7 @@ public class Recipe extends Cookable {
 		this.ingredients = new LinkedList<Ingredient>();
 		this.steps = new LinkedList<RecipeStep>();
 		this.type = "Recipe";
+		
 	}
 	
 	public Recipe(String name, double time){

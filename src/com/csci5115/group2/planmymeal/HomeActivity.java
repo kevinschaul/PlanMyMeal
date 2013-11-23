@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 // Samantha Oyen: This used to implement OnClickListener... had to take out.
-public class HomeActivity extends FragmentActivity implements OnEditorActionListener, MealListFragment.Callbacks {
+public class HomeActivity extends FragmentActivity implements OnEditorActionListener, CookableListFragment.Callbacks {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
 	
@@ -40,9 +40,9 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
         datasource = new DataSourceManager(this);
         datasource.open();
         
-     // List items should be given the 'activated' state when touched.
-     		((MealListFragment) getSupportFragmentManager().findFragmentById(
-     				R.id.home_meal_list)).setActivateOnItemClick(true);
+        // List items should be given the 'activated' state when touched.
+ 		((CookableListFragment) getSupportFragmentManager().findFragmentById(
+ 				R.id.home_cookable_list)).setActivateOnItemClick(true);
         
         // Register text listener
 		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
@@ -109,7 +109,7 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	}
 	
 	@Override
-	public void onItemSelected(long id) {
+	public void onItemSelected(String type, long id) {
 		/*
 		LinearLayout.LayoutParams params;
 		LinearLayout homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
@@ -125,14 +125,17 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 		homeColumn2.setLayoutParams(params);
 		*/
 		
-		// Show the detail view in this activity by adding or replacing the
-		// detail fragment using a fragment transaction.
-		Bundle arguments = new Bundle();
-		arguments.putLong(MealDetailFragment.ARG_ITEM_ID, id);
-		MealDetailFragment fragment = new MealDetailFragment();
-		fragment.setArguments(arguments);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.home_meal_detail_container, fragment).commit();
+		if (type == "Meal") {
+			// If clicked item is a Meal
+			Bundle arguments = new Bundle();
+			arguments.putLong(MealDetailFragment.ARG_ITEM_ID, id);
+			MealDetailFragment fragment = new MealDetailFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.home_meal_detail_container, fragment).commit();
+		} else if (type == "Recipe") {
+			// TODO
+		}
 	}
 	
 	 @Override
