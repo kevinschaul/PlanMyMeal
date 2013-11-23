@@ -26,9 +26,7 @@ public class CookActivity extends Activity {
 		setContentView(R.layout.activity_cook);
 		
 		Intent intent = getIntent();
-		//String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
-		
-<<<<<<< HEAD
+		String mealName = intent.getStringExtra(HomeActivity.EXTRA_MEAL);
 		
 		//TextView mealNameTextView = (TextView) findViewById(R.id.recipeName);
 		//mealNameTextView.setText(mealme);
@@ -130,13 +128,7 @@ public class CookActivity extends Activity {
 		
 		//HorizontalScrollView hSV = (HorizontalScrollView) findViewById(R.id.myListView);
 		//hSV.addView(myText, R.layout.row_cook_recipe_container);
-		
-=======
-		/*
-		TextView mealNameTextView = (TextView) findViewById(R.id.cook_meal_mealName);
-		mealNameTextView.setText(mealName);
-		*/
->>>>>>> 156707a05d44dc744ba3500a65ee57e93fa73ea8
+
 	}
 	
 	@Override
