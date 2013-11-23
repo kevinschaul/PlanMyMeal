@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 // Samantha Oyen: This used to implement OnClickListener... had to take out.
-public class HomeActivity extends FragmentActivity implements OnEditorActionListener, MealListFragment.Callbacks {
+public class HomeActivity extends FragmentActivity implements OnEditorActionListener, CookableListFragment.Callbacks {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
 	
@@ -41,8 +41,8 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
         datasource.open();
         
      // List items should be given the 'activated' state when touched.
-     		((MealListFragment) getSupportFragmentManager().findFragmentById(
-     				R.id.home_meal_list)).setActivateOnItemClick(true);
+     		((CookableListFragment) getSupportFragmentManager().findFragmentById(
+     				R.id.home_cookable_list)).setActivateOnItemClick(true);
         
         // Register text listener
 		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
