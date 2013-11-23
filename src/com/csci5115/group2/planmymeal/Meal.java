@@ -5,8 +5,6 @@ import java.util.List;
 
 public class Meal extends Cookable
 {
-	private String description;
-	
 	// Need to generate using Tag_Meal_Lookup table
 	List<Tag> tags;
 	// Need to generate using Tag_Meal_Lookup table
@@ -15,25 +13,31 @@ public class Meal extends Cookable
 	public Meal()
 	{
 		// default Constructor
+		this.description = "";
 		this.tags = new LinkedList<Tag>();
 		this.recipes = new LinkedList<Recipe>();
+		this.type = "Meal";
 	}
 
 	public Meal(String name, double time, LinkedList<Tag> tags)
 	{
+		this.description = "";
 		this.name = name;
 		this.time = time;
 		this.tags = tags;
 		this.recipes = new LinkedList<Recipe>();
+		this.type = "Meal";
 	}
 
 	public Meal(String name, double time, LinkedList<Tag> tags,
 			LinkedList<Recipe> recipes)
 	{
+		this.description = "";
 		this.name = name;
 		this.time = time;
 		this.tags = tags;
 		this.recipes = recipes;
+		this.type = "Meal";
 	}
 
 	public List<Tag> getTags()
