@@ -4,19 +4,35 @@ public class Cookable {
 	protected long id;
 	protected String name;
 	protected double time;
+	protected String description;
 	protected String type;
 	
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
 	public Cookable() {
 		
 	}
 	
-	public Cookable(String name, double time) {
+	public Cookable(String name, double time, String description) {
 		this.name = name;
 		this.time = time;
+		this.description = description;
 	}
 	
 	public String getType() {
 		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	public long getId() {

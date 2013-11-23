@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.csci5115.group2.planmymeal.Ingredient;
 import com.csci5115.group2.planmymeal.Meal;
-import com.csci5115.group2.planmymeal.MealTag;
 import com.csci5115.group2.planmymeal.Recipe;
+import com.csci5115.group2.planmymeal.RecipeStep;
 import com.csci5115.group2.planmymeal.Tag;
 
 import android.content.ContentValues;
@@ -26,30 +27,36 @@ public class DataSourceManager
 	  public static final String TABLE_MEAL = "meal";
 	  public static final String COLUMN_ID = "_id";
 	  public static final String COLUMN_NAME = "name";
-	  public static final String MEAL_COLUMN_TIME = "time";
-	  public static final String MEAL_COLUMN_DESCRIPTION = "description";
-	  private static String[] allMealColumns = { COLUMN_ID, COLUMN_NAME, MEAL_COLUMN_TIME, MEAL_COLUMN_DESCRIPTION };
+	  public static final String COLUMN_TIME = "time";
+	  public static final String COLUMN_DESCRIPTION = "description";
+	  private static String[] allMealColumns = { COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION };
 	  private static final String MEAL_DATABASE_CREATE = "create table " 
 	      + TABLE_MEAL
 	      + "(" 
 	      + COLUMN_ID + " integer primary key autoincrement, " 
 	      + COLUMN_NAME + " text not null, " 
-	      + MEAL_COLUMN_TIME + " real not null," 
-	      + MEAL_COLUMN_DESCRIPTION
+	      + COLUMN_TIME + " real not null," 
+	      + COLUMN_DESCRIPTION
 	      + " text" 
 	      + ");";
 	  
-	  //TAG DATABASE
+	  	//TAG DATABASE
 		  public static final String TABLE_TAG = "tag";
 		  private static String[] allTagColumns = { COLUMN_ID, COLUMN_NAME };
+		// Database creation
+		  private static final String TAG_DATABASE_CREATE = "create table " 
+		      + TABLE_TAG
+		      + "(" 
+		      + COLUMN_ID + " integer primary key autoincrement, " 
+		      + COLUMN_NAME + " text not null" 
+		      + ");";
 		  
 		// MEAL TAG REL DATABASE
 		  public static final String TABLE_MEAL_TAG_REL = "mealTagRel";
 		  public static final String COLUMN_MEAL_ID = "mealId";
 		  public static final String COLUMN_TAG_ID = "tagId";
 		  private static String[] allMealTagColumns = { COLUMN_ID, COLUMN_MEAL_ID, COLUMN_TAG_ID};
-
-		  // Database creation SQL statement
+		// Database creation 
 		  private static final String MEAL_TAG_DATABASE_CREATE = "create table " 
 		      + TABLE_MEAL_TAG_REL
 		      + "(" 
@@ -57,15 +64,36 @@ public class DataSourceManager
 		      + COLUMN_MEAL_ID + " integer not null, " 
 		      + COLUMN_TAG_ID + " integer not null"
 		      + ");";
-
-		  // Database creation SQL statement
-		  private static final String TAG_DATABASE_CREATE = "create table " 
-		      + TABLE_TAG
+		  
+		  //RECIPE DATABASE
+		  public static final String TABLE_RECIPE = "recipe";
+		  public static final String COLUMN_RECIPE_NUM_SERVINGS = "numServings";
+		  private static String[] allRecipeColumns = { COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION };
+		// Database creation 
+		  private static final String RECIPE_DATABASE_CREATE = "create table " 
+		      + TABLE_RECIPE
 		      + "(" 
 		      + COLUMN_ID + " integer primary key autoincrement, " 
-		      + COLUMN_NAME + " text not null" 
+		      + COLUMN_NAME + " text not null, " 
+		      + COLUMN_TIME + " real not null," 
+		      + COLUMN_DESCRIPTION
+		      + " text," +
+		      COLUMN_RECIPE_NUM_SERVINGS + " integer not null"
 		      + ");";
-	  
+		  
+		// MEAL TAG REL DATABASE
+		  public static final String TABLE_MEAL_RECIPE_REL = "mealRecipeRel";
+		  public static final String COLUMN_RECIPE_ID = "recipeId";
+		  private static String[] allMealRecipeColumns = { COLUMN_ID, COLUMN_MEAL_ID, COLUMN_RECIPE_ID};
+		// Database creation 
+		  private static final String MEAL_RECIPE_DATABASE_CREATE = "create table " 
+		      + TABLE_MEAL_RECIPE_REL
+		      + "(" 
+		      + COLUMN_ID + " integer primary key autoincrement, " 
+		      + COLUMN_MEAL_ID + " integer not null, " 
+		      + COLUMN_RECIPE_ID + " integer not null"
+		      + ");";
+
 	  public DataSourceManager(Context context)
 	  {
 		  dbHelper = new DatabaseHelper(context);
@@ -83,8 +111,8 @@ public class DataSourceManager
 	  	public Meal createMeal(String name, double time, String description) {
 	  	    ContentValues values = new ContentValues();
 	  	    values.put(COLUMN_NAME, name);
-	  	  values.put(MEAL_COLUMN_TIME, time);
-	  	values.put(MEAL_COLUMN_DESCRIPTION, description);
+	  	  values.put(COLUMN_TIME, time);
+	  	values.put(COLUMN_DESCRIPTION, description);
 	  	    long insertId = database.insert(TABLE_MEAL, null,
 	  	        values);
 	  	    Cursor cursor = database.query(TABLE_MEAL,
@@ -141,6 +169,7 @@ public class DataSourceManager
 	  	    meal.setName(cursor.getString(1));
 	  	    meal.setTime(cursor.getLong(2));
 	  	    meal.setDescription(cursor.getString(3));
+	  	    meal.setType("Meal");
 	  	    meal.setRecipes(new LinkedList<Recipe>());
 	  	    meal.setTags(new LinkedList<Tag>());
 	  	    return meal;
@@ -216,63 +245,6 @@ public class DataSourceManager
 
 		  	  //MEALTAG METHODS
 		  	// Data Access Methods
-			  	public MealTag createMealTag(long mealId, long tagId) {
-			  	    ContentValues values = new ContentValues();
-			  	    values.put(COLUMN_MEAL_ID, mealId);
-			  	  values.put(COLUMN_TAG_ID, tagId);
-			  	    long insertId = database.insert(TABLE_MEAL_TAG_REL, null,
-			  	        values);
-			  	    Cursor cursor = database.query(TABLE_MEAL_TAG_REL,
-			  	        allMealTagColumns, COLUMN_ID + " = " + insertId, null,
-			  	        null, null, null);
-			  	    cursor.moveToFirst();
-			  	    MealTag newMealTag = cursorToMealTag(cursor);
-			  	    cursor.close();
-			  	    return newMealTag;
-			  	  }
-
-			  	  public void deleteMealTag(MealTag mealTag) {
-			  	    long id = mealTag.getId();
-			  	    System.out.println("Meal deleted with id: " + id);
-			  	    database.delete(TABLE_MEAL_TAG_REL, COLUMN_ID
-			  	        + " = " + id, null);
-			  	  }
-
-			  	  public List<MealTag> getAllMealTags() {
-			  	    List<MealTag> mealTags = new ArrayList<MealTag>();
-
-			  	    Cursor cursor = database.query(TABLE_MEAL_TAG_REL,
-			  	        allMealTagColumns, null, null, null, null, null);
-
-			  	    cursor.moveToFirst();
-			  	    while (!cursor.isAfterLast()) {
-			  	      MealTag mealTag = cursorToMealTag(cursor);
-			  	      mealTags.add(mealTag);
-			  	      cursor.moveToNext();
-			  	    }
-			  	    // make sure to close the cursor
-			  	    cursor.close();
-			  	    return mealTags;
-			  	  }
-			  	  
-			  	public List<MealTag> getAllMealTagsForMeal(long mealId) {
-			  	    List<MealTag> mealTags = new ArrayList<MealTag>();
-
-			  	    Cursor cursor = database.query(TABLE_MEAL_TAG_REL,
-				  	        allMealTagColumns, COLUMN_ID + " = " + mealId, null,
-				  	        null, null, null);
-
-			  	    cursor.moveToFirst();
-			  	    while (!cursor.isAfterLast()) {
-			  	      MealTag mealTag = cursorToMealTag(cursor);
-			  	      mealTags.add(mealTag);
-			  	      cursor.moveToNext();
-			  	    }
-			  	    // make sure to close the cursor
-			  	    cursor.close();
-			  	    return mealTags;
-			  	  }
-			  	
 			  	public List<Long> getTagIdsForMeal(long mealId)
 			  	{
 			  		List<Long> mealTags = new ArrayList<Long>();
@@ -283,35 +255,142 @@ public class DataSourceManager
 
 			  	    cursor.moveToFirst();
 			  	    while (!cursor.isAfterLast()) {
-			  	      MealTag mealTag = cursorToMealTag(cursor);
-			  	      mealTags.add(mealTag.getTagId());
+			  	      long tagId = cursor.getLong(2);
+			  	      mealTags.add(tagId);
 			  	      cursor.moveToNext();
 			  	    }
 			  	    // make sure to close the cursor
 			  	    cursor.close();
 			  	    return mealTags;
 			  	}
+			  	  
+			  	// MEAL DATA ACCESS METHODS
+				  	public Recipe createRecipe(String name, double time, String description, Integer numServings) {
+				  	    ContentValues values = new ContentValues();
+				  	    values.put(COLUMN_NAME, name);
+				  	  values.put(COLUMN_TIME, time);
+				  	values.put(COLUMN_DESCRIPTION, description);
+				  	values.put(COLUMN_RECIPE_NUM_SERVINGS, numServings);
+				  	    long insertId = database.insert(TABLE_RECIPE, null,
+				  	        values);
+				  	    Cursor cursor = database.query(TABLE_RECIPE,
+				  	    		allRecipeColumns, COLUMN_ID + " = " + insertId, null,
+				  	        null, null, null);
+				  	    cursor.moveToFirst();
+				  	    Recipe newRecipe = cursorToRecipe(cursor);
+				  	    cursor.close();
+				  	    return newRecipe;
+				  	  }
 
-			  	  private MealTag cursorToMealTag(Cursor cursor) {
-			  	    MealTag mealTag = new MealTag();
-			  	    mealTag.setId(cursor.getLong(0));
-			  	    mealTag.setMealId(cursor.getLong(1));
-			  	    mealTag.setTagId(cursor.getLong(2));
-			  	    return mealTag;
-			  	  }
-	  	  
+				  	  public void deleteRecipe(Recipe recipe) {
+				  	    long id = recipe.getId();
+				  	    System.out.println("Recipe deleted with id: " + id);
+				  	    database.delete(TABLE_RECIPE, COLUMN_ID
+				  	        + " = " + id, null);
+				  	  }
+
+				  	  public List<Recipe> getAllRecipes() {
+				  	    List<Recipe> recipes = new ArrayList<Recipe>();
+
+				  	    Cursor cursor = database.query(TABLE_RECIPE,
+				  	    		allRecipeColumns, null, null, null, null, null);
+
+				  	    cursor.moveToFirst();
+				  	    while (!cursor.isAfterLast()) {
+				  	      Recipe recipe = cursorToRecipe(cursor);
+				  	      recipes.add(recipe);
+				  	      cursor.moveToNext();
+				  	    }
+				  	    // make sure to close the cursor
+				  	    cursor.close();
+				  	    return recipes;
+				  	  }
+				  	  
+				  	public List<Recipe> getMealRecipes(long mealId)
+				  	  {
+				  		List<Long> recipeIds = getRecipeIdsForMeal(mealId);
+				  		
+				  		List<Recipe> recipes = new LinkedList<Recipe>();
+				  		for(long recipeId : recipeIds)
+				  		{
+				  			Cursor cursor = database.query(TABLE_RECIPE,
+						  	        allTagColumns, COLUMN_ID + " = " + recipeId, null,
+						  	        null, null, null);
+
+					  	    cursor.moveToFirst();
+					  	    recipes.add(cursorToRecipe(cursor));
+					  	    
+					  	    // make sure to close the cursor
+					  	    cursor.close();
+				  		}
+				  		
+				  		  return recipes;
+				  	  }
+				  	  
+				  	  public Recipe getRecipeById(long recipeId)
+				  	  {
+				  		Recipe recipe = new Recipe();
+
+				  		Cursor cursor = database.query(TABLE_RECIPE,
+				  				allRecipeColumns, COLUMN_ID + " = " + recipeId, null,
+					  	        null, null, null);
+
+				  	    cursor.moveToFirst();
+				  	    recipe = cursorToRecipe(cursor);
+				  	   
+				  	    // make sure to close the cursor
+				  	    cursor.close();
+				  	    return recipe;
+				  	  }
+				  	  private Recipe cursorToRecipe(Cursor cursor) {
+				  	    Recipe recipe = new Recipe();
+				  	    recipe.setId(cursor.getLong(0));
+				  	    recipe.setName(cursor.getString(1));
+				  	    recipe.setTime(cursor.getLong(2));
+				  	    recipe.setDescription(cursor.getString(3));
+				  	    recipe.setType("Recipe");
+				  	    recipe.setSteps(new LinkedList<RecipeStep>());
+				  	    recipe.setIngredients(new LinkedList<Ingredient>());
+				  	    recipe.setTags(new LinkedList<Tag>());
+				  	    return recipe;
+				  	  }
+				  	  
+				  	 //MEALTAG METHODS
+					  	// Data Access Methods
+						  	public List<Long> getRecipeIdsForMeal(long mealId)
+						  	{
+						  		List<Long> mealRecipes = new ArrayList<Long>();
+
+						  		Cursor cursor = database.query(TABLE_MEAL_RECIPE_REL,
+							  	        allMealRecipeColumns, COLUMN_ID + " = " + mealId, null,
+							  	        null, null, null);
+
+						  	    cursor.moveToFirst();
+						  	    while (!cursor.isAfterLast()) {
+						  	      long tagId = cursor.getLong(2);
+						  	      mealRecipes.add(tagId);
+						  	      cursor.moveToNext();
+						  	    }
+						  	    // make sure to close the cursor
+						  	    cursor.close();
+						  	    return mealRecipes;
+						  	}
+			
 	  	  // GENERIC DATABASE METHODS
 	  public static void onCreate(SQLiteDatabase database) {
 	    database.execSQL(MEAL_DATABASE_CREATE);
 	    database.execSQL(TAG_DATABASE_CREATE);
 	    database.execSQL(MEAL_TAG_DATABASE_CREATE);
+	    database.execSQL(RECIPE_DATABASE_CREATE);
+	    database.execSQL(MEAL_RECIPE_DATABASE_CREATE);
+	    
 	    
 	    // add initial meals & tags
 	    //Meal 1
 	    ContentValues values = new ContentValues();
   	    values.put(COLUMN_NAME, "Sam Initial Meal");
-  	    values.put(MEAL_COLUMN_TIME, 5.5);
-  	    values.put(MEAL_COLUMN_DESCRIPTION, "Initial Description");
+  	    values.put(COLUMN_TIME, 5.5);
+  	    values.put(COLUMN_DESCRIPTION, "Initial Description");
   	    long meal1Id = database.insert(TABLE_MEAL, null,
   	        values);
   	    
@@ -344,10 +423,28 @@ public class DataSourceManager
   	    //Meal 1
 	    values = new ContentValues();
   	    values.put(COLUMN_NAME, "Sam Initial Meal 2");
-  	    values.put(MEAL_COLUMN_TIME, 6.8);
-  	    values.put(MEAL_COLUMN_DESCRIPTION, "Initial Description 2");
+  	    values.put(COLUMN_TIME, 6.8);
+  	    values.put(COLUMN_DESCRIPTION, "Initial Description 2");
   	    long meal2Id = database.insert(TABLE_MEAL, null,
   	        values);
+  	    
+  	    //Recipe 1
+  	    values = new ContentValues();
+	    values.put(COLUMN_NAME, "Sam Initial Recipe 1");
+	    values.put(COLUMN_TIME, 2.2);
+	    values.put(COLUMN_DESCRIPTION, "Initial Recipe Description 1");
+	    values.put(COLUMN_RECIPE_NUM_SERVINGS, 3);
+	    long recipe1Id = database.insert(TABLE_RECIPE, null,
+	        values);
+	    
+	  //Recipe 1
+	  	  values = new ContentValues();
+		    values.put(COLUMN_NAME, "Sam Initial Recipe 2");
+		    values.put(COLUMN_TIME, 2);
+		    values.put(COLUMN_DESCRIPTION, "Initial Recipe Description 2");
+		    values.put(COLUMN_RECIPE_NUM_SERVINGS, 6);
+		    long recipe2Id = database.insert(TABLE_RECIPE, null,
+		        values);
 	  }
 
 	  public static void onUpgrade(SQLiteDatabase database, int oldVersion,
@@ -358,6 +455,8 @@ public class DataSourceManager
 	    database.execSQL("DROP TABLE IF EXISTS " + TABLE_MEAL);
 	    database.execSQL("DROP TABLE IF EXISTS " + TABLE_TAG);
 	    database.execSQL("DROP TABLE IF EXISTS " + TABLE_MEAL_TAG_REL);
+	    database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE);
+	    database.execSQL("DROP TABLE IF EXISTS " + TABLE_MEAL_RECIPE_REL);
 	    onCreate(database);
 	  }
 
