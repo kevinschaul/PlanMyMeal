@@ -1,7 +1,7 @@
 package com.csci5115.group2.planmymeal;
 
-import java.util.List;
-
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +30,8 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	
 	// Databases
 	private DataSourceManager datasource;
+	
+	private FragmentManager fragmentManager;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +112,6 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	
 	@Override
 	public void onItemSelected(String type, long id) {
-		/*
 		LinearLayout.LayoutParams params;
 		LinearLayout homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
 		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
@@ -123,18 +124,22 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 		LinearLayout homeColumn2 = (LinearLayout) findViewById(R.id.home_column_2);
 		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
 		homeColumn2.setLayoutParams(params);
-		*/
 		
 		if (type == "Meal") {
-			// If clicked item is a Meal
 			Bundle arguments = new Bundle();
 			arguments.putLong(MealDetailFragment.ARG_ITEM_ID, id);
 			MealDetailFragment fragment = new MealDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.home_meal_detail_container, fragment).commit();
+					.replace(R.id.home_col1_container, fragment).commit();
 		} else if (type == "Recipe") {
 			// TODO
+			Bundle arguments = new Bundle();
+			arguments.putLong(MealDetailFragment.ARG_ITEM_ID, id);
+			CookableListFragment fragment = new CookableListFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.home_col1_container, fragment).commit();
 		}
 	}
 	

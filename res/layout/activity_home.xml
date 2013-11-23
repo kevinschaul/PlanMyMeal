@@ -89,7 +89,7 @@
 		    android:animateLayoutChanges="true" >
 
 		    <FrameLayout
-		        android:id="@+id/home_meal_detail_container"
+		        android:id="@+id/home_col1_container"
 		        android:layout_width="fill_parent"
 		        android:layout_height="fill_parent" />
 		
@@ -107,7 +107,7 @@
 		    android:animateLayoutChanges="true" >
 
 		    <FrameLayout
-		        android:id="@+id/home_recipe_detail_container"
+		        android:id="@+id/home_col2_container"
 		        android:layout_width="fill_parent"
 		        android:layout_height="fill_parent" />
 		

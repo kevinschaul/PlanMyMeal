@@ -3,6 +3,7 @@ package com.csci5115.group2.planmymeal;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -77,7 +80,6 @@ public class MealDetailFragment extends Fragment {
 		
 		Context context = rootView.getContext();
 
-		// Show the dummy content as text in a TextView.
 		if (meal != null) {
 			((TextView) rootView.findViewById(R.id.fragment_meal_title))
 					.setText(meal.getName());
@@ -92,6 +94,7 @@ public class MealDetailFragment extends Fragment {
 
 			RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
 			recipeListView.setAdapter(adapter);
+			recipeListView.setOnItemClickListener(itemClickListener);
 			
 			Button cook = (Button) rootView.findViewById(R.id.fragment_meal_button_cook);
 			cook.setOnClickListener(clickListener);
@@ -106,6 +109,22 @@ public class MealDetailFragment extends Fragment {
 
 		return rootView;
 	}
+	
+	public AdapterView.OnItemClickListener itemClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			Recipe recipe = (Recipe) parent.getItemAtPosition(position);
+			Bundle arguments = new Bundle();
+			arguments.putLong(RecipeDetailFragment.ARG_ITEM_ID, recipe.getId());
+			RecipeDetailFragment fragment = new RecipeDetailFragment();
+			fragment.setArguments(arguments);
+			getFragmentManager().beginTransaction()
+					.replace(R.id.home_col2_container, fragment).commit();
+		}
+		
+	};
 	
 	public View.OnClickListener clickListener = new OnClickListener() {
 
