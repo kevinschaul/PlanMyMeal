@@ -1,10 +1,11 @@
 package com.csci5115.group2.planmymeal;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -79,6 +80,12 @@ public class MealDetailFragment extends Fragment {
 		
 		Button cook = (Button) rootView.findViewById(R.id.fragment_meal_button_cook);
 		cook.setOnClickListener(clickListener);
+		
+		Button edit = (Button) rootView.findViewById(R.id.fragment_meal_button_edit);
+		edit.setOnClickListener(clickListener);
+		
+		Button delete = (Button) rootView.findViewById(R.id.fragment_meal_button_delete);
+		delete.setOnClickListener(clickListener);
 
 		return rootView;
 	}
@@ -90,6 +97,24 @@ public class MealDetailFragment extends Fragment {
 			Context context = v.getContext();
 			Intent intent;
 		    switch (v.getId()) {
+		        case R.id.fragment_meal_button_delete:
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					builder.setTitle("Delete meal?");
+					builder.setMessage("Delete " + meal.getName() + "?");
+					builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {   
+							datasource.deleteMeal(meal);
+						}
+					});
+					builder.setNegativeButton("Cancel", null);
+					AlertDialog dialog = builder.create();
+					dialog.show();
+		    		break;
+		        case R.id.fragment_meal_button_edit:
+		    		intent = new Intent(context, EditMealActivity.class);
+		    		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
+		    		startActivity(intent);
+		    		break;
 		        case R.id.fragment_meal_button_cook:
 		    		intent = new Intent(context, CookActivity.class);
 		    		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
