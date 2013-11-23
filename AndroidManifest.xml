@@ -43,6 +43,14 @@
             android:name="com.csci5115.group2.planmymeal.CommunityCookbookActivity"
             android:label="@string/title_activity_community_cookbook" >
         </activity>
+        <activity
+            android:name="com.csci5115.group2.planmymeal.MealDetailActivity"
+            android:label="@string/title_meal_detail"
+            android:parentActivityName=".MealListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MealListActivity" />
+        </activity>
     </application>
 
 </manifest>
