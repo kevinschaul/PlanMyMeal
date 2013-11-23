@@ -1,5 +1,6 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
@@ -79,8 +80,13 @@ public class MealListFragment extends ListFragment {
 		datasource = new DataSourceManager(context);
 		datasource.open();
 		
+		List<Cookable> cookables = new LinkedList<Cookable>();
 		List<Meal> meals = datasource.getAllMeals();
-		setListAdapter(new MealArrayAdapterSplit(getActivity(), meals));	
+		cookables.addAll(meals);
+		// TODO When this method exists
+		//List<Recipe> recipes = datasource.getAllRecipes();
+		//cookables.addAll(recipes);
+		setListAdapter(new CookableArrayAdapterSplit(getActivity(), cookables));	
 	}
 	
 	@Override
