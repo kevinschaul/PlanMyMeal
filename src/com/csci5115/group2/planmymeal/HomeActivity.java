@@ -44,16 +44,6 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
      		((MealListFragment) getSupportFragmentManager().findFragmentById(
      				R.id.home_meal_list)).setActivateOnItemClick(true);
         
-        
-        // add initial meals
-        Meal meal1= datasource.createMeal("Sam's new Meal", 5.3, "My Description");
-        Tag meal1Tag1 = datasource.createTag("Spicy");
-        Tag meal1Tag2 = datasource.createTag("Yummy");
-        datasource.createMealTag(meal1.getId(), meal1Tag1.getId());
-        datasource.createMealTag(meal1.getId(), meal1Tag2.getId());
-        
-        Meal meal2 = datasource.createMeal("Sam's second Meal", 3.3, "Description 2");
-        
         // Register text listener
 		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
 		String[] tags = getResources().getStringArray(R.array.tags_array);

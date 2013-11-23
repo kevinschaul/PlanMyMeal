@@ -28,7 +28,7 @@ public class DataSourceManager
 	  public static final String COLUMN_NAME = "name";
 	  public static final String MEAL_COLUMN_TIME = "time";
 	  public static final String MEAL_COLUMN_DESCRIPTION = "description";
-	  private String[] allMealColumns = { COLUMN_ID, COLUMN_NAME, MEAL_COLUMN_TIME, MEAL_COLUMN_DESCRIPTION };
+	  private static String[] allMealColumns = { COLUMN_ID, COLUMN_NAME, MEAL_COLUMN_TIME, MEAL_COLUMN_DESCRIPTION };
 	  private static final String MEAL_DATABASE_CREATE = "create table " 
 	      + TABLE_MEAL
 	      + "(" 
@@ -41,13 +41,13 @@ public class DataSourceManager
 	  
 	  //TAG DATABASE
 		  public static final String TABLE_TAG = "tag";
-		  private String[] allTagColumns = { COLUMN_ID, COLUMN_NAME };
+		  private static String[] allTagColumns = { COLUMN_ID, COLUMN_NAME };
 		  
 		// MEAL TAG REL DATABASE
 		  public static final String TABLE_MEAL_TAG_REL = "mealTagRel";
 		  public static final String COLUMN_MEAL_ID = "mealId";
 		  public static final String COLUMN_TAG_ID = "tagId";
-		  private String[] allMealTagColumns = { COLUMN_ID, COLUMN_MEAL_ID, COLUMN_TAG_ID};
+		  private static String[] allMealTagColumns = { COLUMN_ID, COLUMN_MEAL_ID, COLUMN_TAG_ID};
 
 		  // Database creation SQL statement
 		  private static final String MEAL_TAG_DATABASE_CREATE = "create table " 
@@ -305,6 +305,49 @@ public class DataSourceManager
 	    database.execSQL(MEAL_DATABASE_CREATE);
 	    database.execSQL(TAG_DATABASE_CREATE);
 	    database.execSQL(MEAL_TAG_DATABASE_CREATE);
+	    
+	    // add initial meals & tags
+	    //Meal 1
+	    ContentValues values = new ContentValues();
+  	    values.put(COLUMN_NAME, "Sam Initial Meal");
+  	    values.put(MEAL_COLUMN_TIME, 5.5);
+  	    values.put(MEAL_COLUMN_DESCRIPTION, "Initial Description");
+  	    long meal1Id = database.insert(TABLE_MEAL, null,
+  	        values);
+  	    
+  	    //Spicy Tag
+  	    values = new ContentValues();
+	    values.put(COLUMN_NAME, "Spicy");
+	    long tag1Id = database.insert(TABLE_TAG, null,
+	        values);
+	    
+	    //Yummy Tag
+  	    values = new ContentValues();
+	    values.put(COLUMN_NAME, "Yummy");
+	    long tag2Id = database.insert(TABLE_TAG, null,
+	        values);
+	    
+	    //MealTag1
+	    values = new ContentValues();
+  	    values.put(COLUMN_MEAL_ID, meal1Id);
+  	  values.put(COLUMN_TAG_ID, tag1Id);
+  	    long mealTag1Id = database.insert(TABLE_MEAL_TAG_REL, null,
+  	        values);
+  	    
+  	    //MealTag2
+	    values = new ContentValues();
+  	    values.put(COLUMN_MEAL_ID, meal1Id);
+  	  values.put(COLUMN_TAG_ID, tag2Id);
+  	    long mealTag2Id = database.insert(TABLE_MEAL_TAG_REL, null,
+  	        values);
+  	    
+  	    //Meal 1
+	    values = new ContentValues();
+  	    values.put(COLUMN_NAME, "Sam Initial Meal 2");
+  	    values.put(MEAL_COLUMN_TIME, 6.8);
+  	    values.put(MEAL_COLUMN_DESCRIPTION, "Initial Description 2");
+  	    long meal2Id = database.insert(TABLE_MEAL, null,
+  	        values);
 	  }
 
 	  public static void onUpgrade(SQLiteDatabase database, int oldVersion,
