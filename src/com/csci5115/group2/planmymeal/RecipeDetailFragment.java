@@ -73,8 +73,17 @@ public class RecipeDetailFragment extends Fragment {
 		Context context = rootView.getContext();
 		
 		if (recipe != null) {
-			((TextView) rootView.findViewById(R.id.fragment_recipe_title))
-					.setText(recipe.getName());
+			TextView name = (TextView) rootView.findViewById(R.id.fragment_recipe_title);
+			name.setText(recipe.getName());
+			
+			TextView time = (TextView) rootView.findViewById(R.id.fragment_recipe_total_time);
+			time.setText(Double.toString(recipe.getTime()));
+			
+			// TODO
+			/*
+			TextView servings = (TextView) rootView.findViewById(R.id.fragment_recipe_number_of_servings);
+			servings.setText(Integer.toString(recipe.getNumServings()));
+			*/
 			
 		}
 
