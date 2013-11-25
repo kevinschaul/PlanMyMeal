@@ -1,7 +1,5 @@
 package com.csci5115.group2.planmymeal;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +29,6 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	// Databases
 	private DataSourceManager datasource;
 	
-	private FragmentManager fragmentManager;
 	private static LinearLayout homeColumn0;
 	private static LinearLayout homeColumn1;
 	private static LinearLayout homeColumn2;
