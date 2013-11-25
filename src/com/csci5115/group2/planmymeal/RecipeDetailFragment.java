@@ -47,12 +47,15 @@ public class RecipeDetailFragment extends Fragment {
 		Context context = this.getActivity().getApplicationContext();
 		datasource = new DataSourceManager(context);
 		datasource.open();
+		
+		Log.v(HomeActivity.TAG, "onCreate");
 
 		if (getArguments().containsKey(ARG_ITEM_ID)) {
 			// Load the dummy content specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
 			long id = getArguments().getLong(ARG_ITEM_ID);
+			Log.v(HomeActivity.TAG, Long.toString(id));
 			recipe = datasource.getRecipeById(id);
 		}
 	}
@@ -73,6 +76,7 @@ public class RecipeDetailFragment extends Fragment {
 		Context context = rootView.getContext();
 		
 		if (recipe != null) {
+			Log.v(HomeActivity.TAG, "Recipe exists");
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_recipe_title);
 			name.setText(recipe.getName());
 			
@@ -85,6 +89,8 @@ public class RecipeDetailFragment extends Fragment {
 			servings.setText(Integer.toString(recipe.getNumServings()));
 			*/
 			
+		} else {
+			Log.v(HomeActivity.TAG, "Recipe does not exist.");
 		}
 
 		return rootView;

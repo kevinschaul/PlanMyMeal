@@ -26,12 +26,15 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
 	
-	private final String TAG = "HomeActivity";
+	public final static String TAG = "HomeActivity";
 	
 	// Databases
 	private DataSourceManager datasource;
 	
 	private FragmentManager fragmentManager;
+	private static LinearLayout homeColumn0;
+	private static LinearLayout homeColumn1;
+	private static LinearLayout homeColumn2;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,11 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags);
 		search.setAdapter(adapter);
 		search.setOnEditorActionListener(this);
-    }
+		
+		homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
+		homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
+		homeColumn2 = (LinearLayout) findViewById(R.id.home_column_2);
+	}
 	
 	@Override
 	public void onDestroy() {
@@ -112,20 +119,13 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	
 	@Override
 	public void onItemSelected(String type, long id) {
-		LinearLayout.LayoutParams params;
-		LinearLayout homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
-		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
-		homeColumn0.setLayoutParams(params);
 		
-		LinearLayout homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
-		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
-		homeColumn1.setLayoutParams(params);
-		
-		LinearLayout homeColumn2 = (LinearLayout) findViewById(R.id.home_column_2);
-		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
-		homeColumn2.setLayoutParams(params);
+		// No matter which type of item is selected, we want to split the view
+		// evenly between col0 and col1.
+		showColumns(2);
 		
 		if (type == "Meal") {
+			Log.v(HomeActivity.TAG, "Meal selected");
 			Bundle arguments = new Bundle();
 			arguments.putLong(MealDetailFragment.ARG_ITEM_ID, id);
 			MealDetailFragment fragment = new MealDetailFragment();
@@ -133,9 +133,10 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.home_col1_container, fragment).commit();
 		} else if (type == "Recipe") {
+			Log.v(HomeActivity.TAG, "Recipe selected");
 			Bundle arguments = new Bundle();
 			arguments.putLong(RecipeDetailFragment.ARG_ITEM_ID, id);
-			CookableListFragment fragment = new CookableListFragment();
+			RecipeDetailFragment fragment = new RecipeDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.home_col1_container, fragment).commit();
@@ -152,5 +153,41 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	  protected void onPause() {
 		datasource.close();
 	    super.onPause();
+	  }
+	  
+	  public static void showColumns(int numberOfColumns) {
+	  
+		  LinearLayout.LayoutParams params0;
+		  LinearLayout.LayoutParams params1;
+		  LinearLayout.LayoutParams params2;
+		  
+		  switch (numberOfColumns) {
+	        case 1:
+	        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 6);
+	        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
+	        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
+	  		  	homeColumn0.setLayoutParams(params0);
+	  		  	homeColumn1.setLayoutParams(params1);
+	  		  	homeColumn2.setLayoutParams(params2);
+	            break;
+	        case 2:
+	        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
+	        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
+	        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
+	  		  	homeColumn0.setLayoutParams(params0);
+	  		  	homeColumn1.setLayoutParams(params1);
+	  		  	homeColumn2.setLayoutParams(params2);
+	        	break;
+	        case 3:
+	        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
+	        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
+	        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
+	  		  	homeColumn0.setLayoutParams(params0);
+	  		  	homeColumn1.setLayoutParams(params1);
+	  		  	homeColumn2.setLayoutParams(params2);
+	        	break;
+	        default:
+	            break;
+		  }
 	  }
 }
