@@ -30,8 +30,7 @@ public class CookableArrayAdapterSplit extends ArrayAdapter<Cookable> {
 	    TextView mealTime = (TextView) rowView.findViewById(R.id.row_meal_split_listCookableTime);
 	    
 	    Cookable cookable = cookables.get(position);
-	    // TODO Use an icon or something for type of cookable
-	    mealName.setText("[" + cookable.getType() + "] " + cookable.getName());
+	    mealName.setText(cookable.getName());
 	    mealTime.setText(Double.toString(cookable.getTime()));
 	    
 	    return rowView;

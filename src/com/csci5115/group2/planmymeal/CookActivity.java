@@ -21,7 +21,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class CookActivity extends Activity {
-
+	
 	// Databases
 	private DataSourceManager datasource;
 
