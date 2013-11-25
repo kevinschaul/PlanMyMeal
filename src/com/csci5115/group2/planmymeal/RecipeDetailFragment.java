@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,7 +53,7 @@ public class RecipeDetailFragment extends Fragment {
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
 			long id = getArguments().getLong(ARG_ITEM_ID);
-			//recipe = datasource.getRecipeById(id);
+			recipe = datasource.getRecipeById(id);
 		}
 	}
 	
