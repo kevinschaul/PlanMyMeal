@@ -5,26 +5,35 @@ import java.util.List;
 import android.text.format.Time;
 
 public class RecipeStep {
-	
+	private long id;
 	private String instructions;
-	private Time time;
-	private List<String> appliancesUsed;
+	private long time;
 	private boolean activeStep;
+	private List<String> appliancesUsed;
+	
 	
 	public RecipeStep(){
 		//default Constructor
 	}
-	
+
+	public long getId()
+	{
+		return id;
+	}
+	public void setId(long id)
+	{
+		this.id = id;
+	}
 	public String getInstructions() {
 		return instructions;
 	}
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
 	}
-	public Time getTime() {
+	public long getTime() {
 		return time;
 	}
-	public void setTime(Time time) {
+	public void setTime(long time) {
 		this.time = time;
 	}
 	public List<String> getAppliancesUsed() {

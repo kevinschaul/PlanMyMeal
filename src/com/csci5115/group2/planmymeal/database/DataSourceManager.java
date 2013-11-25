@@ -1,6 +1,7 @@
 package com.csci5115.group2.planmymeal.database;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -112,6 +113,42 @@ public class DataSourceManager
 			+ " integer not null, "
 			+ COLUMN_INGREDIENT_ID
 			+ " integer not null" + ");";
+
+	// RECIPE TAG REL DATABASE
+	public static final String TABLE_RECIPE_TAG_REL = "recipeTagRel";
+	private static String[] allRecipeTagColumns =
+	{ COLUMN_ID, COLUMN_RECIPE_ID, COLUMN_TAG_ID };
+	// Database creation
+	private static final String RECIPE_TAG_DATABASE_CREATE = "create table "
+			+ TABLE_RECIPE_TAG_REL + "(" + COLUMN_ID
+			+ " integer primary key autoincrement, " + COLUMN_RECIPE_ID
+			+ " integer not null, " + COLUMN_INGREDIENT_ID
+			+ " integer not null" + ");";
+	// RECIPE STEP DATABASE
+	public static final String TABLE_RECIPE_STEP = "recipeStep";
+		public static final String COLUMN_INSTRUCTIONS = "instructions";
+		public static final String COLUMN_ACTIVE = "isActiveStep";
+		public static final String COLUMN_APPLIANCES = "appliancesUsed";
+		private static String[] allRecipeStepColumns =
+		{ COLUMN_ID, COLUMN_INSTRUCTIONS, COLUMN_TIME, COLUMN_ACTIVE, COLUMN_APPLIANCES };
+		// Database creation
+		private static final String RECIPE_STEP_DATABASE_CREATE = "create table "
+				+ TABLE_RECIPE_STEP + "(" + COLUMN_ID
+				+ " integer primary key autoincrement, " + COLUMN_INSTRUCTIONS
+				+ " text not null, " + COLUMN_ACTIVE + " integer not null,"
+				+ COLUMN_APPLIANCES + " text" + ");";
+		
+		// RECIPE STEP REL DATABASE
+		public static final String TABLE_RECIPE_STEP_REL = "recipeStepRel";
+		public static final String COLUMN_RECIPE_STEP_ID = "recipeStepId";
+		private static String[] allRecipeStepRelColumns =
+		{ COLUMN_ID, COLUMN_RECIPE_ID, COLUMN_RECIPE_STEP_ID };
+		// Database creation
+		private static final String RECIPE_STEP_REL_DATABASE_CREATE = "create table "
+				+ TABLE_RECIPE_STEP_REL + "(" + COLUMN_ID
+				+ " integer primary key autoincrement, " + COLUMN_RECIPE_ID
+				+ " integer not null, " + COLUMN_RECIPE_STEP_ID
+				+ " integer not null" + ");";
 
 	public DataSourceManager(Context context)
 	{
@@ -288,7 +325,7 @@ public class DataSourceManager
 		return mealTags;
 	}
 
-	// MEAL DATA ACCESS METHODS
+	// RECIPE DATA ACCESS METHODS
 	public Recipe createRecipe(String name, double time, String description,
 			Integer numServings)
 	{
@@ -381,15 +418,15 @@ public class DataSourceManager
 		return recipe;
 	}
 
-	// MEALTAG METHODS
+	// MEALRECIPE METHODS
 	// Data Access Methods
 	public List<Long> getRecipeIdsForMeal(long mealId)
 	{
 		List<Long> mealRecipes = new ArrayList<Long>();
 
 		Cursor cursor = database.query(TABLE_MEAL_RECIPE_REL,
-				allMealRecipeColumns, COLUMN_MEAL_ID + " = " + mealId, null, null,
-				null, null);
+				allMealRecipeColumns, COLUMN_MEAL_ID + " = " + mealId, null,
+				null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast())
@@ -426,7 +463,7 @@ public class DataSourceManager
 		database.delete(TABLE_INGREDIENT, COLUMN_ID + " = " + id, null);
 	}
 
-	public List<Ingredient> getMealIngredients(long recipeId)
+	public List<Ingredient> getRecipeIngredients(long recipeId)
 	{
 		List<Long> ingredientIds = getIngredientIdsForRecipe(recipeId);
 
@@ -452,8 +489,8 @@ public class DataSourceManager
 		List<Long> recipeIngredients = new ArrayList<Long>();
 
 		Cursor cursor = database.query(TABLE_RECIPE_INGREDIENT_REL,
-				allRecipeIngredientColumns, COLUMN_RECIPE_ID + " = " + recipeId, null,
-				null, null, null);
+				allRecipeIngredientColumns,
+				COLUMN_RECIPE_ID + " = " + recipeId, null, null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast())
@@ -467,6 +504,46 @@ public class DataSourceManager
 		return recipeIngredients;
 	}
 
+	public List<Tag> getRecipeTags(long recipeId)
+	{
+		List<Long> tagIds = getTagIdsForRecipe(recipeId);
+
+		List<Tag> tags = new LinkedList<Tag>();
+		for (long tagId : tagIds)
+		{
+			Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_ID
+					+ " = " + tagId, null, null, null, null);
+
+			cursor.moveToFirst();
+			tags.add(cursorToTag(cursor));
+
+			// make sure to close the cursor
+			cursor.close();
+		}
+
+		return tags;
+	}
+
+	private List<Long> getTagIdsForRecipe(long recipeId)
+	{
+		List<Long> recipeTags = new ArrayList<Long>();
+
+		Cursor cursor = database.query(TABLE_RECIPE_TAG_REL,
+				allRecipeTagColumns, COLUMN_RECIPE_ID + " = " + recipeId, null,
+				null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			long tagId = cursor.getLong(2);
+			recipeTags.add(tagId);
+			cursor.moveToNext();
+		}
+		// make sure to close the cursor
+		cursor.close();
+		return recipeTags;
+	}
+
 	private Ingredient cursorToIngredient(Cursor cursor)
 	{
 		Ingredient ingredient = new Ingredient();
@@ -475,6 +552,107 @@ public class DataSourceManager
 		ingredient.setAmount(cursor.getLong(2));
 		ingredient.setUnit(cursor.getString(3));
 		return ingredient;
+	}
+	
+	// RECIPE STEP DATA ACCESS METHODS
+		public RecipeStep createRecipeStep(String instructions, long time, Boolean isActive, List<String> appliancesUsed)
+		{
+			ContentValues values = new ContentValues();
+			values.put(COLUMN_INSTRUCTIONS, instructions);
+			values.put(COLUMN_TIME, time);
+			values.put(COLUMN_ACTIVE, isActive);
+			values.put(COLUMN_APPLIANCES, createApplianceString(appliancesUsed));
+			long insertId = database.insert(TABLE_RECIPE_STEP, null, values);
+			Cursor cursor = database.query(TABLE_RECIPE_STEP, allRecipeStepColumns,
+					COLUMN_ID + " = " + insertId, null, null, null, null);
+			cursor.moveToFirst();
+			RecipeStep newStep = cursorToRecipeStep(cursor);
+			cursor.close();
+			return newStep;
+		}
+
+		public void deleteRecipeStep(RecipeStep step)
+		{
+			long id = step.getId();
+			System.out.println("Recipe Step deleted with id: " + id);
+			database.delete(TABLE_RECIPE_STEP, COLUMN_ID + " = " + id, null);
+		}
+
+		public List<RecipeStep> getRecipeSteps(long recipeId)
+		{
+			List<Long> stepIds = getStepIdsForRecipe(recipeId);
+
+			List<RecipeStep> steps = new LinkedList<RecipeStep>();
+			for (long stepId : stepIds)
+			{
+				Cursor cursor = database.query(TABLE_RECIPE_STEP,
+						allRecipeStepColumns, COLUMN_ID + " = " + stepId,
+						null, null, null, null);
+
+				cursor.moveToFirst();
+				steps.add(cursorToRecipeStep(cursor));
+
+				// make sure to close the cursor
+				cursor.close();
+			}
+
+			return steps;
+		}
+
+		private List<Long> getStepIdsForRecipe(long recipeId)
+		{
+			List<Long> recipeSteps = new ArrayList<Long>();
+
+			Cursor cursor = database.query(TABLE_RECIPE_STEP_REL,
+					allRecipeStepRelColumns,
+					COLUMN_RECIPE_ID + " = " + recipeId, null, null, null, null);
+
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast())
+			{
+				long stepId = cursor.getLong(2);
+				recipeSteps.add(stepId);
+				cursor.moveToNext();
+			}
+			// make sure to close the cursor
+			cursor.close();
+			return recipeSteps;
+		}
+
+
+		private RecipeStep cursorToRecipeStep(Cursor cursor)
+		{
+			RecipeStep step = new RecipeStep();
+			step.setId(cursor.getLong(0));
+			step.setInstructions(cursor.getString(1));
+			step.setTime(cursor.getLong(2));
+			step.setActiveStep(cursor.getInt(3) == 1);
+			step.setAppliancesUsed(getAppliances(cursor.getString(4)));
+			return step;
+		}
+
+	private List<String> getAppliances(String appliancesUsed)
+		{
+			if(appliancesUsed == null)
+			{
+				return new LinkedList<String>();
+			}
+			else
+			{
+				return Arrays.asList(appliancesUsed.split(";"));
+			}
+		}
+	
+	private String createApplianceString(List<String> appliances)
+	{
+		String applianceString = "";
+		for(int i = 1; i < appliances.size(); i++)
+		{
+			applianceString += appliances.get(i) + ";";
+		}
+		applianceString += appliances.get(appliances.size() - 1);
+		
+		return applianceString;
 	}
 
 	// GENERIC DATABASE METHODS
@@ -486,6 +664,11 @@ public class DataSourceManager
 		database.execSQL(RECIPE_DATABASE_CREATE);
 		database.execSQL(MEAL_RECIPE_DATABASE_CREATE);
 		database.execSQL(INGREDIENT_DATABASE_CREATE);
+		database.execSQL(RECIPE_INGREDIENT_DATABASE_CREATE);
+		database.execSQL(RECIPE_TAG_DATABASE_CREATE);
+		database.execSQL(RECIPE_STEP_DATABASE_CREATE);
+		database.execSQL(RECIPE_STEP_REL_DATABASE_CREATE);
+		
 
 		// Thanksgiving Meal
 		ContentValues values = new ContentValues();
@@ -531,14 +714,12 @@ public class DataSourceManager
 		values = new ContentValues();
 		values.put(COLUMN_MEAL_ID, thanksgivingId);
 		values.put(COLUMN_RECIPE_ID, applePieId);
-		database.insert(TABLE_MEAL_RECIPE_REL, null,
-				values);
+		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_MEAL_ID, thanksgivingId);
 		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
-		database.insert(TABLE_MEAL_RECIPE_REL, null,
-				values);
+		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
 
 		// Mashed Potato Ingredients
 		values = new ContentValues();
@@ -568,27 +749,23 @@ public class DataSourceManager
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
 		values.put(COLUMN_INGREDIENT_ID, potatoId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null,
-				values);
-		
+		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
+
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
 		values.put(COLUMN_INGREDIENT_ID, butterId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null,
-				values);
-		
+		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
+
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
 		values.put(COLUMN_INGREDIENT_ID, creamId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null,
-				values);
-		
+		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
+
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
 		values.put(COLUMN_INGREDIENT_ID, chiveId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null,
-				values);
-		
+		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
+
 		// Mashed Potato Ingredients
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Apples");
@@ -613,31 +790,27 @@ public class DataSourceManager
 		values.put(COLUMN_AMOUNT, 1);
 		values.put(COLUMN_UNIT, "9 inch");
 		long pieCrustId = database.insert(TABLE_INGREDIENT, null, values);
-		
+
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, applePieId);
 		values.put(COLUMN_INGREDIENT_ID, brownSugarId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null,
-				values);
-		
+		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
+
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, applePieId);
 		values.put(COLUMN_INGREDIENT_ID, appleId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null,
-				values);
-		
+		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
+
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, applePieId);
 		values.put(COLUMN_INGREDIENT_ID, sugarId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null,
-				values);
-		
+		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
+
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, applePieId);
 		values.put(COLUMN_INGREDIENT_ID, pieCrustId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null,
-				values);
-		
+		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
+
 		// Meal 2
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Sam Initial Meal 2");
@@ -659,6 +832,10 @@ public class DataSourceManager
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE);
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_MEAL_RECIPE_REL);
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_INGREDIENT);
+		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_INGREDIENT_REL);
+		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_TAG_REL);
+		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_STEP);
+		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_STEP_REL);
 		onCreate(database);
 	}
 
