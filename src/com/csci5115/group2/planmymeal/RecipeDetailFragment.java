@@ -1,6 +1,8 @@
 package com.csci5115.group2.planmymeal;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
@@ -73,8 +76,6 @@ public class RecipeDetailFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_recipe_detail,
 				container, false);
 		
-		Context context = rootView.getContext();
-		
 		if (recipe != null) {
 			Log.v(HomeActivity.TAG, "Recipe exists");
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_recipe_title);
@@ -83,11 +84,20 @@ public class RecipeDetailFragment extends Fragment {
 			TextView time = (TextView) rootView.findViewById(R.id.fragment_recipe_total_time);
 			time.setText(Double.toString(recipe.getTime()));
 			
-			// TODO
+			// TODO This database call causes a crash
 			/*
 			TextView servings = (TextView) rootView.findViewById(R.id.fragment_recipe_number_of_servings);
 			servings.setText(Integer.toString(recipe.getNumServings()));
 			*/
+			
+			Button cook = (Button) rootView.findViewById(R.id.fragment_recipe_button_cook);
+			cook.setOnClickListener(clickListener);
+			
+			Button edit = (Button) rootView.findViewById(R.id.fragment_recipe_button_edit);
+			edit.setOnClickListener(clickListener);
+			
+			Button delete = (Button) rootView.findViewById(R.id.fragment_recipe_button_delete);
+			delete.setOnClickListener(clickListener);
 			
 		} else {
 			Log.v(HomeActivity.TAG, "Recipe does not exist.");
@@ -102,35 +112,37 @@ public class RecipeDetailFragment extends Fragment {
 		public void onClick(View v) {
 			Context context = v.getContext();
 			Intent intent;
-			/*
+
 		    switch (v.getId()) {
-		        case R.id.fragment_meal_button_delete:
+		        case R.id.fragment_recipe_button_delete:
 					AlertDialog.Builder builder = new AlertDialog.Builder(context);
 					builder.setTitle("Delete meal?");
-					builder.setMessage("Delete " + meal.getName() + "?");
+					builder.setMessage("Delete " + recipe.getName() + "?");
 					builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {   
-							datasource.deleteMeal(meal);
+							datasource.deleteRecipe(recipe);
 						}
 					});
 					builder.setNegativeButton("Cancel", null);
 					AlertDialog dialog = builder.create();
 					dialog.show();
 		    		break;
-		        case R.id.fragment_meal_button_edit:
-		    		intent = new Intent(context, EditMealActivity.class);
-		    		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
+		        case R.id.fragment_recipe_button_edit:
+		        	// TODO Uncomment when this class exists
+		        	/*
+		    		intent = new Intent(context, EditRecipeActivity.class);
+		    		intent.putExtra(EditRecipeActivity.EXTRA_RECIPE, recipe.getId());
 		    		startActivity(intent);
+		    		 */
 		    		break;
-		        case R.id.fragment_meal_button_cook:
+		        case R.id.fragment_recipe_button_cook:
 		    		intent = new Intent(context, CookActivity.class);
-		    		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
+		    		intent.putExtra(HomeActivity.EXTRA_RECIPE, recipe.getId());
 		    		startActivity(intent);
 		    		break;
 		        default:
 		            return;
 		    }
-		    */
 		}
 	};
 }

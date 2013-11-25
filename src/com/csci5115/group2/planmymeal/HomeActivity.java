@@ -1,7 +1,5 @@
 package com.csci5115.group2.planmymeal;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,13 +23,13 @@ import com.csci5115.group2.planmymeal.database.DataSourceManager;
 public class HomeActivity extends FragmentActivity implements OnEditorActionListener, CookableListFragment.Callbacks {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
+	public final static String EXTRA_RECIPE = "com.csci5115.group2.planmymeal.RECIPE";
 	
 	public final static String TAG = "HomeActivity";
 	
 	// Databases
 	private DataSourceManager datasource;
 	
-	private FragmentManager fragmentManager;
 	private static LinearLayout homeColumn0;
 	private static LinearLayout homeColumn1;
 	private static LinearLayout homeColumn2;

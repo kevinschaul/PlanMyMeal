@@ -32,7 +32,7 @@ public class RecipeDetailArrayAdapter extends ArrayAdapter<Recipe> {
 	    TextView mealTime = (TextView) rowView.findViewById(R.id.row_recipe_detail_array_time);
 	    
 	    if (recipe != null) {
-		    mealName.setText(recipe.getName());
+	    	mealName.setText("[" + recipe.getType() + "] " + recipe.getName());
 		    mealTime.setText(Double.toString(recipe.getTime()));
 	    }
 	    
