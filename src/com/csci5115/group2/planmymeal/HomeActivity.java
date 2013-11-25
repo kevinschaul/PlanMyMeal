@@ -156,38 +156,40 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	  }
 	  
 	  public static void showColumns(int numberOfColumns) {
-	  
-		  LinearLayout.LayoutParams params0;
-		  LinearLayout.LayoutParams params1;
-		  LinearLayout.LayoutParams params2;
 		  
-		  switch (numberOfColumns) {
-	        case 1:
-	        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 6);
-	        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
-	        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
-	  		  	homeColumn0.setLayoutParams(params0);
-	  		  	homeColumn1.setLayoutParams(params1);
-	  		  	homeColumn2.setLayoutParams(params2);
-	            break;
-	        case 2:
-	        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
-	        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
-	        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
-	  		  	homeColumn0.setLayoutParams(params0);
-	  		  	homeColumn1.setLayoutParams(params1);
-	  		  	homeColumn2.setLayoutParams(params2);
-	        	break;
-	        case 3:
-	        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
-	        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
-	        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
-	  		  	homeColumn0.setLayoutParams(params0);
-	  		  	homeColumn1.setLayoutParams(params1);
-	  		  	homeColumn2.setLayoutParams(params2);
-	        	break;
-	        default:
-	            break;
+		  if (homeColumn0 != null && homeColumn1 != null && homeColumn2 != null) {
+			  LinearLayout.LayoutParams params0;
+			  LinearLayout.LayoutParams params1;
+			  LinearLayout.LayoutParams params2;
+			  
+			  switch (numberOfColumns) {
+		        case 1:
+		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 6);
+		        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
+		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
+		  		  	homeColumn0.setLayoutParams(params0);
+		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn2.setLayoutParams(params2);
+		            break;
+		        case 2:
+		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
+		        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
+		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
+		  		  	homeColumn0.setLayoutParams(params0);
+		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn2.setLayoutParams(params2);
+		        	break;
+		        case 3:
+		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
+		        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
+		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
+		  		  	homeColumn0.setLayoutParams(params0);
+		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn2.setLayoutParams(params2);
+		        	break;
+		        default:
+		            break;
+			  }
 		  }
 	  }
 }
