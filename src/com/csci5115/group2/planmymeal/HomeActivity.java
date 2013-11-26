@@ -2,28 +2,24 @@ package com.csci5115.group2.planmymeal;
 
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup.LayoutParams;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 // Samantha Oyen: This used to implement OnClickListener... had to take out.
-public class HomeActivity extends FragmentActivity implements OnEditorActionListener, CookableListFragment.Callbacks {
+public class HomeActivity extends FragmentActivity implements CookableListFragment.Callbacks, TextWatcher {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
 	public final static String BUNDLE_SHOWMEALS = "com.csci5115.group2.planmymeal.BUNDLE_SHOWMEALS";
@@ -36,6 +32,7 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	
 	private Boolean showMeals;
 	private Boolean showRecipes;
+	private ArrayAdapter<Cookable> adapter;
 	
 	private static LinearLayout homeColumn0;
 	private static LinearLayout homeColumn1;
@@ -57,6 +54,7 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
         CookableListFragment fragment = (CookableListFragment) getSupportFragmentManager().findFragmentById(
  				R.id.home_cookable_list);
         fragment.setActivateOnItemClick(true);
+        adapter = (ArrayAdapter<Cookable>) fragment.getListAdapter();
         /*
         Bundle arguments = new Bundle();
 		arguments.putBoolean(CookableListFragment.ARG_SHOW_MEALS, showMeals);
@@ -82,10 +80,8 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
         	autocompleteStrings[i] = tags.get(j).getName();
         }
         
-		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, autocompleteStrings);
-		search.setAdapter(adapter);
-		search.setOnEditorActionListener(this);
+		EditText search = (EditText) findViewById(R.id.home_search);
+		search.addTextChangedListener(this);
 		
 		homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
 		homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
@@ -130,22 +126,6 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
-	}
-	
-	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		boolean handled = false;
-		Log.i("onEditorAction()", Integer.toString(actionId));
-		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-	    	Context context = getApplicationContext();
-	    	CharSequence text = v.getText();
-	    	int duration = Toast.LENGTH_SHORT;
-	    	
-	    	Toast toast = Toast.makeText(context, text, duration);
-	    	toast.show();
-		}
-		
-		return handled;
 	}
 	
 	@Override
@@ -223,4 +203,18 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 			  }
 		  }
 	  }
+
+	@Override
+	public void afterTextChanged(Editable arg0) {
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		adapter.getFilter().filter(s);
+	}
 }

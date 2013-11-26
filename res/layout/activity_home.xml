@@ -39,11 +39,11 @@
 		    android:layout_marginRight="16dp"
 		    android:animateLayoutChanges="true" >
 	
-		    <AutoCompleteTextView
+		    <EditText
 		        android:id="@+id/home_search"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:hint="Search by title, tags or ingredients"
+		        android:hint="Filter by title, tags or ingredients"
 		        android:imeOptions="actionSearch"
 		        android:inputType="text" />
 	
