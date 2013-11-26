@@ -38,7 +38,7 @@ public class CookableArrayAdapterSplit extends ArrayAdapter<Cookable> {
 
     	Cookable cookable = cookables.get(position);
 	    mealName.setText("[" + cookable.getType() + "] " + cookable.getName());
-	    mealTime.setText(Double.toString(cookable.getTime()));
+	    mealTime.setText(cookable.getReadableTime());
 	    
 	    return rowView;
 	}

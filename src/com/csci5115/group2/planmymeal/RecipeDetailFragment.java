@@ -82,7 +82,7 @@ public class RecipeDetailFragment extends Fragment {
 			name.setText(recipe.getName());
 			
 			TextView time = (TextView) rootView.findViewById(R.id.fragment_recipe_total_time);
-			time.setText(Double.toString(recipe.getTime()));
+			time.setText(recipe.getReadableTime());
 			
 			// TODO
 			/*

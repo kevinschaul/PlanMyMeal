@@ -44,7 +44,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe>
 	    
 	    Recipe recipe = values.get(position);
 	    recipeName.setText(recipe.getName());
-	    recipeTime.setText(Double.toString(recipe.getTime()));
+	    recipeTime.setText(recipe.getReadableTime());
 	    
 		CheckBox addRecipeToMeal = (CheckBox) rowView.findViewById(R.id.add_recipe_to_meal);
 		addRecipeToMeal.setOnClickListener(new RowAddRecipeToMealListener(recipe, meal));
