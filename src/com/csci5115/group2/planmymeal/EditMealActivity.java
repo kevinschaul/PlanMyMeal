@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class EditMealActivity extends Activity {
@@ -24,6 +26,7 @@ public class EditMealActivity extends Activity {
 	public EditMealActivity view;
 	public LinearLayout tagContainer;
 	private DataSourceManager datasource;
+	private RelativeLayout newTagLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +68,49 @@ public class EditMealActivity extends Activity {
 		
 		for(Tag tag : datasource.getMealTags(mealId))
 		{
+			final RelativeLayout newTagLayout = new RelativeLayout(this);
+			
+			// Defining the RelativeLayout layout parameters.
+	        // In this case I want to fill its parent
+	        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+	                RelativeLayout.LayoutParams.MATCH_PARENT,
+	                RelativeLayout.LayoutParams.WRAP_CONTENT);
+			
 			Button newTag = new Button(this);
-			//newTag.setLayoutParams(params);
 			newTag.setText(tag.getName());
-			tagContainer.addView(newTag);
+			newTag.append("              ");
+			
+			RelativeLayout layout = (RelativeLayout)findViewById(R.id.edit_meal_tag_layout);
+
+			
+			Button deleteTag = new Button(this);
+			deleteTag.setText("X");
+			
+			// Defining the layout parameters of the tag Buttons
+	        RelativeLayout.LayoutParams tagButtonLayout = new RelativeLayout.LayoutParams(
+	                RelativeLayout.LayoutParams.MATCH_PARENT,
+	                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+	        tagButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+			// Defining the layout parameters of the Delete tag Buttons
+	        RelativeLayout.LayoutParams deleteButtonLayout = new RelativeLayout.LayoutParams(
+	                RelativeLayout.LayoutParams.WRAP_CONTENT,
+	                RelativeLayout.LayoutParams.WRAP_CONTENT);
+	        deleteButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+	        //deleteButtonLayout.addRule(RelativeLayout.CENTER_VERTICAL);
+			
+			newTagLayout.addView(newTag, tagButtonLayout);
+			newTagLayout.addView(deleteTag, deleteButtonLayout);
+			tagContainer.addView(newTagLayout);
+			deleteTag.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					newTagLayout.setVisibility(View.GONE);
+				}
+			}
+			);
 		}
 		
 		Button addTagButton = (Button) findViewById(R.id.addTagButton);
@@ -83,11 +125,49 @@ public class EditMealActivity extends Activity {
 				//Add tag to meal
 				meal.tags.add(new Tag(tagText));
 				
+				final RelativeLayout newTagLayout = new RelativeLayout(view);
 				
-				Button newTag = new Button(view);
-				//newTag.setLayoutParams(params);
+				// Defining the RelativeLayout layout parameters.
+		        // In this case I want to fill its parent
+		        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+		                RelativeLayout.LayoutParams.MATCH_PARENT,
+		                RelativeLayout.LayoutParams.WRAP_CONTENT);
+				
+		        Button newTag = new Button(view);
 				newTag.setText(tagText);
-				tagContainer.addView(newTag);
+				newTag.append("              ");
+				
+				RelativeLayout layout = (RelativeLayout)findViewById(R.id.edit_meal_tag_layout);
+
+				
+				Button deleteTag = new Button(view);
+				deleteTag.setText("X");
+				
+				// Defining the layout parameters of the tag Buttons
+		        RelativeLayout.LayoutParams tagButtonLayout = new RelativeLayout.LayoutParams(
+		                RelativeLayout.LayoutParams.MATCH_PARENT,
+		                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+		        tagButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+				// Defining the layout parameters of the Delete tag Buttons
+		        RelativeLayout.LayoutParams deleteButtonLayout = new RelativeLayout.LayoutParams(
+		                RelativeLayout.LayoutParams.WRAP_CONTENT,
+		                RelativeLayout.LayoutParams.WRAP_CONTENT);
+		        deleteButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		        //deleteButtonLayout.addRule(RelativeLayout.CENTER_VERTICAL);
+				
+				newTagLayout.addView(newTag, tagButtonLayout);
+				newTagLayout.addView(deleteTag, deleteButtonLayout);
+				tagContainer.addView(newTagLayout);
+				deleteTag.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						newTagLayout.setVisibility(View.GONE);
+					}
+				}
+				);
 			}
 		}
 		);
