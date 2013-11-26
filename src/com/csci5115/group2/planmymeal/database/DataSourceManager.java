@@ -10,6 +10,7 @@ import com.csci5115.group2.planmymeal.Meal;
 import com.csci5115.group2.planmymeal.Recipe;
 import com.csci5115.group2.planmymeal.RecipeStep;
 import com.csci5115.group2.planmymeal.Tag;
+import com.csci5115.group2.planmymeal.UserSettings;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -126,29 +127,56 @@ public class DataSourceManager
 			+ " integer not null" + ");";
 	// RECIPE STEP DATABASE
 	public static final String TABLE_RECIPE_STEP = "recipeStep";
-		public static final String COLUMN_INSTRUCTIONS = "instructions";
-		public static final String COLUMN_ACTIVE = "isActiveStep";
-		public static final String COLUMN_APPLIANCES = "appliancesUsed";
-		private static String[] allRecipeStepColumns =
-		{ COLUMN_ID, COLUMN_INSTRUCTIONS, COLUMN_TIME, COLUMN_ACTIVE, COLUMN_APPLIANCES };
-		// Database creation
-		private static final String RECIPE_STEP_DATABASE_CREATE = "create table "
-				+ TABLE_RECIPE_STEP + "(" + COLUMN_ID
-				+ " integer primary key autoincrement, " + COLUMN_INSTRUCTIONS
-				+ " text not null, " + COLUMN_ACTIVE + " integer not null,"
-				+ COLUMN_APPLIANCES + " text" + ");";
-		
-		// RECIPE STEP REL DATABASE
-		public static final String TABLE_RECIPE_STEP_REL = "recipeStepRel";
-		public static final String COLUMN_RECIPE_STEP_ID = "recipeStepId";
-		private static String[] allRecipeStepRelColumns =
-		{ COLUMN_ID, COLUMN_RECIPE_ID, COLUMN_RECIPE_STEP_ID };
-		// Database creation
-		private static final String RECIPE_STEP_REL_DATABASE_CREATE = "create table "
-				+ TABLE_RECIPE_STEP_REL + "(" + COLUMN_ID
-				+ " integer primary key autoincrement, " + COLUMN_RECIPE_ID
-				+ " integer not null, " + COLUMN_RECIPE_STEP_ID
-				+ " integer not null" + ");";
+	public static final String COLUMN_INSTRUCTIONS = "instructions";
+	public static final String COLUMN_ACTIVE = "isActiveStep";
+	public static final String COLUMN_APPLIANCES = "appliancesUsed";
+	private static String[] allRecipeStepColumns =
+	{ COLUMN_ID, COLUMN_INSTRUCTIONS, COLUMN_TIME, COLUMN_ACTIVE,
+			COLUMN_APPLIANCES };
+	// Database creation
+	private static final String RECIPE_STEP_DATABASE_CREATE = "create table "
+			+ TABLE_RECIPE_STEP + "(" + COLUMN_ID
+			+ " integer primary key autoincrement, " + COLUMN_INSTRUCTIONS
+			+ " text not null, " + COLUMN_ACTIVE + " integer not null,"
+			+ COLUMN_APPLIANCES + " text" + ");";
+
+	// RECIPE STEP REL DATABASE
+	public static final String TABLE_RECIPE_STEP_REL = "recipeStepRel";
+	public static final String COLUMN_RECIPE_STEP_ID = "recipeStepId";
+	private static String[] allRecipeStepRelColumns =
+	{ COLUMN_ID, COLUMN_RECIPE_ID, COLUMN_RECIPE_STEP_ID };
+	// Database creation
+	private static final String RECIPE_STEP_REL_DATABASE_CREATE = "create table "
+			+ TABLE_RECIPE_STEP_REL
+			+ "("
+			+ COLUMN_ID
+			+ " integer primary key autoincrement, "
+			+ COLUMN_RECIPE_ID
+			+ " integer not null, "
+			+ COLUMN_RECIPE_STEP_ID
+			+ " integer not null" + ");";
+
+	// SETTINGS DATABASE
+	public static final String TABLE_SETTINGS = "settings";
+	public static final String COLUMN_REMINDER_TIME = "reminderTime";
+	public static final String COLUMN_REMINDER_SOUND = "reminderSound";
+	public static final String COLUMN_START_SOUND = "startSound";
+	public static final String COLUMN_NUM_OVENS = "numOvens";
+	public static final String COLUMN_NUM_MICROWAVES = "numMicrowaves";
+	public static final String COLUMN_NUM_BURNERS = "numBurners";
+	private static String[] allSettingColumns =
+	{ COLUMN_ID, COLUMN_REMINDER_TIME, COLUMN_REMINDER_SOUND,
+			COLUMN_START_SOUND, COLUMN_NUM_OVENS, COLUMN_NUM_MICROWAVES,
+			COLUMN_NUM_BURNERS };
+
+	// Database creation
+	private static final String SETTINGS_DATABASE_CREATE = "create table "
+			+ TABLE_SETTINGS + "(" + COLUMN_ID
+			+ " integer primary key autoincrement, " + COLUMN_REMINDER_TIME
+			+ " real not null, " + COLUMN_REMINDER_SOUND + " text not null, "
+			+ COLUMN_START_SOUND + " text not null, " + COLUMN_NUM_OVENS
+			+ " integer not null," + COLUMN_NUM_MICROWAVES
+			+ " integer not null," + COLUMN_NUM_BURNERS + " integer not null);";
 
 	public DataSourceManager(Context context)
 	{
@@ -553,106 +581,152 @@ public class DataSourceManager
 		ingredient.setUnit(cursor.getString(3));
 		return ingredient;
 	}
-	
+
 	// RECIPE STEP DATA ACCESS METHODS
-		public RecipeStep createRecipeStep(String instructions, long time, Boolean isActive, List<String> appliancesUsed)
+	public RecipeStep createRecipeStep(String instructions, long time,
+			Boolean isActive, List<String> appliancesUsed)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_INSTRUCTIONS, instructions);
+		values.put(COLUMN_TIME, time);
+		values.put(COLUMN_ACTIVE, isActive);
+		values.put(COLUMN_APPLIANCES, createApplianceString(appliancesUsed));
+		long insertId = database.insert(TABLE_RECIPE_STEP, null, values);
+		Cursor cursor = database.query(TABLE_RECIPE_STEP, allRecipeStepColumns,
+				COLUMN_ID + " = " + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		RecipeStep newStep = cursorToRecipeStep(cursor);
+		cursor.close();
+		return newStep;
+	}
+
+	public void deleteRecipeStep(RecipeStep step)
+	{
+		long id = step.getId();
+		System.out.println("Recipe Step deleted with id: " + id);
+		database.delete(TABLE_RECIPE_STEP, COLUMN_ID + " = " + id, null);
+	}
+
+	public List<RecipeStep> getRecipeSteps(long recipeId)
+	{
+		List<Long> stepIds = getStepIdsForRecipe(recipeId);
+
+		List<RecipeStep> steps = new LinkedList<RecipeStep>();
+		for (long stepId : stepIds)
 		{
-			ContentValues values = new ContentValues();
-			values.put(COLUMN_INSTRUCTIONS, instructions);
-			values.put(COLUMN_TIME, time);
-			values.put(COLUMN_ACTIVE, isActive);
-			values.put(COLUMN_APPLIANCES, createApplianceString(appliancesUsed));
-			long insertId = database.insert(TABLE_RECIPE_STEP, null, values);
-			Cursor cursor = database.query(TABLE_RECIPE_STEP, allRecipeStepColumns,
-					COLUMN_ID + " = " + insertId, null, null, null, null);
-			cursor.moveToFirst();
-			RecipeStep newStep = cursorToRecipeStep(cursor);
-			cursor.close();
-			return newStep;
-		}
-
-		public void deleteRecipeStep(RecipeStep step)
-		{
-			long id = step.getId();
-			System.out.println("Recipe Step deleted with id: " + id);
-			database.delete(TABLE_RECIPE_STEP, COLUMN_ID + " = " + id, null);
-		}
-
-		public List<RecipeStep> getRecipeSteps(long recipeId)
-		{
-			List<Long> stepIds = getStepIdsForRecipe(recipeId);
-
-			List<RecipeStep> steps = new LinkedList<RecipeStep>();
-			for (long stepId : stepIds)
-			{
-				Cursor cursor = database.query(TABLE_RECIPE_STEP,
-						allRecipeStepColumns, COLUMN_ID + " = " + stepId,
-						null, null, null, null);
-
-				cursor.moveToFirst();
-				steps.add(cursorToRecipeStep(cursor));
-
-				// make sure to close the cursor
-				cursor.close();
-			}
-
-			return steps;
-		}
-
-		private List<Long> getStepIdsForRecipe(long recipeId)
-		{
-			List<Long> recipeSteps = new ArrayList<Long>();
-
-			Cursor cursor = database.query(TABLE_RECIPE_STEP_REL,
-					allRecipeStepRelColumns,
-					COLUMN_RECIPE_ID + " = " + recipeId, null, null, null, null);
+			Cursor cursor = database.query(TABLE_RECIPE_STEP,
+					allRecipeStepColumns, COLUMN_ID + " = " + stepId, null,
+					null, null, null);
 
 			cursor.moveToFirst();
-			while (!cursor.isAfterLast())
-			{
-				long stepId = cursor.getLong(2);
-				recipeSteps.add(stepId);
-				cursor.moveToNext();
-			}
+			steps.add(cursorToRecipeStep(cursor));
+
 			// make sure to close the cursor
 			cursor.close();
-			return recipeSteps;
 		}
 
+		return steps;
+	}
 
-		private RecipeStep cursorToRecipeStep(Cursor cursor)
+	private List<Long> getStepIdsForRecipe(long recipeId)
+	{
+		List<Long> recipeSteps = new ArrayList<Long>();
+
+		Cursor cursor = database.query(TABLE_RECIPE_STEP_REL,
+				allRecipeStepRelColumns, COLUMN_RECIPE_ID + " = " + recipeId,
+				null, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
 		{
-			RecipeStep step = new RecipeStep();
-			step.setId(cursor.getLong(0));
-			step.setInstructions(cursor.getString(1));
-			step.setTime(cursor.getLong(2));
-			step.setActiveStep(cursor.getInt(3) == 1);
-			step.setAppliancesUsed(getAppliances(cursor.getString(4)));
-			return step;
+			long stepId = cursor.getLong(2);
+			recipeSteps.add(stepId);
+			cursor.moveToNext();
 		}
+		// make sure to close the cursor
+		cursor.close();
+		return recipeSteps;
+	}
+
+	private RecipeStep cursorToRecipeStep(Cursor cursor)
+	{
+		RecipeStep step = new RecipeStep();
+		step.setId(cursor.getLong(0));
+		step.setInstructions(cursor.getString(1));
+		step.setTime(cursor.getLong(2));
+		step.setActiveStep(cursor.getInt(3) == 1);
+		step.setAppliancesUsed(getAppliances(cursor.getString(4)));
+		return step;
+	}
 
 	private List<String> getAppliances(String appliancesUsed)
+	{
+		if (appliancesUsed == null)
 		{
-			if(appliancesUsed == null)
-			{
-				return new LinkedList<String>();
-			}
-			else
-			{
-				return Arrays.asList(appliancesUsed.split(";"));
-			}
+			return new LinkedList<String>();
+		} else
+		{
+			return Arrays.asList(appliancesUsed.split(";"));
 		}
-	
+	}
+
 	private String createApplianceString(List<String> appliances)
 	{
 		String applianceString = "";
-		for(int i = 1; i < appliances.size(); i++)
+		for (int i = 1; i < appliances.size(); i++)
 		{
 			applianceString += appliances.get(i) + ";";
 		}
 		applianceString += appliances.get(appliances.size() - 1);
-		
+
 		return applianceString;
+	}
+
+	// SETTINGS DATA ACCESS METHODS
+	// RECIPE STEP DATA ACCESS METHODS
+	public UserSettings updateUserSettings(long id, long reminderTime,
+			String reminderSound, String startSound, int numOvens,
+			int numMicrowaves, int numBurners)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_ID, id);
+		values.put(COLUMN_REMINDER_TIME, reminderTime);
+		values.put(COLUMN_REMINDER_SOUND, reminderSound);
+		values.put(COLUMN_START_SOUND, startSound);
+		values.put(COLUMN_NUM_OVENS, numOvens);
+		values.put(COLUMN_NUM_MICROWAVES, numMicrowaves);
+		values.put(COLUMN_NUM_BURNERS, numBurners);
+		long insertId = database.update(TABLE_SETTINGS, values, COLUMN_ID + "="
+				+ id, null);
+		Cursor cursor = database.query(TABLE_SETTINGS, allSettingColumns,
+				COLUMN_ID + " = " + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		UserSettings newUserSettings = cursorToUserSettings(cursor);
+		cursor.close();
+		return newUserSettings;
+	}
+
+	public UserSettings getUserSettings()
+	{
+		Cursor cursor = database.query(TABLE_SETTINGS, allSettingColumns, null,
+				null, null, null, null);
+		cursor.moveToFirst();
+		UserSettings newUserSettings = cursorToUserSettings(cursor);
+		cursor.close();
+		return newUserSettings;
+	}
+
+	private UserSettings cursorToUserSettings(Cursor cursor)
+	{
+		UserSettings settings = new UserSettings();
+		settings.setId(cursor.getLong(0));
+		settings.setReminderTime(cursor.getLong(1));
+		settings.setReminderSound(cursor.getString(2));
+		settings.setStartSound(cursor.getString(3));
+		settings.setNumOvens(cursor.getInt(4));
+		settings.setNumMicrowaves(cursor.getInt(5));
+		settings.setNumBurners(cursor.getInt(6));
+		return settings;
 	}
 
 	// GENERIC DATABASE METHODS
@@ -668,7 +742,7 @@ public class DataSourceManager
 		database.execSQL(RECIPE_TAG_DATABASE_CREATE);
 		database.execSQL(RECIPE_STEP_DATABASE_CREATE);
 		database.execSQL(RECIPE_STEP_REL_DATABASE_CREATE);
-		
+		database.execSQL(SETTINGS_DATABASE_CREATE);
 
 		// Thanksgiving Meal
 		ContentValues values = new ContentValues();
@@ -818,6 +892,15 @@ public class DataSourceManager
 		values.put(COLUMN_DESCRIPTION, "Initial Description 2");
 		long meal2Id = database.insert(TABLE_MEAL, null, values);
 
+		// Initialize User Settings
+		values = new ContentValues();
+		values.put(COLUMN_REMINDER_TIME, 0);
+		values.put(COLUMN_REMINDER_SOUND, "Quack");
+		values.put(COLUMN_START_SOUND, "Beep");
+		values.put(COLUMN_NUM_OVENS, 1);
+		values.put(COLUMN_NUM_MICROWAVES, 1);
+		values.put(COLUMN_NUM_BURNERS, 4);
+		database.insert(TABLE_SETTINGS, null, values);
 	}
 
 	public static void onUpgrade(SQLiteDatabase database, int oldVersion,
@@ -836,6 +919,7 @@ public class DataSourceManager
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_TAG_REL);
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_STEP);
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_STEP_REL);
+		database.execSQL("DROP TABLE IF EXISTS " + TABLE_SETTINGS);
 		onCreate(database);
 	}
 
