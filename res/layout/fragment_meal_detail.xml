@@ -7,11 +7,9 @@
     
     <TextView
 	    android:id="@+id/fragment_meal_title"
-	    style="?android:attr/textAppearanceLarge"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
 	    android:gravity="center_horizontal"
-	    android:text="Meal title" />
+	    android:text="Meal title"
+	    style="@style/CookableTitle" />
 
     <LinearLayout
         android:id="@+id/fragment_meal_button_wrapper"
@@ -50,7 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:textSize="20sp"
-            android:text="Total Time" />
+            android:text="Total Time"
+            style="@style/DetailLabel" />
 
         <TextView
             android:id="@+id/fragment_meal_time"
@@ -58,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:textSize="20sp"
-            android:text="Time" />
+            android:text="Time"
+            style="@style/DetailItem" />
         
     </RelativeLayout>
     
