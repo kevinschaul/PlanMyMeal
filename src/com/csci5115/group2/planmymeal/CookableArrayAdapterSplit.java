@@ -17,6 +17,7 @@ public class CookableArrayAdapterSplit extends ArrayAdapter<Cookable> {
 	private Context context;
 	private List<Cookable> cookables;
 	private List<Cookable> allCookables;
+	private Filter filter;
 
 	public CookableArrayAdapterSplit(Context context, List<Cookable> cookables) {
 		super(context, R.layout.row_cookable_split, cookables);
@@ -44,39 +45,42 @@ public class CookableArrayAdapterSplit extends ArrayAdapter<Cookable> {
 	
 	@Override
 	public Filter getFilter() {
-		return new Filter() {
-
-			@Override
-			protected FilterResults performFiltering(CharSequence constraint) {
-				FilterResults results = new FilterResults();
-				if (constraint == null || constraint.length() == 0) {
-					results.values = allCookables;
-					results.count = allCookables.size();
-				} else {
-					List<Cookable> filteredCookables = new ArrayList<Cookable>();
-					for (Cookable c : allCookables) {
-						if (c.getName().toUpperCase().startsWith(constraint.toString().toUpperCase())) {
-							filteredCookables.add(c);
+		if (filter != null) {
+			return filter;
+		} else {
+			filter = new Filter() {
+				@Override
+				protected FilterResults performFiltering(CharSequence constraint) {
+					FilterResults results = new FilterResults();
+					if (constraint == null || constraint.length() == 0) {
+						results.values = allCookables;
+						results.count = allCookables.size();
+					} else {
+						List<Cookable> filteredCookables = new ArrayList<Cookable>();
+						for (Cookable c : allCookables) {
+							if (c.getName().toUpperCase().startsWith(constraint.toString().toUpperCase())) {
+								filteredCookables.add(c);
+							}
 						}
+						results.values = filteredCookables;
+						results.count = filteredCookables.size();
 					}
-					results.values = filteredCookables;
-					results.count = filteredCookables.size();
+					return results;
 				}
-				return results;
-			}
-
-			@Override
-			protected void publishResults(CharSequence constraint, FilterResults results) {
-				if (results.count == 0) {
-					notifyDataSetInvalidated();
-				} else {
-					List<Cookable> filterResults = (List<Cookable>) results.values;
-					cookables.clear();
-					cookables.addAll(filterResults);
-					notifyDataSetChanged();
+	
+				@Override
+				protected void publishResults(CharSequence constraint, FilterResults results) {
+					if (results.count == 0) {
+						notifyDataSetInvalidated();
+					} else {
+						List<Cookable> filterResults = (List<Cookable>) results.values;
+						cookables.clear();
+						cookables.addAll(filterResults);
+						notifyDataSetChanged();
+					}
 				}
-			}
-			
-		};
+			};
+			return filter;
+		}
 	}
 }

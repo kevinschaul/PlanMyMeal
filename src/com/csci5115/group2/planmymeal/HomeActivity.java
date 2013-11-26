@@ -10,6 +10,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -19,7 +21,7 @@ import android.widget.LinearLayout;
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 // Samantha Oyen: This used to implement OnClickListener... had to take out.
-public class HomeActivity extends FragmentActivity implements CookableListFragment.Callbacks, TextWatcher {
+public class HomeActivity extends FragmentActivity implements CookableListFragment.Callbacks, TextWatcher, OnFocusChangeListener {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
 	public final static String BUNDLE_SHOWMEALS = "com.csci5115.group2.planmymeal.BUNDLE_SHOWMEALS";
@@ -55,12 +57,6 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
  				R.id.home_cookable_list);
         fragment.setActivateOnItemClick(true);
         adapter = (ArrayAdapter<Cookable>) fragment.getListAdapter();
-        /*
-        Bundle arguments = new Bundle();
-		arguments.putBoolean(CookableListFragment.ARG_SHOW_MEALS, showMeals);
-		arguments.putBoolean(CookableListFragment.ARG_SHOW_RECIPES, showRecipes);
-		fragment.setArguments(arguments);
-		*/
         
         // Register text listener
         List<Tag> tags = datasource.getAllTags();
@@ -82,6 +78,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
         
 		EditText search = (EditText) findViewById(R.id.home_search);
 		search.addTextChangedListener(this);
+		search.setOnFocusChangeListener(this);
 		
 		homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
 		homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
@@ -216,5 +213,16 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		adapter.getFilter().filter(s);
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+		switch(v.getId()) {
+		case R.id.home_search:
+			if (hasFocus) {
+				showColumns(1);
+			}
+			break;
+		}
 	}
 }
