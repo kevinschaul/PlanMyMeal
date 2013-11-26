@@ -26,7 +26,6 @@ public class EditMealActivity extends Activity {
 	public EditMealActivity view;
 	public LinearLayout tagContainer;
 	private DataSourceManager datasource;
-	private RelativeLayout newTagLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +79,6 @@ public class EditMealActivity extends Activity {
 			newTag.setText(tag.getName());
 			newTag.append("              ");
 			
-			RelativeLayout layout = (RelativeLayout)findViewById(R.id.edit_meal_tag_layout);
 
 			
 			Button deleteTag = new Button(this);
@@ -137,8 +135,6 @@ public class EditMealActivity extends Activity {
 				newTag.setText(tagText);
 				newTag.append("              ");
 				
-				RelativeLayout layout = (RelativeLayout)findViewById(R.id.edit_meal_tag_layout);
-
 				
 				Button deleteTag = new Button(view);
 				deleteTag.setText("X");
