@@ -3,31 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
-    android:focusableInTouchMode="true" >
-    
-    <TextView
-        android:id="@+id/home_textTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:text="My recipes and meals"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="42sp" />
+    android:focusableInTouchMode="true"
+    android:padding="8dp" >
 
     <LinearLayout
         android:id="@+id/home_mainWrapper"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/home_textTitle"
+        android:layout_alignParentTop="true"
         android:orientation="horizontal"
         android:weightSum="6"
         android:baselineAligned="false"
         android:showDividers="middle"
-        android:divider="?android:attr/dividerHorizontal"
-        android:layout_marginLeft="16dp"
-		android:layout_marginRight="16dp" >
+        android:divider="?android:attr/dividerHorizontal" >
 	
 	    <LinearLayout
 	        android:id="@+id/home_column_0"
@@ -35,15 +23,14 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="6"
 	        android:orientation="vertical"
-	        android:layout_marginLeft="16dp"
-		    android:layout_marginRight="16dp"
-		    android:animateLayoutChanges="true" >
+		    android:animateLayoutChanges="true"
+		    android:padding="8dp" >
 	
-		    <AutoCompleteTextView
+		    <EditText
 		        android:id="@+id/home_search"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:hint="Search by title, tags or ingredients"
+		        android:hint="Filter by title, tags or ingredients"
 		        android:imeOptions="actionSearch"
 		        android:inputType="text" />
 	
@@ -58,13 +45,15 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:checked="true"
 			        android:text="Meals" />
 			
 			    <CheckBox
-			        android:id="@+id/home_CheckBoxRecipes"
+			        android:id="@+id/home_checkBoxRecipes"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:checked="true"
 			        android:text="Recipes" />
 		    </LinearLayout>
 
@@ -84,9 +73,9 @@
 		    android:baselineAligned="false"
 		    android:orientation="horizontal"
 		    android:layout_weight="0"
-		    android:layout_marginLeft="16dp"
-		    android:layout_marginRight="16dp"
-		    android:animateLayoutChanges="true" >
+		    android:animateLayoutChanges="true"
+		    android:visibility="gone"
+		    android:padding="8dp" >
 
 		    <FrameLayout
 		        android:id="@+id/home_col1_container"
@@ -102,9 +91,9 @@
 		    android:baselineAligned="false"
 		    android:orientation="horizontal"
 		    android:layout_weight="0"
-		    android:layout_marginLeft="16dp"
-		    android:layout_marginRight="16dp"
-		    android:animateLayoutChanges="true" >
+		    android:animateLayoutChanges="true"
+		    android:visibility="gone"
+		    android:padding="8dp" >
 
 		    <FrameLayout
 		        android:id="@+id/home_col2_container"

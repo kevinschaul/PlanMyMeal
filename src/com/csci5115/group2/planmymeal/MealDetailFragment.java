@@ -83,8 +83,11 @@ public class MealDetailFragment extends Fragment {
 		Context context = rootView.getContext();
 
 		if (meal != null) {
-			((TextView) rootView.findViewById(R.id.fragment_meal_title))
-					.setText(meal.getName());
+			TextView name = (TextView) rootView.findViewById(R.id.fragment_meal_title);
+			name.setText(meal.getName());
+			
+			TextView time = (TextView) rootView.findViewById(R.id.fragment_meal_time);
+			time.setText(meal.getReadableTime());
 			
 			ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
 			List<Recipe> recipes = datasource.getMealRecipes(meal.getId());

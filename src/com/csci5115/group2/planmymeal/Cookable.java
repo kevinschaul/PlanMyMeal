@@ -53,5 +53,16 @@ public class Cookable {
 	public void setTime(double time) {
 		this.time = time;
 	}
+	
+	// TODO test these
+	public int getMinutes() {
+		return (int) time / 60;
+	}
+	public int getSeconds() {
+		return (int) time % 60;
+	}
+	public String getReadableTime() {
+		return String.format("%02d:%02d", this.getMinutes(), this.getSeconds());
+	}
 
 }

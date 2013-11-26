@@ -23,6 +23,9 @@ import com.csci5115.group2.planmymeal.database.DataSourceManager;
  */
 public class CookableListFragment extends ListFragment {
 
+	public static final String ARG_SHOW_MEALS = "show_meals";
+	public static final String ARG_SHOW_RECIPES = "show_recipes";
+	
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
 	 * activated item position. Only used on tablets.
@@ -80,12 +83,30 @@ public class CookableListFragment extends ListFragment {
 		datasource = new DataSourceManager(context);
 		datasource.open();
 		
+		Boolean showMeals = true;
+		Boolean showRecipes = true;
+		/*
+		Bundle arguments = getArguments();
+		if (arguments.containsKey(ARG_SHOW_MEALS)) {
+			showMeals = arguments.getBoolean(ARG_SHOW_MEALS);
+		}
+		if (arguments.containsKey(ARG_SHOW_RECIPES)) {
+			showRecipes = arguments.getBoolean(ARG_SHOW_RECIPES);
+		}
+		*/
+
 		List<Cookable> cookables = new LinkedList<Cookable>();
-		List<Meal> meals = datasource.getAllMeals();
-		cookables.addAll(meals);
 		
-		List<Recipe> recipes = datasource.getAllRecipes();
-		cookables.addAll(recipes);
+		if (showMeals) {
+			List<Meal> meals = datasource.getAllMeals();
+			cookables.addAll(meals);
+		}
+		
+		if (showRecipes) {
+			List<Recipe> recipes = datasource.getAllRecipes();
+			cookables.addAll(recipes);
+		}
+		
 		setListAdapter(new CookableArrayAdapterSplit(getActivity(), cookables));	
 	}
 	

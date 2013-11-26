@@ -1,33 +1,41 @@
 package com.csci5115.group2.planmymeal;
 
-import android.content.Context;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 // Samantha Oyen: This used to implement OnClickListener... had to take out.
-public class HomeActivity extends FragmentActivity implements OnEditorActionListener, CookableListFragment.Callbacks {
+public class HomeActivity extends FragmentActivity implements CookableListFragment.Callbacks, TextWatcher, OnFocusChangeListener {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
+	public final static String BUNDLE_SHOWMEALS = "com.csci5115.group2.planmymeal.BUNDLE_SHOWMEALS";
+	public final static String BUNDLE_SHOWRECIPES = "com.csci5115.group2.planmymeal.BUNDLE_SHOWRECIPES";
 	
 	public final static String TAG = "HomeActivity";
 	
 	// Databases
 	private DataSourceManager datasource;
+	
+	private Boolean showMeals;
+	private Boolean showRecipes;
+	private ArrayAdapter<Cookable> adapter;
 	
 	private static LinearLayout homeColumn0;
 	private static LinearLayout homeColumn1;
@@ -37,21 +45,42 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setTitle("My meals and recipes");
         
         // Database Creation
         datasource = new DataSourceManager(this);
         datasource.open();
         
+        showMeals = ((CheckBox) findViewById(R.id.home_checkBoxMeals)).isChecked();
+        showRecipes = ((CheckBox) findViewById(R.id.home_checkBoxRecipes)).isChecked();
+        
         // List items should be given the 'activated' state when touched.
- 		((CookableListFragment) getSupportFragmentManager().findFragmentById(
- 				R.id.home_cookable_list)).setActivateOnItemClick(true);
+        CookableListFragment fragment = (CookableListFragment) getSupportFragmentManager().findFragmentById(
+ 				R.id.home_cookable_list);
+        fragment.setActivateOnItemClick(true);
+        adapter = (ArrayAdapter<Cookable>) fragment.getListAdapter();
         
         // Register text listener
-		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
-		String[] tags = getResources().getStringArray(R.array.tags_array);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags);
-		search.setAdapter(adapter);
-		search.setOnEditorActionListener(this);
+        List<Tag> tags = datasource.getAllTags();
+        List<Meal> meals = datasource.getAllMeals();
+        List<Recipe> recipes = datasource.getAllRecipes();
+        
+        String[] autocompleteStrings = new String[tags.size() + meals.size() + recipes.size()];
+        int i = 0;
+        int j = 0;
+        for (j = 0; j < meals.size(); i++, j++) {
+        	autocompleteStrings[i] = meals.get(j).getName();
+        }
+        for (j = 0; j < recipes.size(); i++, j++) {
+        	autocompleteStrings[i] = recipes.get(j).getName();
+        }
+        for (j = 0; j < tags.size(); i++, j++) {
+        	autocompleteStrings[i] = tags.get(j).getName();
+        }
+        
+		EditText search = (EditText) findViewById(R.id.home_search);
+		search.addTextChangedListener(this);
+		search.setOnFocusChangeListener(this);
 		
 		homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
 		homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
@@ -96,22 +125,6 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
-	}
-	
-	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		boolean handled = false;
-		Log.i("onEditorAction()", Integer.toString(actionId));
-		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-	    	Context context = getApplicationContext();
-	    	CharSequence text = v.getText();
-	    	int duration = Toast.LENGTH_SHORT;
-	    	
-	    	Toast toast = Toast.makeText(context, text, duration);
-	    	toast.show();
-		}
-		
-		return handled;
 	}
 	
 	@Override
@@ -166,7 +179,9 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
 		  		  	homeColumn0.setLayoutParams(params0);
 		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn1.setVisibility(View.GONE);
 		  		  	homeColumn2.setLayoutParams(params2);
+		  		  	homeColumn2.setVisibility(View.GONE);
 		            break;
 		        case 2:
 		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
@@ -174,7 +189,9 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
 		  		  	homeColumn0.setLayoutParams(params0);
 		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn1.setVisibility(View.VISIBLE);
 		  		  	homeColumn2.setLayoutParams(params2);
+		  		  	homeColumn2.setVisibility(View.GONE);
 		        	break;
 		        case 3:
 		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
@@ -182,11 +199,38 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
 		  		  	homeColumn0.setLayoutParams(params0);
 		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn1.setVisibility(View.VISIBLE);
 		  		  	homeColumn2.setLayoutParams(params2);
+		  		  	homeColumn2.setVisibility(View.VISIBLE);
 		        	break;
 		        default:
 		            break;
 			  }
 		  }
 	  }
+
+	@Override
+	public void afterTextChanged(Editable arg0) {
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		adapter.getFilter().filter(s);
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+		switch(v.getId()) {
+		case R.id.home_search:
+			if (hasFocus) {
+				showColumns(1);
+			}
+			break;
+		}
+	}
 }

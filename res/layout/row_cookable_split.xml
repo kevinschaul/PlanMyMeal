@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/row_meal_split_listCookableName"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
         android:text="Meal name"
@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/row_meal_split_listCookableTime"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:gravity="center_vertical"
         android:text="Meal time"

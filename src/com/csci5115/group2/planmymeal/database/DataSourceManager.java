@@ -212,8 +212,15 @@ public class DataSourceManager
 	public void deleteMeal(Meal meal)
 	{
 		long id = meal.getId();
-		System.out.println("Meal deleted with id: " + id);
+		//Delete all MealTags
+		database.delete(TABLE_MEAL_TAG_REL, COLUMN_MEAL_ID + "=" + id, null);
+		System.out.println("MealTags deleted with meal id: " + id);
+		//Delete all MealRecipes
+		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_MEAL_ID + "=" + id, null);
+		System.out.println("MealRecipes deleted with meal id: " + id);
+		//Delete Meal
 		database.delete(TABLE_MEAL, COLUMN_ID + " = " + id, null);
+		System.out.println("Meal deleted with id: " + id);
 	}
 
 	public List<Meal> getAllMeals()
@@ -233,6 +240,12 @@ public class DataSourceManager
 		// make sure to close the cursor
 		cursor.close();
 		return meals;
+	}
+	
+	public void deleteMealRecipe(long mealId, long recipeId)
+	{
+		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_MEAL_ID + "=" + mealId + " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
+		System.out.println("MealRecipe deleted with mealid: " + mealId + " and recipeId: " + recipeId);
 	}
 
 	public Meal getMealById(long mealId)
@@ -281,10 +294,102 @@ public class DataSourceManager
 	public void deleteTag(Tag tag)
 	{
 		long id = tag.getId();
-		System.out.println("Tag deleted with id: " + id);
+		//Remove MealTags
+		database.delete(TABLE_MEAL_TAG_REL, COLUMN_TAG_ID + "=" + id, null);
+		System.out.println("MealTag deleted with tag id: " + id);
+		//Remove RecipeTags
+		database.delete(TABLE_RECIPE_TAG_REL, COLUMN_TAG_ID + "=" + id, null);
+		System.out.println("RecipeTag deleted with tag id: " + id);
+		//Delete tag item
 		database.delete(TABLE_TAG, COLUMN_ID + " = " + id, null);
+		System.out.println("Tag deleted with id: " + id);
 	}
+	
+	public void deleteMealTag(Tag tag, long mealId)
+	{
+		long id = tag.getId();
+		database.delete(TABLE_MEAL_TAG_REL, COLUMN_TAG_ID + " = " + id + " and " + COLUMN_MEAL_ID + "=" + mealId, null);
+		System.out.println("MealTag deleted with tag id: " + id + " and meal id: " + mealId);
+	}
+	
+	public void deleteRecipeTag(Tag tag, long recipeId)
+	{
+		long id = tag.getId();
+		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_TAG_ID + " = " + id + " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
+		System.out.println("MealTag deleted with tag id: " + id + " and meal id: " + recipeId);
+	}
+	
+	public Tag addTagToMeal(String tagName, long mealId)
+	{
+		Tag tagItem;
+		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME + "=" + tagName, null,
+				null, null, null);
 
+		cursor.moveToFirst();
+		if(cursor == null || cursor.getLong(0) == 0)
+		{
+			cursor.close();
+			
+			//Add to tag table AND MealTag table.
+			ContentValues values = new ContentValues();
+			values.put(COLUMN_NAME, tagName);
+			long insertId = database.insert(TABLE_TAG, null, values);
+			Cursor newTagCursor = database.query(TABLE_TAG, allTagColumns, COLUMN_ID
+					+ " = " + insertId, null, null, null, null);
+			newTagCursor.moveToFirst();
+			tagItem = cursorToTag(newTagCursor);
+			newTagCursor.close();
+		}
+		else
+		{
+			tagItem = cursorToTag(cursor);
+			cursor.close();
+		}
+		
+		// Create MealTag item.
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_TAG_ID, tagItem.getId());
+		values.put(COLUMN_MEAL_ID, mealId);
+		database.insert(TABLE_MEAL_TAG_REL, null, values);
+		return tagItem;
+	}
+	
+	public Tag addTagToRecipe(String tagName, long recipeId)
+	{
+		Tag tagItem;
+		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME + "=" + tagName, null,
+				null, null, null);
+
+		cursor.moveToFirst();
+		if(cursor == null || cursor.getLong(0) == 0)
+		{
+			cursor.close();
+			
+			//Add to tag table AND RecipeTag table.
+			ContentValues values = new ContentValues();
+			values.put(COLUMN_NAME, tagName);
+			long insertId = database.insert(TABLE_TAG, null, values);
+			Cursor newTagCursor = database.query(TABLE_TAG, allTagColumns, COLUMN_ID
+					+ " = " + insertId, null, null, null, null);
+			newTagCursor.moveToFirst();
+			tagItem = cursorToTag(newTagCursor);
+			newTagCursor.close();
+		}
+		else
+		{
+			tagItem = cursorToTag(cursor);
+			cursor.close();
+		}
+		
+		// Create RecipeTag item.
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_TAG_ID, tagItem.getId());
+		values.put(COLUMN_RECIPE_ID, recipeId);
+		database.insert(TABLE_RECIPE_TAG_REL, null, values);
+		return tagItem;
+	}
+	
+	
 	public List<Tag> getAllTags()
 	{
 		List<Tag> tags = new ArrayList<Tag>();
@@ -374,8 +479,21 @@ public class DataSourceManager
 	public void deleteRecipe(Recipe recipe)
 	{
 		long id = recipe.getId();
-		System.out.println("Recipe deleted with id: " + id);
+		//Delete MealRecipe
+		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_RECIPE_ID + "=" + id, null);
+		System.out.println("MealRecipe deleted with recipe id: " + id);
+		//Delete RecipeTags
+		database.delete(TABLE_RECIPE_TAG_REL, COLUMN_RECIPE_ID + "=" + id, null);
+		System.out.println("RecipeTags deleted with recipe id: " + id);
+		//Delete RecipeIngredients
+		database.delete(TABLE_RECIPE_INGREDIENT_REL, COLUMN_RECIPE_ID + "=" + id, null);
+		System.out.println("RecipeIngredients deleted with recipe id: " + id);
+		//Delete RecipeSteps
+		database.delete(TABLE_RECIPE_STEP_REL, COLUMN_RECIPE_ID + "=" + id, null);
+		System.out.println("RecipeSteps deleted with recipe id: " + id);
+		//Delete Recipe item.
 		database.delete(TABLE_RECIPE, COLUMN_ID + " = " + id, null);
+		System.out.println("Recipe deleted with id: " + id);
 	}
 
 	public List<Recipe> getAllRecipes()
