@@ -1,5 +1,7 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -23,11 +26,16 @@ import com.csci5115.group2.planmymeal.database.DataSourceManager;
 public class HomeActivity extends FragmentActivity implements OnEditorActionListener, CookableListFragment.Callbacks {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
+	public final static String BUNDLE_SHOWMEALS = "com.csci5115.group2.planmymeal.BUNDLE_SHOWMEALS";
+	public final static String BUNDLE_SHOWRECIPES = "com.csci5115.group2.planmymeal.BUNDLE_SHOWRECIPES";
 	
 	public final static String TAG = "HomeActivity";
 	
 	// Databases
 	private DataSourceManager datasource;
+	
+	private Boolean showMeals;
+	private Boolean showRecipes;
 	
 	private static LinearLayout homeColumn0;
 	private static LinearLayout homeColumn1;
@@ -42,14 +50,40 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
         datasource = new DataSourceManager(this);
         datasource.open();
         
+        showMeals = ((CheckBox) findViewById(R.id.home_checkBoxMeals)).isChecked();
+        showRecipes = ((CheckBox) findViewById(R.id.home_checkBoxRecipes)).isChecked();
+        
         // List items should be given the 'activated' state when touched.
- 		((CookableListFragment) getSupportFragmentManager().findFragmentById(
- 				R.id.home_cookable_list)).setActivateOnItemClick(true);
+        CookableListFragment fragment = (CookableListFragment) getSupportFragmentManager().findFragmentById(
+ 				R.id.home_cookable_list);
+        fragment.setActivateOnItemClick(true);
+        /*
+        Bundle arguments = new Bundle();
+		arguments.putBoolean(CookableListFragment.ARG_SHOW_MEALS, showMeals);
+		arguments.putBoolean(CookableListFragment.ARG_SHOW_RECIPES, showRecipes);
+		fragment.setArguments(arguments);
+		*/
         
         // Register text listener
+        List<Tag> tags = datasource.getAllTags();
+        List<Meal> meals = datasource.getAllMeals();
+        List<Recipe> recipes = datasource.getAllRecipes();
+        
+        String[] autocompleteStrings = new String[tags.size() + meals.size() + recipes.size()];
+        int i = 0;
+        int j = 0;
+        for (j = 0; j < meals.size(); i++, j++) {
+        	autocompleteStrings[i] = meals.get(j).getName();
+        }
+        for (j = 0; j < recipes.size(); i++, j++) {
+        	autocompleteStrings[i] = recipes.get(j).getName();
+        }
+        for (j = 0; j < tags.size(); i++, j++) {
+        	autocompleteStrings[i] = tags.get(j).getName();
+        }
+        
 		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
-		String[] tags = getResources().getStringArray(R.array.tags_array);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, autocompleteStrings);
 		search.setAdapter(adapter);
 		search.setOnEditorActionListener(this);
 		
