@@ -45,6 +45,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setTitle("My meals and recipes");
         
         // Database Creation
         datasource = new DataSourceManager(this);
@@ -178,7 +179,9 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
 		  		  	homeColumn0.setLayoutParams(params0);
 		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn1.setVisibility(View.GONE);
 		  		  	homeColumn2.setLayoutParams(params2);
+		  		  	homeColumn2.setVisibility(View.GONE);
 		            break;
 		        case 2:
 		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
@@ -186,7 +189,9 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
 		  		  	homeColumn0.setLayoutParams(params0);
 		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn1.setVisibility(View.VISIBLE);
 		  		  	homeColumn2.setLayoutParams(params2);
+		  		  	homeColumn2.setVisibility(View.GONE);
 		        	break;
 		        case 3:
 		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
@@ -194,7 +199,9 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
 		  		  	homeColumn0.setLayoutParams(params0);
 		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn1.setVisibility(View.VISIBLE);
 		  		  	homeColumn2.setLayoutParams(params2);
+		  		  	homeColumn2.setVisibility(View.VISIBLE);
 		        	break;
 		        default:
 		            break;
