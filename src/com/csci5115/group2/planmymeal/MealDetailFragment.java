@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -105,6 +103,16 @@ public class MealDetailFragment extends Fragment {
 			Button delete = (Button) rootView.findViewById(R.id.fragment_meal_button_delete);
 			delete.setOnClickListener(clickListener);
 			
+			LinearLayout tags_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_meal_tags_wrapper);
+			List<Tag> tags = datasource.getMealTags(meal.getId());
+			for (Tag tag : tags) {
+				View tagView = inflater.inflate(R.layout.tag, null);
+				
+				TextView tagName = (TextView) tagView.findViewById(R.id.tag_name);
+				tagName.setText(tag.getName());
+				
+				tags_wrapper.addView(tagView);
+			}
 		}
 
 		return rootView;
