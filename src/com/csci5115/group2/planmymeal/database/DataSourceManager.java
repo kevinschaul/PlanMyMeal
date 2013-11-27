@@ -887,7 +887,7 @@ public class DataSourceManager
 		for (long stepId : stepIds)
 		{
 			Cursor cursor = database.query(TABLE_RECIPE_STEP,
-					allRecipeStepColumns, COLUMN_ID + " = " + stepId, null,
+					allRecipeStepColumns, COLUMN_RECIPE_ID + " = " + stepId, null,
 					null, null, null);
 
 			cursor.moveToFirst();
