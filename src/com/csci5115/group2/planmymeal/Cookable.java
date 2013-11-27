@@ -6,17 +6,8 @@ public class Cookable {
 	protected double time;
 	protected String description;
 	protected String type;
-	
-	public String getDescription()
-	{
-		return description;
-	}
-
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
-
+	protected boolean belongsToUser;
+	protected boolean belongsToCommunity;
 	public Cookable() {
 		
 	}
@@ -52,6 +43,36 @@ public class Cookable {
 	}
 	public void setTime(double time) {
 		this.time = time;
+	}
+	
+	public boolean isBelongsToUser()
+	{
+		return belongsToUser;
+	}
+
+	public void setBelongsToUser(boolean belongsToUser)
+	{
+		this.belongsToUser = belongsToUser;
+	}
+
+	public boolean isBelongsToCommunity()
+	{
+		return belongsToCommunity;
+	}
+
+	public void setBelongsToCommunity(boolean belongsToCommunity)
+	{
+		this.belongsToCommunity = belongsToCommunity;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
 	}
 	
 	// TODO test these
