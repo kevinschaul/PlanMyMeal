@@ -143,7 +143,8 @@ public class DataSourceManager
 	private static final String RECIPE_STEP_DATABASE_CREATE = "create table "
 			+ TABLE_RECIPE_STEP + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_INSTRUCTIONS
-			+ " text not null, " + COLUMN_ACTIVE + " integer not null,"
+			+ " text not null, " + COLUMN_TIME
+			+ " real not null, "  + COLUMN_ACTIVE + " integer not null,"
 			+ COLUMN_APPLIANCES + " text" + ");";
 
 	// RECIPE STEP REL DATABASE
@@ -887,7 +888,7 @@ public class DataSourceManager
 		for (long stepId : stepIds)
 		{
 			Cursor cursor = database.query(TABLE_RECIPE_STEP,
-					allRecipeStepColumns, COLUMN_RECIPE_ID + " = " + stepId, null,
+					allRecipeStepColumns, COLUMN_ID + " = " + stepId, null,
 					null, null, null);
 
 			cursor.moveToFirst();
