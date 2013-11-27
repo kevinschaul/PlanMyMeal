@@ -322,7 +322,7 @@ public class DataSourceManager
 	public Tag addTagToMeal(String tagName, long mealId)
 	{
 		Tag tagItem;
-		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME + "=" + tagName, null,
+		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME + "='" + tagName + "'", null,
 				null, null, null);
 
 		cursor.moveToFirst();
@@ -357,7 +357,7 @@ public class DataSourceManager
 	public Tag addTagToRecipe(String tagName, long recipeId)
 	{
 		Tag tagItem;
-		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME + "=" + tagName, null,
+		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME + "='" + tagName + "'", null,
 				null, null, null);
 
 		cursor.moveToFirst();
@@ -801,7 +801,6 @@ public class DataSourceManager
 	}
 
 	// SETTINGS DATA ACCESS METHODS
-	// RECIPE STEP DATA ACCESS METHODS
 	public UserSettings updateUserSettings(long id, long reminderTime,
 			String reminderSound, String startSound, int numOvens,
 			int numMicrowaves, int numBurners)
