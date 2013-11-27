@@ -81,10 +81,10 @@ public class CCListFragment extends ListFragment {
 		datasource.open();
 		
 		List<Cookable> cookables = new LinkedList<Cookable>();
-		List<Meal> meals = datasource.getAllMeals();
+		List<Meal> meals = datasource.getAllCommunityMeals();
 		cookables.addAll(meals);
 		
-		List<Recipe> recipes = datasource.getAllRecipes();
+		List<Recipe> recipes = datasource.getAllCommunityRecipes();
 		cookables.addAll(recipes);
 		setListAdapter(new CCArrayAdapterSplit(getActivity(), cookables));	
 	}

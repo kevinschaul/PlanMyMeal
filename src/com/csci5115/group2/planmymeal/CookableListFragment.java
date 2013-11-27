@@ -98,12 +98,12 @@ public class CookableListFragment extends ListFragment {
 		List<Cookable> cookables = new LinkedList<Cookable>();
 		
 		if (showMeals) {
-			List<Meal> meals = datasource.getAllMeals();
+			List<Meal> meals = datasource.getAllUserMeals();
 			cookables.addAll(meals);
 		}
 		
 		if (showRecipes) {
-			List<Recipe> recipes = datasource.getAllRecipes();
+			List<Recipe> recipes = datasource.getAllUserRecipes();
 			cookables.addAll(recipes);
 		}
 		
