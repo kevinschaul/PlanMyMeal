@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/row_meal_split_listCookableName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
         android:text="Meal name"
@@ -16,10 +16,40 @@
     <TextView
         android:id="@+id/row_meal_split_listCookableTime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
         android:gravity="center_vertical"
         android:text="Meal time"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout
+        android:id="@+id/row_meal_split_buttonWrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:layout_toLeftOf="@+id/row_meal_split_listCookableTime"
+        style="?android:attr/buttonBarStyle" >
+        
+        <Button
+	        android:id="@+id/row_meal_split_button_cook"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:gravity="center"
+	        style="?android:attr/buttonBarButtonStyle"
+	        android:focusable="false"
+        	android:focusableInTouchMode="false"
+	        android:textSize="26sp"
+	        android:text="@string/icon_play" />
+        <Button
+	        android:id="@+id/row_meal_split_button_edit"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:gravity="center"
+	        style="?android:attr/buttonBarButtonStyle"
+	        android:focusable="false"
+        	android:focusableInTouchMode="false"
+	        android:textSize="26sp"
+	        android:text="@string/icon_edit" />
+    </LinearLayout>
 
 </RelativeLayout>
