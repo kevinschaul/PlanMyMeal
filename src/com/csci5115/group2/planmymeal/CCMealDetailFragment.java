@@ -28,7 +28,7 @@ import com.csci5115.group2.planmymeal.database.DataSourceManager;
  * contained in a {@link MealListActivity} in two-pane mode (on tablets) or a
  * {@link MealDetailActivity} on handsets.
  */
-public class MealDetailFragment extends Fragment {
+public class CCMealDetailFragment extends Fragment {
 	/**
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
@@ -47,7 +47,7 @@ public class MealDetailFragment extends Fragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public MealDetailFragment() {
+	public CCMealDetailFragment() {
 	}
 
 	@Override
@@ -77,33 +77,26 @@ public class MealDetailFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_meal_detail,
+		View rootView = inflater.inflate(R.layout.cc_fragment_meal_detail,
 				container, false);
 		
 		Context context = rootView.getContext();
 
 		if (meal != null) {
-			TextView name = (TextView) rootView.findViewById(R.id.fragment_meal_title);
-			name.setText(meal.getName());
+			((TextView) rootView.findViewById(R.id.cc_fragment_meal_title))
+					.setText(meal.getName());
 			
-			TextView time = (TextView) rootView.findViewById(R.id.fragment_meal_time);
-			time.setText(meal.getReadableTime());
-			
-			ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
+			ListView recipeListView = (ListView) rootView.findViewById(R.id.cc_fragment_meal_recipe_list);
 			List<Recipe> recipes = datasource.getMealRecipes(meal.getId());
 
 			RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
 			recipeListView.setAdapter(adapter);
 			recipeListView.setOnItemClickListener(itemClickListener);
 			
-			Button cook = (Button) rootView.findViewById(R.id.fragment_meal_button_cook);
+			Button cook = (Button) rootView.findViewById(R.id.cc_fragment_meal_button_cook);
 			cook.setOnClickListener(clickListener);
 			
-			Button edit = (Button) rootView.findViewById(R.id.fragment_meal_button_edit);
-			edit.setOnClickListener(clickListener);
 			
-			Button delete = (Button) rootView.findViewById(R.id.fragment_meal_button_delete);
-			delete.setOnClickListener(clickListener);
 			
 		}
 
@@ -117,15 +110,15 @@ public class MealDetailFragment extends Fragment {
 				long id) {
 			
 			// Item selected must be a recipe, so split the view evenly between all columns.
-			HomeActivity.showColumns(3);
+			CommunityCookbookActivity.showColumns(3);
 			
 			Recipe recipe = (Recipe) parent.getItemAtPosition(position);
 			Bundle arguments = new Bundle();
-			arguments.putLong(RecipeDetailFragment.ARG_ITEM_ID, recipe.getId());
-			RecipeDetailFragment fragment = new RecipeDetailFragment();
+			arguments.putLong(CCRecipeDetailFragment.ARG_ITEM_ID, recipe.getId());   //////new RecipeDetailFragment
+			CCRecipeDetailFragment fragment = new CCRecipeDetailFragment();
 			fragment.setArguments(arguments);
 			getFragmentManager().beginTransaction()
-					.replace(R.id.home_col2_container, fragment).commit();
+					.replace(R.id.CC_col2_container, fragment).commit();
 		}
 		
 	};
@@ -137,27 +130,9 @@ public class MealDetailFragment extends Fragment {
 			Context context = v.getContext();
 			Intent intent;
 		    switch (v.getId()) {
-		        case R.id.fragment_meal_button_delete:
-					AlertDialog.Builder builder = new AlertDialog.Builder(context);
-					builder.setTitle("Delete meal?");
-					builder.setMessage("Delete " + meal.getName() + "?");
-					builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {   
-							datasource.deleteMeal(meal);
-						}
-					});
-					builder.setNegativeButton("Cancel", null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
-		    		break;
-		        case R.id.fragment_meal_button_edit:
-		    		intent = new Intent(context, EditMealActivity.class);
-		    		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
-		    		startActivity(intent);
-		    		break;
-		        case R.id.fragment_meal_button_cook:
+		        case R.id.cc_fragment_meal_button_cook:
 		    		intent = new Intent(context, CookActivity.class);
-		    		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
+		    		intent.putExtra(CommunityCookbookActivity.EXTRA_MEAL, meal.getId());
 		    		startActivity(intent);
 		    		break;
 		        default:

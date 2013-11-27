@@ -1,5 +1,9 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.ArrayList;
+
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,10 +22,18 @@ import android.widget.Toast;
 
 public class SettingsActivity extends Activity implements OnClickListener, OnEditorActionListener {
 
+		// Databases
+		private DataSourceManager datasource;
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
+		
+		// Database Creation
+        datasource = new DataSourceManager(this);
+        datasource.open();
+        
 		 // Register button listeners
        Button saveButton = (Button) findViewById(R.id.save_settings_button);
        saveButton.setOnClickListener(this);
@@ -78,6 +90,25 @@ public class SettingsActivity extends Activity implements OnClickListener, OnEdi
 			}
 		}
 	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		datasource.close();
+	}
+	
+	@Override
+	  protected void onResume() {
+	    datasource.open();
+	    super.onResume();
+	  }
+
+	  @Override
+	  protected void onPause() {
+		datasource.close();
+	    super.onPause();
+	  }
 	
 	private void onClickButtonSettings(View v) {	
 		Intent intent = new Intent(this, HomeActivity.class);

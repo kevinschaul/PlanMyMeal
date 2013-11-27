@@ -1,14 +1,12 @@
 package com.csci5115.group2.planmymeal;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;

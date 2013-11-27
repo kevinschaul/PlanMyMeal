@@ -2,55 +2,90 @@ package com.csci5115.group2.planmymeal;
 
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 // Samantha Oyen: This used to implement OnClickListener... had to take out.
-public class HomeActivity extends FragmentActivity implements OnEditorActionListener, CookableListFragment.Callbacks {
+public class HomeActivity extends FragmentActivity implements CookableListFragment.Callbacks, TextWatcher, OnFocusChangeListener {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
+	public final static String BUNDLE_SHOWMEALS = "com.csci5115.group2.planmymeal.BUNDLE_SHOWMEALS";
+	public final static String BUNDLE_SHOWRECIPES = "com.csci5115.group2.planmymeal.BUNDLE_SHOWRECIPES";
 	
-	private final String TAG = "HomeActivity";
+	public final static String TAG = "HomeActivity";
 	
 	// Databases
 	private DataSourceManager datasource;
+	
+	private Boolean showMeals;
+	private Boolean showRecipes;
+	private ArrayAdapter<Cookable> adapter;
+	
+	private static LinearLayout homeColumn0;
+	private static LinearLayout homeColumn1;
+	private static LinearLayout homeColumn2;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setTitle("My meals and recipes");
         
         // Database Creation
         datasource = new DataSourceManager(this);
         datasource.open();
         
+        showMeals = ((CheckBox) findViewById(R.id.home_checkBoxMeals)).isChecked();
+        showRecipes = ((CheckBox) findViewById(R.id.home_checkBoxRecipes)).isChecked();
+        
         // List items should be given the 'activated' state when touched.
- 		((CookableListFragment) getSupportFragmentManager().findFragmentById(
- 				R.id.home_cookable_list)).setActivateOnItemClick(true);
+        CookableListFragment fragment = (CookableListFragment) getSupportFragmentManager().findFragmentById(
+ 				R.id.home_cookable_list);
+        fragment.setActivateOnItemClick(true);
+        adapter = (ArrayAdapter<Cookable>) fragment.getListAdapter();
         
         // Register text listener
-		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.home_search);
-		String[] tags = getResources().getStringArray(R.array.tags_array);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags);
-		search.setAdapter(adapter);
-		search.setOnEditorActionListener(this);
-    }
+        List<Tag> tags = datasource.getAllTags();
+        List<Meal> meals = datasource.getAllMeals();
+        List<Recipe> recipes = datasource.getAllRecipes();
+        
+        String[] autocompleteStrings = new String[tags.size() + meals.size() + recipes.size()];
+        int i = 0;
+        int j = 0;
+        for (j = 0; j < meals.size(); i++, j++) {
+        	autocompleteStrings[i] = meals.get(j).getName();
+        }
+        for (j = 0; j < recipes.size(); i++, j++) {
+        	autocompleteStrings[i] = recipes.get(j).getName();
+        }
+        for (j = 0; j < tags.size(); i++, j++) {
+        	autocompleteStrings[i] = tags.get(j).getName();
+        }
+        
+		EditText search = (EditText) findViewById(R.id.home_search);
+		search.addTextChangedListener(this);
+		search.setOnFocusChangeListener(this);
+		
+		homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
+		homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
+		homeColumn2 = (LinearLayout) findViewById(R.id.home_column_2);
+	}
 	
 	@Override
 	public void onDestroy() {
@@ -93,48 +128,28 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 	}
 	
 	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		boolean handled = false;
-		Log.i("onEditorAction()", Integer.toString(actionId));
-		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-	    	Context context = getApplicationContext();
-	    	CharSequence text = v.getText();
-	    	int duration = Toast.LENGTH_SHORT;
-	    	
-	    	Toast toast = Toast.makeText(context, text, duration);
-	    	toast.show();
-		}
-		
-		return handled;
-	}
-	
-	@Override
 	public void onItemSelected(String type, long id) {
-		/*
-		LinearLayout.LayoutParams params;
-		LinearLayout homeColumn0 = (LinearLayout) findViewById(R.id.home_column_0);
-		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
-		homeColumn0.setLayoutParams(params);
 		
-		LinearLayout homeColumn1 = (LinearLayout) findViewById(R.id.home_column_1);
-		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
-		homeColumn1.setLayoutParams(params);
-		
-		LinearLayout homeColumn2 = (LinearLayout) findViewById(R.id.home_column_2);
-		params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 2);
-		homeColumn2.setLayoutParams(params);
-		*/
+		// No matter which type of item is selected, we want to split the view
+		// evenly between col0 and col1.
+		showColumns(2);
 		
 		if (type == "Meal") {
-			// If clicked item is a Meal
+			Log.v(HomeActivity.TAG, "Meal selected");
 			Bundle arguments = new Bundle();
 			arguments.putLong(MealDetailFragment.ARG_ITEM_ID, id);
 			MealDetailFragment fragment = new MealDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.home_meal_detail_container, fragment).commit();
+					.replace(R.id.home_col1_container, fragment).commit();
 		} else if (type == "Recipe") {
-			// TODO
+			Log.v(HomeActivity.TAG, "Recipe selected");
+			Bundle arguments = new Bundle();
+			arguments.putLong(RecipeDetailFragment.ARG_ITEM_ID, id);
+			RecipeDetailFragment fragment = new RecipeDetailFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.home_col1_container, fragment).commit();
 		}
 	}
 	
@@ -149,4 +164,73 @@ public class HomeActivity extends FragmentActivity implements OnEditorActionList
 		datasource.close();
 	    super.onPause();
 	  }
+	  
+	  public static void showColumns(int numberOfColumns) {
+		  
+		  if (homeColumn0 != null && homeColumn1 != null && homeColumn2 != null) {
+			  LinearLayout.LayoutParams params0;
+			  LinearLayout.LayoutParams params1;
+			  LinearLayout.LayoutParams params2;
+			  
+			  switch (numberOfColumns) {
+		        case 1:
+		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 6);
+		        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
+		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
+		  		  	homeColumn0.setLayoutParams(params0);
+		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn1.setVisibility(View.GONE);
+		  		  	homeColumn2.setLayoutParams(params2);
+		  		  	homeColumn2.setVisibility(View.GONE);
+		            break;
+		        case 2:
+		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
+		        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
+		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
+		  		  	homeColumn0.setLayoutParams(params0);
+		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn1.setVisibility(View.VISIBLE);
+		  		  	homeColumn2.setLayoutParams(params2);
+		  		  	homeColumn2.setVisibility(View.GONE);
+		        	break;
+		        case 3:
+		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
+		        	params1 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
+		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
+		  		  	homeColumn0.setLayoutParams(params0);
+		  		  	homeColumn1.setLayoutParams(params1);
+		  		  	homeColumn1.setVisibility(View.VISIBLE);
+		  		  	homeColumn2.setLayoutParams(params2);
+		  		  	homeColumn2.setVisibility(View.VISIBLE);
+		        	break;
+		        default:
+		            break;
+			  }
+		  }
+	  }
+
+	@Override
+	public void afterTextChanged(Editable arg0) {
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		adapter.getFilter().filter(s);
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+		switch(v.getId()) {
+		case R.id.home_search:
+			if (hasFocus) {
+				showColumns(1);
+			}
+			break;
+		}
+	}
 }
