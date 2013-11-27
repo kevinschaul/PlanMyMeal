@@ -5,10 +5,19 @@
     android:padding="6dip" >
 
     <TextView
-        android:id="@+id/row_meal_split_listCookableName"
+        android:id="@+id/row_meal_split_listCookableType"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:text="Meal type"
+        android:textSize="26sp"
+        android:paddingRight="8dip" />
+    <TextView
+        android:id="@+id/row_meal_split_listCookableName"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@id/row_meal_split_listCookableType"
         android:gravity="center_vertical"
         android:text="Meal name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -27,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:gravity="center_vertical"
-        android:layout_toLeftOf="@+id/row_meal_split_listCookableTime"
+        android:layout_toLeftOf="@id/row_meal_split_listCookableTime"
         style="?android:attr/buttonBarStyle" >
         
         <Button

@@ -39,11 +39,14 @@ public class CookableArrayAdapterSplit extends ArrayAdapter<Cookable> {
 	        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 	    View rowView = inflater.inflate(R.layout.row_cookable_split, parent, false);
+	    TextView mealType = (TextView) rowView.findViewById(R.id.row_meal_split_listCookableType);
 	    TextView mealName = (TextView) rowView.findViewById(R.id.row_meal_split_listCookableName);
 	    TextView mealTime = (TextView) rowView.findViewById(R.id.row_meal_split_listCookableTime);
 
     	Cookable cookable = cookables.get(position);
-	    mealName.setText("[" + cookable.getType() + "] " + cookable.getName());
+    	mealType.setText(context.getString(cookable.getTypeIconResource()));
+    	mealType.setTypeface(this.fontAwesome);
+	    mealName.setText(cookable.getName());
 	    mealTime.setText(cookable.getReadableTime());
 	    
 	    Button cook = (Button) rowView.findViewById(R.id.row_meal_split_button_cook);

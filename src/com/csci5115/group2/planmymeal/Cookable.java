@@ -26,6 +26,15 @@ public class Cookable {
 		this.type = type;
 	}
 	
+	public int getTypeIconResource() {
+		if (this.type == "Meal") {
+			return R.string.icon_meal;
+		} else if (this.type == "Recipe") {
+			return R.string.icon_recipe;
+		}
+		return -1;
+	}
+	
 	public long getId() {
 		return id;
 	}
