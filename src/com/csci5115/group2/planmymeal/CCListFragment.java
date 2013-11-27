@@ -21,11 +21,8 @@ import com.csci5115.group2.planmymeal.database.DataSourceManager;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class CookableListFragment extends ListFragment {
+public class CCListFragment extends ListFragment {
 
-	public static final String ARG_SHOW_MEALS = "show_meals";
-	public static final String ARG_SHOW_RECIPES = "show_recipes";
-	
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
 	 * activated item position. Only used on tablets.
@@ -72,7 +69,7 @@ public class CookableListFragment extends ListFragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public CookableListFragment() {
+	public CCListFragment() {
 	}
 
 	@Override
@@ -83,31 +80,13 @@ public class CookableListFragment extends ListFragment {
 		datasource = new DataSourceManager(context);
 		datasource.open();
 		
-		Boolean showMeals = true;
-		Boolean showRecipes = true;
-		/*
-		Bundle arguments = getArguments();
-		if (arguments.containsKey(ARG_SHOW_MEALS)) {
-			showMeals = arguments.getBoolean(ARG_SHOW_MEALS);
-		}
-		if (arguments.containsKey(ARG_SHOW_RECIPES)) {
-			showRecipes = arguments.getBoolean(ARG_SHOW_RECIPES);
-		}
-		*/
-
 		List<Cookable> cookables = new LinkedList<Cookable>();
+		List<Meal> meals = datasource.getAllCommunityMeals();
+		cookables.addAll(meals);
 		
-		if (showMeals) {
-			List<Meal> meals = datasource.getAllUserMeals();
-			cookables.addAll(meals);
-		}
-		
-		if (showRecipes) {
-			List<Recipe> recipes = datasource.getAllUserRecipes();
-			cookables.addAll(recipes);
-		}
-		
-		setListAdapter(new CookableArrayAdapterSplit(getActivity(), cookables));	
+		List<Recipe> recipes = datasource.getAllCommunityRecipes();
+		cookables.addAll(recipes);
+		setListAdapter(new CCArrayAdapterSplit(getActivity(), cookables));	
 	}
 	
 	@Override

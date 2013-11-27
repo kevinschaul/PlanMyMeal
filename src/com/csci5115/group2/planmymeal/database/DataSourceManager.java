@@ -31,13 +31,17 @@ public class DataSourceManager
 	public static final String COLUMN_NAME = "name";
 	public static final String COLUMN_TIME = "time";
 	public static final String COLUMN_DESCRIPTION = "description";
+	public static final String COLUMN_USER = "belongsToUser";
+	public static final String COLUMN_CC = "belongsToCommunity";
 	private static String[] allMealColumns =
-	{ COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION };
+	{ COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION, COLUMN_USER,
+			COLUMN_CC };
 	private static final String MEAL_DATABASE_CREATE = "create table "
 			+ TABLE_MEAL + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_NAME
 			+ " text not null, " + COLUMN_TIME + " real not null,"
-			+ COLUMN_DESCRIPTION + " text" + ");";
+			+ COLUMN_DESCRIPTION + " text, " + COLUMN_USER
+			+ " integer not null, " + COLUMN_CC + " integer not null);";
 
 	// TAG DATABASE
 	public static final String TABLE_TAG = "tag";
@@ -66,14 +70,16 @@ public class DataSourceManager
 	public static final String TABLE_RECIPE = "recipe";
 	public static final String COLUMN_RECIPE_NUM_SERVINGS = "numServings";
 	private static String[] allRecipeColumns =
-	{ COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION };
+	{ COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION, COLUMN_USER,
+			COLUMN_CC };
 	// Database creation
 	private static final String RECIPE_DATABASE_CREATE = "create table "
 			+ TABLE_RECIPE + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_NAME
 			+ " text not null, " + COLUMN_TIME + " real not null,"
 			+ COLUMN_DESCRIPTION + " text," + COLUMN_RECIPE_NUM_SERVINGS
-			+ " integer not null" + ");";
+			+ " integer not null, " + COLUMN_USER + " integer not null, "
+			+ COLUMN_CC + " integer not null);";
 
 	// MEAL RECIPE REL DATABASE
 	public static final String TABLE_MEAL_RECIPE_REL = "mealRecipeRel";
@@ -137,7 +143,8 @@ public class DataSourceManager
 	private static final String RECIPE_STEP_DATABASE_CREATE = "create table "
 			+ TABLE_RECIPE_STEP + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_INSTRUCTIONS
-			+ " text not null, " + COLUMN_ACTIVE + " integer not null,"
+			+ " text not null, " + COLUMN_TIME
+			+ " real not null, "  + COLUMN_ACTIVE + " integer not null,"
 			+ COLUMN_APPLIANCES + " text" + ");";
 
 	// RECIPE STEP REL DATABASE
@@ -194,12 +201,42 @@ public class DataSourceManager
 	}
 
 	// MEAL DATA ACCESS METHODS
-	public Meal createMeal(String name, double time, String description)
+	public Meal createNewUserMeal(String name, double time, String description)
 	{
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME, name);
 		values.put(COLUMN_TIME, time);
 		values.put(COLUMN_DESCRIPTION, description);
+		values.put(COLUMN_USER, 1);
+		values.put(COLUMN_CC, 0);
+		long insertId = database.insert(TABLE_MEAL, null, values);
+		Cursor cursor = database.query(TABLE_MEAL, allMealColumns, COLUMN_ID
+				+ " = " + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		Meal newMeal = cursorToMeal(cursor);
+		cursor.close();
+		return newMeal;
+	}
+
+	public Meal importMeal(long mealId)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_CC, 1);
+		database.update(TABLE_MEAL, values, COLUMN_ID + "=" + mealId, null);
+		Cursor cursor = database.query(TABLE_MEAL, allMealColumns, COLUMN_ID
+				+ " = " + mealId, null, null, null, null);
+		Meal mealToImport = cursorToMeal(cursor);
+		return mealToImport;
+	}
+
+	public Meal createCommunityMeal(String name, double time, String description)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_NAME, name);
+		values.put(COLUMN_TIME, time);
+		values.put(COLUMN_DESCRIPTION, description);
+		values.put(COLUMN_USER, 0);
+		values.put(COLUMN_CC, 1);
 		long insertId = database.insert(TABLE_MEAL, null, values);
 		Cursor cursor = database.query(TABLE_MEAL, allMealColumns, COLUMN_ID
 				+ " = " + insertId, null, null, null, null);
@@ -212,13 +249,13 @@ public class DataSourceManager
 	public void deleteMeal(Meal meal)
 	{
 		long id = meal.getId();
-		//Delete all MealTags
+		// Delete all MealTags
 		database.delete(TABLE_MEAL_TAG_REL, COLUMN_MEAL_ID + "=" + id, null);
 		System.out.println("MealTags deleted with meal id: " + id);
-		//Delete all MealRecipes
+		// Delete all MealRecipes
 		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_MEAL_ID + "=" + id, null);
 		System.out.println("MealRecipes deleted with meal id: " + id);
-		//Delete Meal
+		// Delete Meal
 		database.delete(TABLE_MEAL, COLUMN_ID + " = " + id, null);
 		System.out.println("Meal deleted with id: " + id);
 	}
@@ -241,11 +278,51 @@ public class DataSourceManager
 		cursor.close();
 		return meals;
 	}
-	
+
+	public List<Meal> getAllCommunityMeals()
+	{
+		List<Meal> meals = new ArrayList<Meal>();
+
+		Cursor cursor = database.query(TABLE_MEAL, allMealColumns, COLUMN_CC
+				+ " = " + 1, null, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			Meal meal = cursorToMeal(cursor);
+			meals.add(meal);
+			cursor.moveToNext();
+		}
+		// make sure to close the cursor
+		cursor.close();
+		return meals;
+	}
+
+	public List<Meal> getAllUserMeals()
+	{
+		List<Meal> meals = new ArrayList<Meal>();
+
+		Cursor cursor = database.query(TABLE_MEAL, allMealColumns, COLUMN_USER
+				+ " = " + 1, null, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			Meal meal = cursorToMeal(cursor);
+			meals.add(meal);
+			cursor.moveToNext();
+		}
+		// make sure to close the cursor
+		cursor.close();
+		return meals;
+	}
+
 	public void deleteMealRecipe(long mealId, long recipeId)
 	{
-		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_MEAL_ID + "=" + mealId + " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
-		System.out.println("MealRecipe deleted with mealid: " + mealId + " and recipeId: " + recipeId);
+		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_MEAL_ID + "=" + mealId
+				+ " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
+		System.out.println("MealRecipe deleted with mealid: " + mealId
+				+ " and recipeId: " + recipeId);
 	}
 
 	public Meal getMealById(long mealId)
@@ -270,6 +347,8 @@ public class DataSourceManager
 		meal.setName(cursor.getString(1));
 		meal.setTime(cursor.getLong(2));
 		meal.setDescription(cursor.getString(3));
+		meal.setBelongsToUser(cursor.getInt(4) == 1);
+		meal.setBelongsToCommunity(cursor.getInt(5) == 1);
 		meal.setType("Meal");
 		meal.setRecipes(new LinkedList<Recipe>());
 		meal.setTags(new LinkedList<Tag>());
@@ -294,58 +373,61 @@ public class DataSourceManager
 	public void deleteTag(Tag tag)
 	{
 		long id = tag.getId();
-		//Remove MealTags
+		// Remove MealTags
 		database.delete(TABLE_MEAL_TAG_REL, COLUMN_TAG_ID + "=" + id, null);
 		System.out.println("MealTag deleted with tag id: " + id);
-		//Remove RecipeTags
+		// Remove RecipeTags
 		database.delete(TABLE_RECIPE_TAG_REL, COLUMN_TAG_ID + "=" + id, null);
 		System.out.println("RecipeTag deleted with tag id: " + id);
-		//Delete tag item
+		// Delete tag item
 		database.delete(TABLE_TAG, COLUMN_ID + " = " + id, null);
 		System.out.println("Tag deleted with id: " + id);
 	}
-	
+
 	public void deleteMealTag(Tag tag, long mealId)
 	{
 		long id = tag.getId();
-		database.delete(TABLE_MEAL_TAG_REL, COLUMN_TAG_ID + " = " + id + " and " + COLUMN_MEAL_ID + "=" + mealId, null);
-		System.out.println("MealTag deleted with tag id: " + id + " and meal id: " + mealId);
+		database.delete(TABLE_MEAL_TAG_REL, COLUMN_TAG_ID + " = " + id
+				+ " and " + COLUMN_MEAL_ID + "=" + mealId, null);
+		System.out.println("MealTag deleted with tag id: " + id
+				+ " and meal id: " + mealId);
 	}
-	
+
 	public void deleteRecipeTag(Tag tag, long recipeId)
 	{
 		long id = tag.getId();
-		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_TAG_ID + " = " + id + " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
-		System.out.println("MealTag deleted with tag id: " + id + " and meal id: " + recipeId);
+		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_TAG_ID + " = " + id
+				+ " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
+		System.out.println("MealTag deleted with tag id: " + id
+				+ " and meal id: " + recipeId);
 	}
-	
+
 	public Tag addTagToMeal(String tagName, long mealId)
 	{
 		Tag tagItem;
-		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME + "=" + tagName, null,
-				null, null, null);
+		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME
+				+ "='" + tagName + "'", null, null, null, null);
 
 		cursor.moveToFirst();
-		if(cursor == null || cursor.getLong(0) == 0)
+		if (cursor == null || cursor.getLong(0) == 0)
 		{
 			cursor.close();
-			
-			//Add to tag table AND MealTag table.
+
+			// Add to tag table AND MealTag table.
 			ContentValues values = new ContentValues();
 			values.put(COLUMN_NAME, tagName);
 			long insertId = database.insert(TABLE_TAG, null, values);
-			Cursor newTagCursor = database.query(TABLE_TAG, allTagColumns, COLUMN_ID
-					+ " = " + insertId, null, null, null, null);
+			Cursor newTagCursor = database.query(TABLE_TAG, allTagColumns,
+					COLUMN_ID + " = " + insertId, null, null, null, null);
 			newTagCursor.moveToFirst();
 			tagItem = cursorToTag(newTagCursor);
 			newTagCursor.close();
-		}
-		else
+		} else
 		{
 			tagItem = cursorToTag(cursor);
 			cursor.close();
 		}
-		
+
 		// Create MealTag item.
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_TAG_ID, tagItem.getId());
@@ -353,34 +435,33 @@ public class DataSourceManager
 		database.insert(TABLE_MEAL_TAG_REL, null, values);
 		return tagItem;
 	}
-	
+
 	public Tag addTagToRecipe(String tagName, long recipeId)
 	{
 		Tag tagItem;
-		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME + "=" + tagName, null,
-				null, null, null);
+		Cursor cursor = database.query(TABLE_TAG, allTagColumns, COLUMN_NAME
+				+ "='" + tagName + "'", null, null, null, null);
 
 		cursor.moveToFirst();
-		if(cursor == null || cursor.getLong(0) == 0)
+		if (cursor == null || cursor.getLong(0) == 0)
 		{
 			cursor.close();
-			
-			//Add to tag table AND RecipeTag table.
+
+			// Add to tag table AND RecipeTag table.
 			ContentValues values = new ContentValues();
 			values.put(COLUMN_NAME, tagName);
 			long insertId = database.insert(TABLE_TAG, null, values);
-			Cursor newTagCursor = database.query(TABLE_TAG, allTagColumns, COLUMN_ID
-					+ " = " + insertId, null, null, null, null);
+			Cursor newTagCursor = database.query(TABLE_TAG, allTagColumns,
+					COLUMN_ID + " = " + insertId, null, null, null, null);
 			newTagCursor.moveToFirst();
 			tagItem = cursorToTag(newTagCursor);
 			newTagCursor.close();
-		}
-		else
+		} else
 		{
 			tagItem = cursorToTag(cursor);
 			cursor.close();
 		}
-		
+
 		// Create RecipeTag item.
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_TAG_ID, tagItem.getId());
@@ -388,8 +469,7 @@ public class DataSourceManager
 		database.insert(TABLE_RECIPE_TAG_REL, null, values);
 		return tagItem;
 	}
-	
-	
+
 	public List<Tag> getAllTags()
 	{
 		List<Tag> tags = new ArrayList<Tag>();
@@ -459,14 +539,46 @@ public class DataSourceManager
 	}
 
 	// RECIPE DATA ACCESS METHODS
-	public Recipe createRecipe(String name, double time, String description,
-			Integer numServings)
+	public Recipe createNewUserRecipe(String name, double time,
+			String description, Integer numServings)
 	{
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME, name);
 		values.put(COLUMN_TIME, time);
 		values.put(COLUMN_DESCRIPTION, description);
 		values.put(COLUMN_RECIPE_NUM_SERVINGS, numServings);
+		values.put(COLUMN_USER, 1);
+		values.put(COLUMN_CC, 0);
+		long insertId = database.insert(TABLE_RECIPE, null, values);
+		Cursor cursor = database.query(TABLE_RECIPE, allRecipeColumns,
+				COLUMN_ID + " = " + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		Recipe newRecipe = cursorToRecipe(cursor);
+		cursor.close();
+		return newRecipe;
+	}
+
+	public Recipe importRecipe(long recipeId)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_CC, 1);
+		database.update(TABLE_RECIPE, values, COLUMN_ID + "=" + recipeId, null);
+		Cursor cursor = database.query(TABLE_RECIPE, allRecipeColumns,
+				COLUMN_ID + " = " + recipeId, null, null, null, null);
+		Recipe recipeToImport = cursorToRecipe(cursor);
+		return recipeToImport;
+	}
+
+	public Recipe createCommunityRecipe(String name, double time,
+			String description, Integer numServings)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_NAME, name);
+		values.put(COLUMN_TIME, time);
+		values.put(COLUMN_DESCRIPTION, description);
+		values.put(COLUMN_RECIPE_NUM_SERVINGS, numServings);
+		values.put(COLUMN_USER, 0);
+		values.put(COLUMN_CC, 1);
 		long insertId = database.insert(TABLE_RECIPE, null, values);
 		Cursor cursor = database.query(TABLE_RECIPE, allRecipeColumns,
 				COLUMN_ID + " = " + insertId, null, null, null, null);
@@ -479,19 +591,22 @@ public class DataSourceManager
 	public void deleteRecipe(Recipe recipe)
 	{
 		long id = recipe.getId();
-		//Delete MealRecipe
-		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_RECIPE_ID + "=" + id, null);
+		// Delete MealRecipe
+		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_RECIPE_ID + "=" + id,
+				null);
 		System.out.println("MealRecipe deleted with recipe id: " + id);
-		//Delete RecipeTags
+		// Delete RecipeTags
 		database.delete(TABLE_RECIPE_TAG_REL, COLUMN_RECIPE_ID + "=" + id, null);
 		System.out.println("RecipeTags deleted with recipe id: " + id);
-		//Delete RecipeIngredients
-		database.delete(TABLE_RECIPE_INGREDIENT_REL, COLUMN_RECIPE_ID + "=" + id, null);
+		// Delete RecipeIngredients
+		database.delete(TABLE_RECIPE_INGREDIENT_REL, COLUMN_RECIPE_ID + "="
+				+ id, null);
 		System.out.println("RecipeIngredients deleted with recipe id: " + id);
-		//Delete RecipeSteps
-		database.delete(TABLE_RECIPE_STEP_REL, COLUMN_RECIPE_ID + "=" + id, null);
+		// Delete RecipeSteps
+		database.delete(TABLE_RECIPE_STEP_REL, COLUMN_RECIPE_ID + "=" + id,
+				null);
 		System.out.println("RecipeSteps deleted with recipe id: " + id);
-		//Delete Recipe item.
+		// Delete Recipe item.
 		database.delete(TABLE_RECIPE, COLUMN_ID + " = " + id, null);
 		System.out.println("Recipe deleted with id: " + id);
 	}
@@ -502,6 +617,44 @@ public class DataSourceManager
 
 		Cursor cursor = database.query(TABLE_RECIPE, allRecipeColumns, null,
 				null, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			Recipe recipe = cursorToRecipe(cursor);
+			recipes.add(recipe);
+			cursor.moveToNext();
+		}
+		// make sure to close the cursor
+		cursor.close();
+		return recipes;
+	}
+
+	public List<Recipe> getAllCommunityRecipes()
+	{
+		List<Recipe> recipes = new ArrayList<Recipe>();
+
+		Cursor cursor = database.query(TABLE_RECIPE, allRecipeColumns,
+				COLUMN_CC + " = " + 1, null, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			Recipe recipe = cursorToRecipe(cursor);
+			recipes.add(recipe);
+			cursor.moveToNext();
+		}
+		// make sure to close the cursor
+		cursor.close();
+		return recipes;
+	}
+
+	public List<Recipe> getAllUserRecipes()
+	{
+		List<Recipe> recipes = new ArrayList<Recipe>();
+
+		Cursor cursor = database.query(TABLE_RECIPE, allRecipeColumns,
+				COLUMN_USER + " = " + 1, null, null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast())
@@ -557,6 +710,8 @@ public class DataSourceManager
 		recipe.setName(cursor.getString(1));
 		recipe.setTime(cursor.getLong(2));
 		recipe.setDescription(cursor.getString(3));
+		recipe.setBelongsToUser(cursor.getInt(4) == 1);
+		recipe.setBelongsToCommunity(cursor.getInt(5) == 1);
 		recipe.setType("Recipe");
 		recipe.setSteps(new LinkedList<RecipeStep>());
 		recipe.setIngredients(new LinkedList<Ingredient>());
@@ -801,7 +956,6 @@ public class DataSourceManager
 	}
 
 	// SETTINGS DATA ACCESS METHODS
-	// RECIPE STEP DATA ACCESS METHODS
 	public UserSettings updateUserSettings(long id, long reminderTime,
 			String reminderSound, String startSound, int numOvens,
 			int numMicrowaves, int numBurners)
@@ -867,6 +1021,8 @@ public class DataSourceManager
 		values.put(COLUMN_NAME, "Thanksgiving");
 		values.put(COLUMN_TIME, 5.5);
 		values.put(COLUMN_DESCRIPTION, "Thanksgiving description");
+		values.put(COLUMN_USER, 1);
+		values.put(COLUMN_CC, 0);
 		long thanksgivingId = database.insert(TABLE_MEAL, null, values);
 
 		// Thanksgiving Tags
@@ -894,6 +1050,8 @@ public class DataSourceManager
 		values.put(COLUMN_TIME, 2.2);
 		values.put(COLUMN_DESCRIPTION, "Grandma's Original Recipe");
 		values.put(COLUMN_RECIPE_NUM_SERVINGS, 8);
+		values.put(COLUMN_USER, 1);
+		values.put(COLUMN_CC, 0);
 		long applePieId = database.insert(TABLE_RECIPE, null, values);
 
 		values = new ContentValues();
@@ -901,6 +1059,8 @@ public class DataSourceManager
 		values.put(COLUMN_TIME, 3);
 		values.put(COLUMN_DESCRIPTION, "Sah good!");
 		values.put(COLUMN_RECIPE_NUM_SERVINGS, 6);
+		values.put(COLUMN_USER, 1);
+		values.put(COLUMN_CC, 1);
 		long mashedPotatoesId = database.insert(TABLE_RECIPE, null, values);
 
 		values = new ContentValues();
@@ -912,6 +1072,51 @@ public class DataSourceManager
 		values.put(COLUMN_MEAL_ID, thanksgivingId);
 		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
 		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
+		
+		// Apple Pie Steps
+		values = new ContentValues();
+		values.put(COLUMN_INSTRUCTIONS, "Preheat oven to 350F.");
+		values.put(COLUMN_TIME, .1);
+		values.put(COLUMN_ACTIVE, 1);
+		long applePieStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
+		
+		values = new ContentValues();
+		values.put(COLUMN_INSTRUCTIONS, "Cut up apples.");
+		values.put(COLUMN_TIME, .1);
+		values.put(COLUMN_ACTIVE, 1);
+		long applePieStep2 = database.insert(TABLE_RECIPE_STEP, null, values);
+		
+		values = new ContentValues();
+		values.put(COLUMN_INSTRUCTIONS, "Mix up all the ingredients");
+		values.put(COLUMN_TIME, .1);
+		values.put(COLUMN_ACTIVE, 1);
+		long applePieStep3 = database.insert(TABLE_RECIPE_STEP, null, values);
+		
+		values = new ContentValues();
+		values.put(COLUMN_INSTRUCTIONS, "Bake for 30 minutes.");
+		values.put(COLUMN_TIME, .5);
+		values.put(COLUMN_ACTIVE, 0);
+		long applePieStep4 = database.insert(TABLE_RECIPE_STEP, null, values);
+		
+		values = new ContentValues();
+		values.put(COLUMN_RECIPE_ID, applePieId);
+		values.put(COLUMN_RECIPE_STEP_ID, applePieStep1);
+		database.insert(TABLE_RECIPE_STEP_REL, null, values);
+		
+		values = new ContentValues();
+		values.put(COLUMN_RECIPE_ID, applePieId);
+		values.put(COLUMN_RECIPE_STEP_ID, applePieStep2);
+		database.insert(TABLE_RECIPE_STEP_REL, null, values);
+		
+		values = new ContentValues();
+		values.put(COLUMN_RECIPE_ID, applePieId);
+		values.put(COLUMN_RECIPE_STEP_ID, applePieStep3);
+		database.insert(TABLE_RECIPE_STEP_REL, null, values);
+		
+		values = new ContentValues();
+		values.put(COLUMN_RECIPE_ID, applePieId);
+		values.put(COLUMN_RECIPE_STEP_ID, applePieStep4);
+		database.insert(TABLE_RECIPE_STEP_REL, null, values);
 
 		// Mashed Potato Ingredients
 		values = new ContentValues();
@@ -1008,6 +1213,8 @@ public class DataSourceManager
 		values.put(COLUMN_NAME, "Sam Initial Meal 2");
 		values.put(COLUMN_TIME, 6.8);
 		values.put(COLUMN_DESCRIPTION, "Initial Description 2");
+		values.put(COLUMN_USER, 0);
+		values.put(COLUMN_CC, 1);
 		long meal2Id = database.insert(TABLE_MEAL, null, values);
 
 		// Initialize User Settings

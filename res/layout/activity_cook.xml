@@ -7,20 +7,24 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".CookActivity" >
-  
+    <include  layout="@layout/row_cook_recipe_container" ></include>
 
+    
     <HorizontalScrollView
         android:id="@+id/myListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="132dp"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal">
 
+             
         <LinearLayout
             android:id="@+id/cookMealRecipeHolder"
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:orientation="vertical" >   
+            android:orientation="vertical" > 
+            	<!--    
                 <TextView
 	            android:id="@+id/recipeCookName"
 	            android:layout_width="match_parent"
@@ -48,6 +52,7 @@
 	            android:layout_toRightOf="@+id/checkedTextView1"
 	            android:background="#008080" >
 	        </ListView>  
+	        -->
         </LinearLayout>
         
     </HorizontalScrollView>

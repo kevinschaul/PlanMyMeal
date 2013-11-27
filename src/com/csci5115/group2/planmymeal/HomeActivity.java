@@ -62,8 +62,8 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
         
         // Register text listener
         List<Tag> tags = datasource.getAllTags();
-        List<Meal> meals = datasource.getAllMeals();
-        List<Recipe> recipes = datasource.getAllRecipes();
+        List<Meal> meals = datasource.getAllUserMeals();
+        List<Recipe> recipes = datasource.getAllUserRecipes();
         
         String[] autocompleteStrings = new String[tags.size() + meals.size() + recipes.size()];
         int i = 0;
