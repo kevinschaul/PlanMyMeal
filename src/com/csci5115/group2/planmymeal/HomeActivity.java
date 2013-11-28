@@ -11,11 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -33,8 +31,6 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	// Databases
 	private DataSourceManager datasource;
 	
-	private Boolean showMeals;
-	private Boolean showRecipes;
 	private ArrayAdapter<Cookable> adapter;
 	
 	private static LinearLayout homeColumn0;
@@ -50,9 +46,6 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
         // Database Creation
         datasource = new DataSourceManager(this);
         datasource.open();
-        
-        showMeals = ((CheckBox) findViewById(R.id.home_checkBoxMeals)).isChecked();
-        showRecipes = ((CheckBox) findViewById(R.id.home_checkBoxRecipes)).isChecked();
         
         // List items should be given the 'activated' state when touched.
         CookableListFragment fragment = (CookableListFragment) getSupportFragmentManager().findFragmentById(

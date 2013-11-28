@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -83,31 +84,15 @@ public class CookableListFragment extends ListFragment {
 		datasource = new DataSourceManager(context);
 		datasource.open();
 		
-		Boolean showMeals = true;
-		Boolean showRecipes = true;
-		/*
-		Bundle arguments = getArguments();
-		if (arguments.containsKey(ARG_SHOW_MEALS)) {
-			showMeals = arguments.getBoolean(ARG_SHOW_MEALS);
-		}
-		if (arguments.containsKey(ARG_SHOW_RECIPES)) {
-			showRecipes = arguments.getBoolean(ARG_SHOW_RECIPES);
-		}
-		*/
-
 		List<Cookable> cookables = new LinkedList<Cookable>();
 		
-		if (showMeals) {
-			List<Meal> meals = datasource.getAllUserMeals();
-			cookables.addAll(meals);
-		}
+		List<Meal> meals = datasource.getAllUserMeals();
+		cookables.addAll(meals);
 		
-		if (showRecipes) {
-			List<Recipe> recipes = datasource.getAllUserRecipes();
-			cookables.addAll(recipes);
-		}
+		List<Recipe> recipes = datasource.getAllUserRecipes();
+		cookables.addAll(recipes);
 		
-		setListAdapter(new CookableArrayAdapterSplit(getActivity(), cookables));	
+		setListAdapter(new CookableArrayAdapterSplit(getActivity(), cookables));
 	}
 	
 	@Override
@@ -154,7 +139,7 @@ public class CookableListFragment extends ListFragment {
 	public void onListItemClick(ListView listView, View view, int position,
 			long id) {
 		super.onListItemClick(listView, view, position, id);
-
+		
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
 		Cookable cookable = (Cookable) listView.getItemAtPosition(position);
@@ -177,9 +162,9 @@ public class CookableListFragment extends ListFragment {
 	public void setActivateOnItemClick(boolean activateOnItemClick) {
 		// When setting CHOICE_MODE_SINGLE, ListView will automatically
 		// give items the 'activated' state when touched.
-		getListView().setChoiceMode(
-				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
-						: ListView.CHOICE_MODE_NONE);
+		ListView listview = getListView();
+		listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		listview.setSelector(R.drawable.cookable_selector);
 	}
 
 	private void setActivatedPosition(int position) {
