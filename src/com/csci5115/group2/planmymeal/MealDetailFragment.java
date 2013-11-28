@@ -88,6 +88,8 @@ public class MealDetailFragment extends Fragment {
 			time.setText(meal.getReadableTime());
 			
 			ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
+			recipeListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			recipeListView.setSelector(R.drawable.cookable_selector);
 			List<Recipe> recipes = datasource.getMealRecipes(meal.getId());
 
 			RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
