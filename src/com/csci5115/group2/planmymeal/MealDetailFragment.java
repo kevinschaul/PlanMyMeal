@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +33,8 @@ public class MealDetailFragment extends Fragment {
 	 * represents.
 	 */
 	public static final String ARG_ITEM_ID = "item_id";
+	private static final String STATE_ACTIVATED_POSITION = "meal_deatil_activated_position";
+	private int mActivatedPosition = ListView.INVALID_POSITION;
 
 	/**
 	 * The dummy content this fragment is presenting.
@@ -71,6 +74,15 @@ public class MealDetailFragment extends Fragment {
 		
 		datasource.close();
 	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (mActivatedPosition != ListView.INVALID_POSITION) {
+			// Serialize and persist the activated item position.
+			outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,6 +91,14 @@ public class MealDetailFragment extends Fragment {
 				container, false);
 		
 		Context context = rootView.getContext();
+		
+		ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
+		
+		// Restore the previously serialized activated item position.
+		if (savedInstanceState != null
+				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+			setActivatedPosition(recipeListView, savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+		}
 
 		if (meal != null) {
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_meal_title);
@@ -87,7 +107,6 @@ public class MealDetailFragment extends Fragment {
 			TextView time = (TextView) rootView.findViewById(R.id.fragment_meal_time);
 			time.setText(meal.getReadableTime());
 			
-			ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
 			recipeListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 			recipeListView.setSelector(R.drawable.cookable_selector);
 			List<Recipe> recipes = datasource.getMealRecipes(meal.getId());
@@ -128,6 +147,9 @@ public class MealDetailFragment extends Fragment {
 			
 			// Item selected must be a recipe, so split the view evenly between all columns.
 			HomeActivity.showColumns(3);
+			
+			ListView listView = (ListView) parent;
+			setActivatedPosition(listView, position);
 			
 			Recipe recipe = (Recipe) parent.getItemAtPosition(position);
 			Bundle arguments = new Bundle();
@@ -175,4 +197,17 @@ public class MealDetailFragment extends Fragment {
 		    }
 		}
 	};
+	
+	private void setActivatedPosition(ListView listView, int position) {
+		Log.v("HI", "HERE");
+		if (position == ListView.INVALID_POSITION) {
+			Log.v("HI", "INVALID");
+			listView.setItemChecked(mActivatedPosition, false);
+		} else {
+			Log.v("HI", "VALID");
+			listView.setItemChecked(position, true);
+		}
+
+		mActivatedPosition = position;
+	}
 }
