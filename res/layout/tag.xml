@@ -1,21 +1,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:layout_margin="6dp"
-    android:background="@drawable/tag_background" >
+    android:layout_margin="20dp"
+    android:background="@drawable/tag_background">
 
     <TextView
         android:id="@+id/tag_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tag name" />
+        android:layout_height="fill_parent"
+        android:text="Tag name"
+        android:layout_marginLeft="16dp"
+        style="@style/Tag" />
 
     <Button
         android:id="@+id/tag_button_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete" />
+        android:text="@string/icon_delete"
+        android:textSize="24sp"
+        style="?android:attr/buttonBarButtonStyle" />
     
 </LinearLayout>

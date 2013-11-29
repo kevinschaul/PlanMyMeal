@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class MealDetailFragment extends Fragment {
 	 * The dummy content this fragment is presenting.
 	 */
 	private Meal meal;
+	private Typeface fontAwesome;
 	
 	// Databases
 	private DataSourceManager datasource;
@@ -58,6 +60,8 @@ public class MealDetailFragment extends Fragment {
 		Context context = this.getActivity().getApplicationContext();
 		datasource = new DataSourceManager(context);
 		datasource.open();
+		
+		this.fontAwesome = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf" );
 
 		if (getArguments().containsKey(ARG_ITEM_ID)) {
 			// Load the dummy content specified by the fragment
@@ -90,15 +94,21 @@ public class MealDetailFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_meal_detail,
 				container, false);
 		
+		Log.v("MealDetailFragment", "onCreateView()");
+		
 		Context context = rootView.getContext();
 		
 		ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
+		recipeListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		recipeListView.setSelector(R.drawable.cookable_selector);
 		
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState != null
 				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(recipeListView, savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
 		}
+		
+		recipeListView.setItemChecked(1, true);
 
 		if (meal != null) {
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_meal_title);
@@ -107,8 +117,6 @@ public class MealDetailFragment extends Fragment {
 			TextView time = (TextView) rootView.findViewById(R.id.fragment_meal_time);
 			time.setText(meal.getReadableTime());
 			
-			recipeListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			recipeListView.setSelector(R.drawable.cookable_selector);
 			List<Recipe> recipes = datasource.getMealRecipes(meal.getId());
 
 			RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
@@ -131,6 +139,9 @@ public class MealDetailFragment extends Fragment {
 				
 				TextView tagName = (TextView) tagView.findViewById(R.id.tag_name);
 				tagName.setText(tag.getName());
+				
+				Button tagDelete = (Button) tagView.findViewById(R.id.tag_button_delete);
+				tagDelete.setTypeface(fontAwesome);
 				
 				tags_wrapper.addView(tagView);
 			}
