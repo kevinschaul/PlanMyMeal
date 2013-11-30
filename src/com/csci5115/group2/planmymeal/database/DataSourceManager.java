@@ -129,7 +129,7 @@ public class DataSourceManager
 	private static final String RECIPE_TAG_DATABASE_CREATE = "create table "
 			+ TABLE_RECIPE_TAG_REL + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_RECIPE_ID
-			+ " integer not null, " + COLUMN_INGREDIENT_ID
+			+ " integer not null, " + COLUMN_TAG_ID
 			+ " integer not null" + ");";
 	// RECIPE STEP DATABASE
 	public static final String TABLE_RECIPE_STEP = "recipeStep";
