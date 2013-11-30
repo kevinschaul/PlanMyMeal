@@ -85,7 +85,7 @@
         android:id="@+id/fragment_recipe_ingredients_wrapper"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
     </LinearLayout>
 
     <TextView
@@ -99,7 +99,7 @@
         android:id="@+id/fragment_recipe_steps_wrapper"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
     </LinearLayout>
 
 </LinearLayout>

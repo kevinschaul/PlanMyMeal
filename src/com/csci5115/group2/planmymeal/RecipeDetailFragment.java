@@ -86,6 +86,8 @@ public class RecipeDetailFragment extends Fragment {
 		if (recipe != null) {
 			Log.v(HomeActivity.TAG, "Recipe exists");
 			
+			long recipeId = recipe.getId();
+			
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_recipe_title);
 			name.setText(recipe.getName());
 			
@@ -115,17 +117,10 @@ public class RecipeDetailFragment extends Fragment {
 				tags_wrapper.addView(tagView);
 			}
 			
-			// TODO Use real ingredients
 			// TODO Include unit and amount
 			// TODO Fix layout to accommodate all fields
 			LinearLayout ingredients_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_recipe_ingredients_wrapper);
-			List<Ingredient> ingredients = recipe.getIngredients();
-			
-			Ingredient i1 = new Ingredient();
-			i1.setName("Apple");
-			i1.setAmount(1);
-			i1.setUnit("whole");
-			ingredients.add(i1);
+			List<Ingredient> ingredients = datasource.getRecipeIngredients(recipeId);
 			
 			for (Ingredient ingredient : ingredients) {
 				View ingredientView = inflater.inflate(R.layout.ingredient, null);
@@ -136,13 +131,8 @@ public class RecipeDetailFragment extends Fragment {
 				ingredients_wrapper.addView(ingredientView);
 			}
 			
-			// TODO ingredient steps
 			LinearLayout steps_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_recipe_steps_wrapper);
-			List<RecipeStep> steps = recipe.getSteps();
-			
-			RecipeStep s1 = new RecipeStep();
-			s1.setInstructions("Slice apples.");
-			steps.add(s1);
+			List<RecipeStep> steps = datasource.getRecipeSteps(recipeId);
 			
 			for (int i = 0; i < steps.size(); i++) {
 				RecipeStep step = steps.get(i);
