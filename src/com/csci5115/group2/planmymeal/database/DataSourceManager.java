@@ -129,8 +129,8 @@ public class DataSourceManager
 	private static final String RECIPE_TAG_DATABASE_CREATE = "create table "
 			+ TABLE_RECIPE_TAG_REL + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_RECIPE_ID
-			+ " integer not null, " + COLUMN_TAG_ID + " integer not null"
-			+ ");";
+			+ " integer not null, " + COLUMN_TAG_ID
+			+ " integer not null" + ");";
 	// RECIPE STEP DATABASE
 	public static final String TABLE_RECIPE_STEP = "recipeStep";
 	public static final String COLUMN_INSTRUCTIONS = "instructions";
@@ -143,9 +143,9 @@ public class DataSourceManager
 	private static final String RECIPE_STEP_DATABASE_CREATE = "create table "
 			+ TABLE_RECIPE_STEP + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_INSTRUCTIONS
-			+ " text not null, " + COLUMN_TIME + " real not null, "
-			+ COLUMN_ACTIVE + " integer not null," + COLUMN_APPLIANCES
-			+ " text" + ");";
+			+ " text not null, " + COLUMN_TIME
+			+ " real not null, "  + COLUMN_ACTIVE + " integer not null,"
+			+ COLUMN_APPLIANCES + " text" + ");";
 
 	// RECIPE STEP REL DATABASE
 	public static final String TABLE_RECIPE_STEP_REL = "recipeStepRel";
@@ -324,7 +324,7 @@ public class DataSourceManager
 		System.out.println("MealRecipe deleted with mealid: " + mealId
 				+ " and recipeId: " + recipeId);
 	}
-
+	
 	public void addMealRecipe(long mealId, long recipeId)
 	{
 		ContentValues values = new ContentValues();
@@ -1052,6 +1052,7 @@ public class DataSourceManager
 		values.put(COLUMN_TAG_ID, turkeyMealTagId);
 		database.insert(TABLE_MEAL_TAG_REL, null, values);
 
+		
 		// Thanksgiving Recipes
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Apple Pie");
@@ -1080,121 +1081,50 @@ public class DataSourceManager
 		values.put(COLUMN_MEAL_ID, thanksgivingId);
 		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
 		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
-
-		// Apple Pie Tags
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Fruit (aka healthy)");
-		long fruitTagId = database.insert(TABLE_TAG, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Desert");
-		long desertTagId = database.insert(TABLE_TAG, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, applePieId);
-		values.put(COLUMN_TAG_ID, fruitTagId);
-		database.insert(TABLE_RECIPE_TAG_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, applePieId);
-		values.put(COLUMN_TAG_ID, desertTagId);
-		database.insert(TABLE_RECIPE_TAG_REL, null, values);
-
+		
 		// Apple Pie Steps
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Preheat oven to 350F.");
 		values.put(COLUMN_TIME, .1);
 		values.put(COLUMN_ACTIVE, 1);
 		long applePieStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
-
+		
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Cut up apples.");
 		values.put(COLUMN_TIME, .1);
 		values.put(COLUMN_ACTIVE, 1);
 		long applePieStep2 = database.insert(TABLE_RECIPE_STEP, null, values);
-
+		
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Mix up all the ingredients");
 		values.put(COLUMN_TIME, .1);
 		values.put(COLUMN_ACTIVE, 1);
 		long applePieStep3 = database.insert(TABLE_RECIPE_STEP, null, values);
-
+		
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Bake for 30 minutes.");
 		values.put(COLUMN_TIME, .5);
 		values.put(COLUMN_ACTIVE, 0);
 		long applePieStep4 = database.insert(TABLE_RECIPE_STEP, null, values);
-
+		
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, applePieId);
 		values.put(COLUMN_RECIPE_STEP_ID, applePieStep1);
 		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
+		
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, applePieId);
 		values.put(COLUMN_RECIPE_STEP_ID, applePieStep2);
 		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
+		
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, applePieId);
 		values.put(COLUMN_RECIPE_STEP_ID, applePieStep3);
 		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
+		
 		values = new ContentValues();
 		values.put(COLUMN_RECIPE_ID, applePieId);
 		values.put(COLUMN_RECIPE_STEP_ID, applePieStep4);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		// Mashed Potato Steps
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS,
-				"Fill 4 quart pot with potoatos and enough water to cover the top.");
-		values.put(COLUMN_TIME, .05);
-		values.put(COLUMN_ACTIVE, 1);
-		long mashedPotatoStep1 = database.insert(TABLE_RECIPE_STEP, null,
-				values);
-
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS,
-				"Cook on stove on high heat until the potatos are tender.");
-		values.put(COLUMN_TIME, .75);
-		values.put(COLUMN_ACTIVE, 0);
-		long mashedPotatoStep2 = database.insert(TABLE_RECIPE_STEP, null,
-				values);
-
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS,
-				"Take off stove and mash up all the ingredients");
-		values.put(COLUMN_TIME, .1);
-		values.put(COLUMN_ACTIVE, 1);
-		long mashedPotatoStep3 = database.insert(TABLE_RECIPE_STEP, null,
-				values);
-
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS, "Top with chives and serve.");
-		values.put(COLUMN_TIME, .05);
-		values.put(COLUMN_ACTIVE, 1);
-		long mashedPotatoStep4 = database.insert(TABLE_RECIPE_STEP, null,
-				values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
-		values.put(COLUMN_RECIPE_STEP_ID, mashedPotatoStep1);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
-		values.put(COLUMN_RECIPE_STEP_ID, mashedPotatoStep2);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
-		values.put(COLUMN_RECIPE_STEP_ID, mashedPotatoStep3);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, mashedPotatoesId);
-		values.put(COLUMN_RECIPE_STEP_ID, mashedPotatoStep4);
 		database.insert(TABLE_RECIPE_STEP_REL, null, values);
 
 		// Mashed Potato Ingredients
@@ -1287,225 +1217,6 @@ public class DataSourceManager
 		values.put(COLUMN_INGREDIENT_ID, pieCrustId);
 		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
 
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Green Bean Cassarole");
-		values.put(COLUMN_TIME, 1.5);
-		values.put(COLUMN_DESCRIPTION, "Out the can");
-		values.put(COLUMN_RECIPE_NUM_SERVINGS, 8);
-		values.put(COLUMN_USER, 1);
-		values.put(COLUMN_CC, 0);
-		long greenBeanId = database.insert(TABLE_RECIPE, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Stuffing");
-		values.put(COLUMN_TIME, 1);
-		values.put(COLUMN_DESCRIPTION, "Homemade");
-		values.put(COLUMN_RECIPE_NUM_SERVINGS, 8);
-		values.put(COLUMN_USER, 1);
-		values.put(COLUMN_CC, 0);
-		long stuffingId = database.insert(TABLE_RECIPE, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_MEAL_ID, thanksgivingId);
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_MEAL_ID, thanksgivingId);
-		values.put(COLUMN_RECIPE_ID, stuffingId);
-		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
-
-		// Green Bean Tags
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Oniony");
-		long onionyTagId = database.insert(TABLE_TAG, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Veggie");
-		long veggieTagId = database.insert(TABLE_TAG, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_TAG_ID, onionyTagId);
-		database.insert(TABLE_RECIPE_TAG_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_TAG_ID, veggieTagId);
-		database.insert(TABLE_RECIPE_TAG_REL, null, values);
-
-		// Green Bean Steps
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS, "Preheat oven to 350F.");
-		values.put(COLUMN_TIME, .2);
-		values.put(COLUMN_ACTIVE, 0);
-		long greenBeanStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS,
-				"Put all ingredients except the onions in a 8 x 8 baking pan.");
-		values.put(COLUMN_TIME, .1);
-		values.put(COLUMN_ACTIVE, 1);
-		long greenBeanStep2 = database.insert(TABLE_RECIPE_STEP, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS, "Bake for 20 minues");
-		values.put(COLUMN_TIME, .33);
-		values.put(COLUMN_ACTIVE, 0);
-		long greenBeanStep3 = database.insert(TABLE_RECIPE_STEP, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS,
-				"Take pan out, sprinkle on onion crunchies, and serve.");
-		values.put(COLUMN_TIME, .05);
-		values.put(COLUMN_ACTIVE, 1);
-		long greenBeanStep4 = database.insert(TABLE_RECIPE_STEP, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_RECIPE_STEP_ID, greenBeanStep1);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_RECIPE_STEP_ID, greenBeanStep2);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_RECIPE_STEP_ID, greenBeanStep3);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_RECIPE_STEP_ID, greenBeanStep4);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		// Stuffing Steps
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS, "Preheat oven to 350F.");
-		values.put(COLUMN_TIME, .2);
-		values.put(COLUMN_ACTIVE, 0);
-		long stuffingStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS,
-				"Chop up all bread into 1 inch square cubes.");
-		values.put(COLUMN_TIME, .15);
-		values.put(COLUMN_ACTIVE, 1);
-		long stuffingStep2 = database.insert(TABLE_RECIPE_STEP, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS, "Pour cream and melted butter over bread in baking dish.");
-		values.put(COLUMN_TIME, .1);
-		values.put(COLUMN_ACTIVE, 1);
-		long stuffingStep3 = database.insert(TABLE_RECIPE_STEP, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS,
-				"Bake for 30 minutes and serve.");
-		values.put(COLUMN_TIME, .5);
-		values.put(COLUMN_ACTIVE, 0);
-		long stuffingStep4 = database.insert(TABLE_RECIPE_STEP, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, stuffingId);
-		values.put(COLUMN_RECIPE_STEP_ID, stuffingStep1);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, stuffingId);
-		values.put(COLUMN_RECIPE_STEP_ID, stuffingStep2);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-		
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, stuffingId);
-		values.put(COLUMN_RECIPE_STEP_ID, stuffingStep3);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-		
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, stuffingId);
-		values.put(COLUMN_RECIPE_STEP_ID, stuffingStep4);
-		database.insert(TABLE_RECIPE_STEP_REL, null, values);
-
-		// Stuffing Ingredients
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Rye Bread");
-		values.put(COLUMN_AMOUNT, 1);
-		values.put(COLUMN_UNIT, "Loaf");
-		long ryeBreadId = database.insert(TABLE_INGREDIENT, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Wheat Bread");
-		values.put(COLUMN_AMOUNT, 1);
-		values.put(COLUMN_UNIT, "Loaf");
-		long wheatBreadId = database.insert(TABLE_INGREDIENT, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, stuffingId);
-		values.put(COLUMN_INGREDIENT_ID, ryeBreadId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, stuffingId);
-		values.put(COLUMN_INGREDIENT_ID, butterId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, stuffingId);
-		values.put(COLUMN_INGREDIENT_ID, creamId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, stuffingId);
-		values.put(COLUMN_INGREDIENT_ID, wheatBreadId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
-
-		// Green Bean Ingredients
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Green Beans");
-		values.put(COLUMN_AMOUNT, 2);
-		values.put(COLUMN_UNIT, "14.5 oz cans");
-		long canGreenBeansId = database.insert(TABLE_INGREDIENT, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Laughing Cow Cheese");
-		values.put(COLUMN_AMOUNT, 6);
-		values.put(COLUMN_UNIT, "Wedges");
-		long laughingCowId = database.insert(TABLE_INGREDIENT, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Chicken Stock");
-		values.put(COLUMN_AMOUNT, .5);
-		values.put(COLUMN_UNIT, "Cups");
-		long chickenStockId = database.insert(TABLE_INGREDIENT, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Crispy Onions");
-		values.put(COLUMN_AMOUNT, 1);
-		values.put(COLUMN_UNIT, "Cup");
-		long onionId = database.insert(TABLE_INGREDIENT, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_INGREDIENT_ID, canGreenBeansId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_INGREDIENT_ID, laughingCowId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_INGREDIENT_ID, chickenStockId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_RECIPE_ID, greenBeanId);
-		values.put(COLUMN_INGREDIENT_ID, onionId);
-		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, values);
-
 		// Meal 2
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Sam Initial Meal 2");
@@ -1514,6 +1225,30 @@ public class DataSourceManager
 		values.put(COLUMN_USER, 0);
 		values.put(COLUMN_CC, 1);
 		long meal2Id = database.insert(TABLE_MEAL, null, values);
+
+		//Other Recipes
+		values = new ContentValues();
+		values.put(COLUMN_NAME, "Beef Stew");
+		values.put(COLUMN_TIME, 7.2);
+		values.put(COLUMN_DESCRIPTION, "Old Family Favorite");
+		values.put(COLUMN_RECIPE_NUM_SERVINGS, 3);
+		values.put(COLUMN_USER, 1);
+		values.put(COLUMN_CC, 0);
+		long beefStewId = database.insert(TABLE_RECIPE, null, values);
+
+		values = new ContentValues();
+		values.put(COLUMN_NAME, "Lutefisk");
+		values.put(COLUMN_TIME, 240.5);
+		values.put(COLUMN_DESCRIPTION, "Traditional Scandinavian Dish");
+		values.put(COLUMN_RECIPE_NUM_SERVINGS, 12);
+		values.put(COLUMN_USER, 1);
+		values.put(COLUMN_CC, 0);
+		long lutefiskId = database.insert(TABLE_RECIPE, null, values);
+
+		values = new ContentValues();
+		values.put(COLUMN_MEAL_ID, meal2Id);
+		values.put(COLUMN_RECIPE_ID, lutefiskId);
+		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
 
 		// Initialize User Settings
 		values = new ContentValues();

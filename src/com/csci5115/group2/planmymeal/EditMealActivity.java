@@ -1,38 +1,44 @@
 package com.csci5115.group2.planmymeal;
 
 import java.util.LinkedList;
-
-import com.csci5115.group2.planmymeal.database.DataSourceManager;
+import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
+import android.view.View.OnFocusChangeListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-public class EditMealActivity extends Activity {
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
+
+public class EditMealActivity extends Activity implements TextWatcher, OnFocusChangeListener{
+	
+	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
+	public final static String EXTRA_RECIPE = "com.csci5115.group2.planmymeal.RECIPE";
+	public final static String BUNDLE_SHOWMEALS = "com.csci5115.group2.planmymeal.BUNDLE_SHOWMEALS";
+	public final static String BUNDLE_SHOWRECIPES = "com.csci5115.group2.planmymeal.BUNDLE_SHOWRECIPES";
 	
 	public Meal meal;
 	public EditMealActivity view;
 	public LinearLayout tagContainer;
 	private DataSourceManager datasource;
+	RecipeArrayAdapter recipeAdapter; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_meal);
-		
-		view = this;
+        setTitle("Edit Meal");
 		
 		// Database Creation
 		datasource = new DataSourceManager(this);
@@ -40,47 +46,60 @@ public class EditMealActivity extends Activity {
 		
 		Intent intent = getIntent();
 		long mealId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
-		
 		meal = datasource.getMealById(mealId);
 		
-		EditText mealNameTextView = (EditText) findViewById(R.id.edit_meal_mealName);
-		mealNameTextView.setText(meal.getName());
-		
+		EditText editMealNameView = (EditText) findViewById(R.id.edit_meal_mealName);
+		editMealNameView.setText(meal.getName());
+		//TODO: Have Meal Name actually change
+		        
 		// Set up recipes in meal list
-		LinkedList<Recipe> recipes = (LinkedList<Recipe>) meal.getRecipes();
-		
-		MealRecipesArrayAdapter mealRecipesAdapter = new MealRecipesArrayAdapter(this, recipes);
+		LinkedList<Recipe> recipes = (LinkedList<Recipe>) datasource.getMealRecipes(meal.getId());
+						
+		RecipeDetailArrayAdapter mealRecipesAdapter = new RecipeDetailArrayAdapter(this, recipes);
 		ListView mealListView = (ListView) findViewById(R.id.edit_meal_recipes_in_meal);
 		mealListView.setAdapter(mealRecipesAdapter);
 
 		// Set up all user recipes
-		LinkedList<Recipe> allUserRecipesArray = GlobalData.userRecipes;
+		List<Recipe> allUserRecipesList = datasource.getAllRecipes();
 				
-		RecipeArrayAdapter recipeAdapter = new RecipeArrayAdapter(this, allUserRecipesArray, meal, mealRecipesAdapter);
-		ListView allUserListView = (ListView) findViewById(R.id.edit_meal_allUserRecipes);
+		recipeAdapter = new RecipeArrayAdapter(this, allUserRecipesList, meal, mealRecipesAdapter);
+		ListView allUserListView = (ListView) findViewById(R.id.edit_meal_all_recipes);
 		allUserListView.setAdapter(recipeAdapter);
+				
+		// Register text listener
+        List<Tag> allTags = datasource.getAllTags();
+        List<Recipe> allRecipes = datasource.getAllUserRecipes();
+        
+        String[] autocompleteStrings = new String[allTags.size() + allRecipes.size()];
+        int i = 0;
+        int j = 0;
+        for (j = 0; j < allRecipes.size(); i++, j++) {
+        	autocompleteStrings[i] = allRecipes.get(j).getName();
+        }
+        for (j = 0; j < allTags.size(); i++, j++) {
+        	autocompleteStrings[i] = allTags.get(j).getName();
+        }
+        
+		EditText search = (EditText) findViewById(R.id.edit_meal_search);
+		search.addTextChangedListener(this);
+		search.setOnFocusChangeListener(this);
 		
+		
+			
 		// Set up tags
 		tagContainer = (LinearLayout)findViewById(R.id.edit_meal_tag_container);
 		
 		//Get tags for id
 		
-		for(Tag tag : datasource.getMealTags(mealId))
+		for(final Tag tag : datasource.getMealTags(mealId))
 		{
 			final RelativeLayout newTagLayout = new RelativeLayout(this);
 			
-			// Defining the RelativeLayout layout parameters.
-	        // In this case I want to fill its parent
-	        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-	                RelativeLayout.LayoutParams.MATCH_PARENT,
-	                RelativeLayout.LayoutParams.WRAP_CONTENT);
-			
+			// Defining the RelativeLayout layout parameters.			
 			Button newTag = new Button(this);
 			newTag.setText(tag.getName());
 			newTag.append("              ");
-			
 
-			
 			Button deleteTag = new Button(this);
 			deleteTag.setText("X");
 			
@@ -96,7 +115,6 @@ public class EditMealActivity extends Activity {
 	                RelativeLayout.LayoutParams.WRAP_CONTENT,
 	                RelativeLayout.LayoutParams.WRAP_CONTENT);
 	        deleteButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-	        //deleteButtonLayout.addRule(RelativeLayout.CENTER_VERTICAL);
 			
 			newTagLayout.addView(newTag, tagButtonLayout);
 			newTagLayout.addView(deleteTag, deleteButtonLayout);
@@ -106,6 +124,7 @@ public class EditMealActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					newTagLayout.setVisibility(View.GONE);
+					datasource.deleteMealTag(tag, meal.getId());
 				}
 			}
 			);
@@ -122,15 +141,12 @@ public class EditMealActivity extends Activity {
 				String tagText = newTagText.getText().toString();
 				//Add tag to meal
 				meal.tags.add(new Tag(tagText));
+				final Tag tag = datasource.createTag(tagText);
+				datasource.addTagToMeal(tagText, meal.getId());
+				newTagText.clearComposingText();
 				
 				final RelativeLayout newTagLayout = new RelativeLayout(view);
-				
-				// Defining the RelativeLayout layout parameters.
-		        // In this case I want to fill its parent
-		        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-		                RelativeLayout.LayoutParams.MATCH_PARENT,
-		                RelativeLayout.LayoutParams.WRAP_CONTENT);
-				
+								
 		        Button newTag = new Button(view);
 				newTag.setText(tagText);
 				newTag.append("              ");
@@ -151,7 +167,6 @@ public class EditMealActivity extends Activity {
 		                RelativeLayout.LayoutParams.WRAP_CONTENT,
 		                RelativeLayout.LayoutParams.WRAP_CONTENT);
 		        deleteButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		        //deleteButtonLayout.addRule(RelativeLayout.CENTER_VERTICAL);
 				
 				newTagLayout.addView(newTag, tagButtonLayout);
 				newTagLayout.addView(deleteTag, deleteButtonLayout);
@@ -161,6 +176,8 @@ public class EditMealActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						newTagLayout.setVisibility(View.GONE);
+						datasource.deleteMealTag(tag, meal.getId());
+						
 					}
 				}
 				);
@@ -169,7 +186,7 @@ public class EditMealActivity extends Activity {
 		);
 		
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -187,6 +204,24 @@ public class EditMealActivity extends Activity {
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+	}
+
+	@Override
+	public void afterTextChanged(Editable arg0) {
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		recipeAdapter.getFilter().filter(s);
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
 	}
 
 }

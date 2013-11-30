@@ -25,19 +25,9 @@
             android:id="@+id/relativeLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/view1"
-            android:layout_weight="1" >
-
-            <EditText
-                android:id="@+id/edit_meal_mealName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:ems="10"
-                android:text="Meal Title"
-                android:textSize="40sp" />
+            android:layout_weight="1"  >
 
             <TextView
                 android:id="@+id/edit_meal_addTag"
@@ -67,7 +57,7 @@
                 android:layout_below="@+id/addTagButton"
                 android:text="My Meal Tags"
                 android:textSize="20sp" />
-
+    		
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
@@ -113,6 +103,15 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
+            <EditText
+                android:id="@+id/edit_meal_mealName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:ems="10"
+                android:text="Meal Title"
+                android:textSize="40sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -124,34 +123,48 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="40dp"
             android:layout_toRightOf="@+id/relativeLayout2" >
+            
+            <ListView
+                android:id="@+id/edit_meal_all_recipes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/edit_meal_search" >
 
+            </ListView>
+            
             <TextView
                 android:id="@+id/edit_meal_myRecipes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
                 android:ems="10"
                 android:text="My Recipes"
                 android:textSize="40sp" />
 
-            <ListView
-                android:id="@+id/edit_meal_allUserRecipes"
+            <EditText
+                android:id="@+id/edit_meal_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_below="@+id/edit_meal_myRecipes"
-                android:layout_marginTop="10dp" >
-            </ListView>
+                android:ems="10"
+                android:hint="Filter by title, tags or ingredients"
+                android:imeOptions="actionSearch"
+                android:inputType="text" />
+                
+               <!--<fragment
+                    android:id="@+id/edit_meal_cookable_list"
+                    android:name="com.csci5115.group2.planmymeal.RecipeListFragment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_below="@+id/edit_meal_search"
+                    tools:layout="@android:layout/list_content" />-->
+
         </RelativeLayout>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/edit_meal_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="34dp"
-        android:text="Edit Meal"
-        android:textSize="40sp" />
+   
 
 </RelativeLayout>
