@@ -51,7 +51,7 @@ public class CookActivity extends Activity {
         datasource = new DataSourceManager(this);
         datasource.open();
 		
-        numRecipes = 2;
+        numRecipes = 4;
         
         Meal meal = datasource.getMealById(mealId);
 		
@@ -76,10 +76,8 @@ public class CookActivity extends Activity {
 		
 		
 		populateRecipes();
-		List<RecipeStep> newSteps = recipe0.getSteps();
-		newSteps.remove(0);
-		recipe0.setSteps(newSteps);
-
+		//removeRecipeStep(0);
+		removeRecipeStep(1);
 		
 	}
 	
@@ -109,6 +107,34 @@ public class CookActivity extends Activity {
 		
 		datasource.close();
 	}
+	
+	public void removeRecipeStep(int recipe){
+		List<RecipeStep> newSteps = new LinkedList<RecipeStep>();
+		
+		switch(recipe){
+			case 0:
+				newSteps = recipe0.getSteps();
+				newSteps.remove(0);
+				recipe0.setSteps(newSteps);
+				break;
+			case 1:
+				newSteps = recipe1.getSteps();
+				newSteps.remove(0);
+				recipe1.setSteps(newSteps);
+				break;
+			case 2:
+				newSteps = recipe2.getSteps();
+				newSteps.remove(0);
+				recipe2.setSteps(newSteps);
+				break;
+			case 3:
+				newSteps = recipe3.getSteps();
+				newSteps.remove(0);
+				recipe3.setSteps(newSteps);
+				break;
+		}
+	}
+	
 	
 	public void populateRecipes(){
 		switch(numRecipes){

@@ -27,18 +27,15 @@
              
         <LinearLayout
             android:id="@+id/allRecipesHolder"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal" > 
-            
-            
+            android:orientation="horizontal" >
             
             <LinearLayout 
-            	android:id="@+id/RecipeHolder0"
-            	android:layout_width="350dip"
+                android:id="@+id/RecipeHolder0"
+                android:layout_width="350dip"
             	android:layout_height="match_parent"
-            	android:orientation="vertical">
-                
+            	android:orientation="vertical">  
             </LinearLayout>
             
             <LinearLayout 
@@ -64,37 +61,18 @@
             	android:orientation="vertical"
             	android:visibility="gone">    
             </LinearLayout>
-            	<!--    
-                <TextView
-	            android:id="@+id/recipeCookName"
-	            android:layout_width="match_parent"
-	            android:layout_height="30dp"
-	            android:text="Recipe 1"
-	            android:textAppearance="?android:attr/textAppearanceLarge" >
-	        </TextView>
-			<GridView
-			    android:id="@+id/recipeCookIngredients"
-			    android:layout_width="300dp"
-			    android:layout_height="200dp"
-			    android:layout_centerVertical="true"
-			    android:layout_marginLeft="0dp"
-			    android:layout_toRightOf="@+id/linearLayout1"
-			    android:numColumns="2" 
-			    android:verticalSpacing="0dp">
-			</GridView>    
-	        <ListView
-	            android:id="@+id/recipeCookSteps"
-	            android:layout_width="300dp"
-	            android:layout_height="wrap_content"
-	            android:layout_below="@+id/checkedTextView1"
-	            android:layout_marginLeft="0dp"
-	            android:layout_marginTop="0dp"
-	            android:layout_toRightOf="@+id/checkedTextView1"
-	            android:background="#008080" >
-	        </ListView>  
-	        -->
+            
         </LinearLayout>
         
     </HorizontalScrollView>
 
+    
+    <Button
+        android:id="@+id/button0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/myListView"
+        android:layout_alignParentBottom="true"
+        android:text="Remove0" />
+    
 </RelativeLayout>
