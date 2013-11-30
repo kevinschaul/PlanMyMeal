@@ -6,14 +6,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -34,11 +34,14 @@ public class MealDetailFragment extends Fragment {
 	 * represents.
 	 */
 	public static final String ARG_ITEM_ID = "item_id";
+	private static final String STATE_ACTIVATED_POSITION = "meal_deatil_activated_position";
+	private int mActivatedPosition = ListView.INVALID_POSITION;
 
 	/**
 	 * The dummy content this fragment is presenting.
 	 */
 	private Meal meal;
+	private Typeface fontAwesome;
 	
 	// Databases
 	private DataSourceManager datasource;
@@ -57,6 +60,8 @@ public class MealDetailFragment extends Fragment {
 		Context context = this.getActivity().getApplicationContext();
 		datasource = new DataSourceManager(context);
 		datasource.open();
+		
+		this.fontAwesome = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf" );
 
 		if (getArguments().containsKey(ARG_ITEM_ID)) {
 			// Load the dummy content specified by the fragment
@@ -73,6 +78,15 @@ public class MealDetailFragment extends Fragment {
 		
 		datasource.close();
 	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (mActivatedPosition != ListView.INVALID_POSITION) {
+			// Serialize and persist the activated item position.
+			outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,7 +94,21 @@ public class MealDetailFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_meal_detail,
 				container, false);
 		
+		Log.v("MealDetailFragment", "onCreateView()");
+		
 		Context context = rootView.getContext();
+		
+		ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
+		recipeListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		recipeListView.setSelector(R.drawable.cookable_selector);
+		
+		// Restore the previously serialized activated item position.
+		if (savedInstanceState != null
+				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+			setActivatedPosition(recipeListView, savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+		}
+		
+		recipeListView.setItemChecked(1, true);
 
 		if (meal != null) {
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_meal_title);
@@ -89,7 +117,6 @@ public class MealDetailFragment extends Fragment {
 			TextView time = (TextView) rootView.findViewById(R.id.fragment_meal_time);
 			time.setText(meal.getReadableTime());
 			
-			ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
 			List<Recipe> recipes = datasource.getMealRecipes(meal.getId());
 
 			RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
@@ -105,6 +132,19 @@ public class MealDetailFragment extends Fragment {
 			Button delete = (Button) rootView.findViewById(R.id.fragment_meal_button_delete);
 			delete.setOnClickListener(clickListener);
 			
+			LinearLayout tags_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_meal_tags_wrapper);
+			List<Tag> tags = datasource.getMealTags(meal.getId());
+			for (Tag tag : tags) {
+				View tagView = inflater.inflate(R.layout.tag, null);
+				
+				TextView tagName = (TextView) tagView.findViewById(R.id.tag_name);
+				tagName.setText(tag.getName());
+				
+				Button tagDelete = (Button) tagView.findViewById(R.id.tag_button_delete);
+				tagDelete.setTypeface(fontAwesome);
+				
+				tags_wrapper.addView(tagView);
+			}
 		}
 
 		return rootView;
@@ -118,6 +158,9 @@ public class MealDetailFragment extends Fragment {
 			
 			// Item selected must be a recipe, so split the view evenly between all columns.
 			HomeActivity.showColumns(3);
+			
+			ListView listView = (ListView) parent;
+			setActivatedPosition(listView, position);
 			
 			Recipe recipe = (Recipe) parent.getItemAtPosition(position);
 			Bundle arguments = new Bundle();
@@ -165,4 +208,17 @@ public class MealDetailFragment extends Fragment {
 		    }
 		}
 	};
+	
+	private void setActivatedPosition(ListView listView, int position) {
+		Log.v("HI", "HERE");
+		if (position == ListView.INVALID_POSITION) {
+			Log.v("HI", "INVALID");
+			listView.setItemChecked(mActivatedPosition, false);
+		} else {
+			Log.v("HI", "VALID");
+			listView.setItemChecked(position, true);
+		}
+
+		mActivatedPosition = position;
+	}
 }

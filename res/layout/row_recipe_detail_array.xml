@@ -3,12 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip" >
+    
+    <TextView
+        android:id="@+id/row_recipe_detail_array_recipeType"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:text="Recipe type"
+        android:textSize="26sp"
+        android:paddingRight="8dip" />
 
     <TextView
         android:id="@+id/row_recipe_detail_array_recipeName"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/row_recipe_detail_array_recipeType"
         android:gravity="center_vertical"
         android:text="Recipe Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />

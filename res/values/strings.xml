@@ -9,6 +9,8 @@
     <string name="icon_play">&#xf04b;</string>
     <string name="icon_edit">&#xf044;</string>
     <string name="icon_delete">&#xf014;</string>
+    <string name="icon_meal">&#xf0f5;</string>
+    <string name="icon_recipe">&#xf022;</string>
     <string name="title_activity_cook">CookActivity</string>
     <string name="title_activity_edit_meal">EditMealActivity</string>
     <string name="title_activity_community_cookbook">CommunityCookbookActivity</string>

@@ -6,7 +6,7 @@ import java.util.List;
 public class Recipe extends Cookable {
 	private Integer numServings;
 	private List<Ingredient> ingredients;
-	private List<Tag> tags;
+	List<Tag> tags;
 	private List<RecipeStep> steps;
 	// TODO Don't use String to represent time
 	

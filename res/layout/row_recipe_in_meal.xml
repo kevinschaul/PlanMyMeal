@@ -2,13 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="?android:attr/activatedBackgroundIndicator"
     android:padding="6dip">
+    
+    <TextView
+        android:id="@+id/row_recipe_recipeType"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:text="Recipe type"
+        android:textSize="26sp"
+        android:paddingRight="8dip" />
     
     <TextView
         android:id="@+id/row_recipe_recipeName"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
+       android:layout_toRightOf="@id/row_recipe_recipeType"
         android:gravity="center_vertical"
         android:text="Recipe Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
