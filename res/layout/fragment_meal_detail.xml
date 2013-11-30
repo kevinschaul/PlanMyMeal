@@ -25,28 +25,34 @@
 		
 		    <Button
 	            android:id="@+id/fragment_meal_button_edit"
-	            android:layout_width="0dip"
+	            android:layout_width="wrap_content"
 	            android:layout_height="match_parent"
-	            android:layout_weight="0.33"
 	            android:text="Edit"
 	            style="?android:attr/buttonBarButtonStyle" />
 	        <Button
 	            android:id="@+id/fragment_meal_button_delete"
-	            android:layout_width="0dip"
+	            android:layout_width="wrap_content"
 	            android:layout_height="match_parent"
-	            android:layout_weight="0.33"
 	            android:text="Delete"
-	            style="?android:attr/buttonBarButtonStyle" />
-	        <Button
-	            android:id="@+id/fragment_meal_button_cook"
-	            android:layout_width="0dip"
-	            android:layout_height="match_parent"
-	            android:layout_weight="0.33"
-	            android:text="Start cooking"
 	            style="?android:attr/buttonBarButtonStyle" />
 	    </LinearLayout>
     </RelativeLayout>
 
+   	<View
+	    style="@style/Divider"
+	    android:layout_marginTop="8dp" />
+    <Button
+        android:id="@+id/fragment_meal_button_cook"
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_gravity="center_horizontal"
+    	android:textSize="18dp"
+        android:text="Start cooking"
+        style="?android:attr/borderlessButtonStyle" />
+    <View
+	    style="@style/Divider"
+	    android:layout_marginBottom="8dp" />
+        
     <TextView
         android:id="@+id/fragment_meal_time"
         android:layout_width="wrap_content"
