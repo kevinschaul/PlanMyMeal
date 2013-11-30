@@ -5,81 +5,67 @@
     android:orientation="vertical"
     tools:context=".RecipeDetailFragment" >
     
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+	            
+	    <TextView
+		    android:id="@+id/fragment_recipe_title"
+		    android:text="Recipe title"
+		    android:layout_alignParentLeft="true"
+		    style="@style/CookableTitle" />
+	    
+	    <LinearLayout
+	        android:id="@+id/fragment_recipe_button_wrapper"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:orientation="horizontal"
+	        style="?android:attr/buttonBarStyle" >
+		
+		    <Button
+	            android:id="@+id/fragment_recipe_button_edit"
+	            android:layout_width="0dip"
+	            android:layout_height="match_parent"
+	            android:layout_weight="0.33"
+	            android:text="Edit"
+	            style="?android:attr/buttonBarButtonStyle" />
+	        <Button
+	            android:id="@+id/fragment_recipe_button_delete"
+	            android:layout_width="0dip"
+	            android:layout_height="match_parent"
+	            android:layout_weight="0.33"
+	            android:text="Delete"
+	            style="?android:attr/buttonBarButtonStyle" />
+	        <Button
+	            android:id="@+id/fragment_recipe_button_cook"
+	            android:layout_width="0dip"
+	            android:layout_height="match_parent"
+	            android:layout_weight="0.33"
+	            android:text="Start cooking"
+	            style="?android:attr/buttonBarButtonStyle" />
+	    </LinearLayout>
+    </RelativeLayout>
+
     <TextView
-	    android:id="@+id/fragment_recipe_title"
-	    style="?android:attr/textAppearanceLarge"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:gravity="center_horizontal"
-	    android:text="Recipe title" />
+        android:id="@+id/fragment_recipe_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        style="@style/DetailItem" />
     
-    <LinearLayout android:id="@+id/fragment_recipe_button_wrapper"
+    <TextView
+        android:id="@+id/fragment_recipe_tags_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tags"
+        style="@style/DetailLabel" />
+    
+    <LinearLayout
+        android:id="@+id/fragment_recipe_tags_wrapper"
         android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:weightSum="3" >
-
-        <Button
-            android:id="@+id/fragment_recipe_button_edit"
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="Edit" />
-        
-        <Button
-            android:id="@+id/fragment_recipe_button_delete"
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="Delete" />
-                
-        <Button
-            android:id="@+id/fragment_recipe_button_cook"
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="Start Cooking" />
-        
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
     </LinearLayout>
-    
-   <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="Total Time" />
-
-        <TextView
-            android:id="@+id/fragment_recipe_total_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
-        
-    </RelativeLayout>
-    
-      <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="Number of Servings" />
-
-        <TextView
-            android:id="@+id/fragment_recipe_number_of_servings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
-        
-    </RelativeLayout>
 
 </LinearLayout>

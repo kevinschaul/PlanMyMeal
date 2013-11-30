@@ -1,9 +1,12 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
@@ -32,6 +36,7 @@ public class RecipeDetailFragment extends Fragment {
 	 * The dummy content this fragment is presenting.
 	 */
 	private Recipe recipe;
+	private Typeface fontAwesome;
 	
 	// Databases
 	private DataSourceManager datasource;
@@ -50,6 +55,8 @@ public class RecipeDetailFragment extends Fragment {
 		Context context = this.getActivity().getApplicationContext();
 		datasource = new DataSourceManager(context);
 		datasource.open();
+		
+		this.fontAwesome = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf" );
 		
 		Log.v(HomeActivity.TAG, "onCreate");
 
@@ -81,14 +88,8 @@ public class RecipeDetailFragment extends Fragment {
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_recipe_title);
 			name.setText(recipe.getName());
 			
-			TextView time = (TextView) rootView.findViewById(R.id.fragment_recipe_total_time);
+			TextView time = (TextView) rootView.findViewById(R.id.fragment_recipe_time);
 			time.setText(recipe.getReadableTime());
-			
-			// TODO
-			/*
-			TextView servings = (TextView) rootView.findViewById(R.id.fragment_recipe_number_of_servings);
-			servings.setText(Integer.toString(recipe.getNumServings()));
-			*/
 			
 			Button cook = (Button) rootView.findViewById(R.id.fragment_recipe_button_cook);
 			cook.setOnClickListener(clickListener);
@@ -98,6 +99,23 @@ public class RecipeDetailFragment extends Fragment {
 			
 			Button delete = (Button) rootView.findViewById(R.id.fragment_recipe_button_delete);
 			delete.setOnClickListener(clickListener);
+			
+			LinearLayout tags_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_recipe_tags_wrapper);
+			// TODO
+			/*
+			List<Tag> tags = datasource.getRecipeTags(recipe.getId());
+			for (Tag tag : tags) {
+				View tagView = inflater.inflate(R.layout.tag, null);
+				
+				TextView tagName = (TextView) tagView.findViewById(R.id.tag_name);
+				tagName.setText(tag.getName());
+				
+				Button tagDelete = (Button) tagView.findViewById(R.id.tag_button_delete);
+				tagDelete.setTypeface(fontAwesome);
+				
+				tags_wrapper.addView(tagView);
+			}
+			*/
 			
 		} else {
 			Log.v(HomeActivity.TAG, "Recipe does not exist.");
