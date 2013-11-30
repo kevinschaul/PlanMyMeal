@@ -27,9 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/view1"
-            android:layout_weight="1" >
+            android:layout_alignParentTop="true">
 
             <EditText
                 android:id="@+id/edit_recipe_recipeName"
@@ -75,6 +73,7 @@
                 android:id="@+id/edit_recipe_detailsScrollView"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/edit_recipe_scrollView" >
 
