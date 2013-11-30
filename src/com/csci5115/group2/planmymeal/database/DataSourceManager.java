@@ -324,6 +324,14 @@ public class DataSourceManager
 		System.out.println("MealRecipe deleted with mealid: " + mealId
 				+ " and recipeId: " + recipeId);
 	}
+	
+	public void addMealRecipe(long mealId, long recipeId)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_MEAL_ID, mealId);
+		values.put(COLUMN_RECIPE_ID, recipeId);
+		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
+	}
 
 	public Meal getMealById(long mealId)
 	{
