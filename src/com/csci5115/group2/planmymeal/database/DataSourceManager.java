@@ -129,7 +129,7 @@ public class DataSourceManager
 	private static final String RECIPE_TAG_DATABASE_CREATE = "create table "
 			+ TABLE_RECIPE_TAG_REL + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_RECIPE_ID
-			+ " integer not null, " + COLUMN_INGREDIENT_ID
+			+ " integer not null, " + COLUMN_TAG_ID
 			+ " integer not null" + ");";
 	// RECIPE STEP DATABASE
 	public static final String TABLE_RECIPE_STEP = "recipeStep";
@@ -323,6 +323,14 @@ public class DataSourceManager
 				+ " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
 		System.out.println("MealRecipe deleted with mealid: " + mealId
 				+ " and recipeId: " + recipeId);
+	}
+	
+	public void addMealRecipe(long mealId, long recipeId)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_MEAL_ID, mealId);
+		values.put(COLUMN_RECIPE_ID, recipeId);
+		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
 	}
 
 	public Meal getMealById(long mealId)
