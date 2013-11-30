@@ -18,16 +18,14 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.csci5115.group2.planmymeal.MealTagArrayAdapter.RemoveTagFromMealListener;
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 public class EditMealActivity extends Activity implements TextWatcher, OnFocusChangeListener{
@@ -46,21 +44,22 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 	private Typeface fontAwesome;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_meal);
         setTitle("Edit Meal");
+		context = this;
 		
 		// Database Creation
 		datasource = new DataSourceManager(this);
 		datasource.open();
 		
+		this.fontAwesome = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf" );
+		
 		Intent intent = getIntent();
 		long mealId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
 		meal = datasource.getMealById(mealId);
-		context = this;
-		
-		EditText editMealNameView = (EditText) findViewById(R.id.edit_meal_mealName);
+		final EditText editMealNameView = (EditText) findViewById(R.id.edit_meal_mealName);
 		editMealNameView.setText(meal.getName());
 		//TODO: Have Meal Name actually change
 		Button saveButton = (Button) findViewById(R.id.edit_meal_save_button);
@@ -69,10 +68,10 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 			public void onClick(View v)
 			{
 				//TODO: save new name of meal
-				EditText nameText = (EditText) findViewById(R.id.edit_meal_mealName);
-				String mealNameText = nameText.getText().toString();
+				String mealNameText = editMealNameView.getText().toString();
 				datasource.renameMeal(meal.getId(), mealNameText);//NOt working
 				//notifyDataSetChanged:not sure how to do this for prev page
+				
 				finish();
 			}
 		}

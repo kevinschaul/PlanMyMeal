@@ -348,19 +348,13 @@ public class DataSourceManager
 		return meal;
 	}
 	
-	public Meal renameMeal(long mealId, String newName)
+	public void renameMeal(long mealId, String newName)
 	{
-		Meal meal = new Meal();
-		
-		Cursor cursor = database.query(TABLE_MEAL, allMealColumns, COLUMN_ID
-				+ " = " + mealId, null, null, null, null);
-		
-		cursor.moveToFirst();
-		meal = cursorToMeal(cursor);
-		meal.setName(newName);
-		
-		return meal;
-		
+		ContentValues args = new ContentValues();
+	    args.put(COLUMN_NAME, newName);
+	    String strFilter = "_id=" + mealId;
+	    database.update(TABLE_MEAL, args, strFilter, null);
+				
 	}
 
 	private Meal cursorToMeal(Cursor cursor)
