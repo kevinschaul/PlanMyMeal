@@ -69,7 +69,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe>
 		Recipe recipe;
 		Meal meal;
 		
-		public RowAddRecipeToMealListener(Recipe recipel) {
+		public RowAddRecipeToMealListener(Recipe recipe){
 			this.recipe = recipe;
 		}
 

@@ -65,7 +65,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:ems="10"
-                android:text="Meal Title"
+                android:hint="New Meal Title"
                 android:textSize="40sp" />
 
             <Button

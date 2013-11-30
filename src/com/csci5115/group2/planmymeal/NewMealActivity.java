@@ -1,5 +1,6 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,8 +43,8 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 	private DataSourceManager datasource;
 	private RecipeArrayAdapter recipeAdapter; 
 	private Typeface fontAwesome;
-	public List<Tag> addedTags;
-	public List<Recipe> addedRecipes;
+	public List<Tag> addedTags = new ArrayList<Tag>();
+	public List<Recipe> addedRecipes = new ArrayList<Recipe>();
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -51,8 +52,6 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 		setContentView(R.layout.activity_new_meal);
         setTitle("New Meal");
 		context = this;
-		Recipe recipe = new Recipe("PlaceHolder", 0.5);
-		addedRecipes.add(recipe);
 		
 		// Database Creation
 		datasource = new DataSourceManager(this);
@@ -89,6 +88,7 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 				{
 					if(!datasource.getMealTags(meal.getId()).contains(tag))
 					{
+						meal.tags.add(new Tag(tag.getName()));
 						datasource.addTagToMeal(tag.getName(), meal.getId());
 					}
 				}
@@ -97,6 +97,7 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 				{
 					if(!datasource.getMealRecipes(meal.getId()).contains(recipe))
 					{
+						meal.recipes.add(recipe);
 						datasource.addMealRecipe(meal.getId(), recipe.getId());
 					}
 				}
@@ -177,7 +178,6 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 				newTagText.setHint("New Tag Name");
 				
 				//Add tag to meal
-				meal.tags.add(new Tag(tagText));
 				final Tag tag = datasource.createTag(tagText);
 				addedTags.add(tag);
 				
