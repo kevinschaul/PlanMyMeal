@@ -1,9 +1,11 @@
 package com.csci5115.group2.planmymeal;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
@@ -23,6 +26,7 @@ public class EditRecipeActivity extends Activity
 	public EditRecipeActivity view;
 	public LinearLayout tagContainer;
 	private DataSourceManager datasource;
+	private Typeface fontAwesome;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,8 @@ public class EditRecipeActivity extends Activity
 		datasource = new DataSourceManager(this);
 		datasource.open();
 		
+		this.fontAwesome = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf" );
+		
 		Intent intent = getIntent();
 		long recipeId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
 		
@@ -43,53 +49,28 @@ public class EditRecipeActivity extends Activity
 		EditText recipeNameTextView = (EditText) findViewById(R.id.edit_recipe_recipeName);
 		recipeNameTextView.setText(recipe.getName());
 		
-		// Set up tags
-		tagContainer = (LinearLayout)findViewById(R.id.edit_recipe_tag_container);
 		
-		//Get tags for id
-		
-		for(Tag tag : datasource.getRecipeTags(recipeId))
-		{
-			final RelativeLayout newTagLayout = new RelativeLayout(this);
+		LinearLayout tags_wrapper = (LinearLayout)findViewById(R.id.edit_recipe_tag_container);
+		List<Tag> tags = datasource.getRecipeTags(recipe.getId());
+		for (final Tag tag : tags) {
+			final View tagView = getLayoutInflater().inflate(R.layout.tag, null);
 			
-			// Defining the RelativeLayout layout parameters.
-	        // In this case I want to fill its parent
-	        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-	                RelativeLayout.LayoutParams.MATCH_PARENT,
-	                RelativeLayout.LayoutParams.WRAP_CONTENT);
+			TextView tagName = (TextView) tagView.findViewById(R.id.tag_name);
+			tagName.setText(tag.getName());
 			
-			Button newTag = new Button(this);
-			newTag.setText(tag.getName());
-			newTag.append("              ");
+			Button tagDelete = (Button) tagView.findViewById(R.id.tag_button_delete);
+			tagDelete.setTypeface(fontAwesome);
 			
-			Button deleteTag = new Button(this);
-			deleteTag.setText("X");
-			
-			// Defining the layout parameters of the tag Buttons
-	        RelativeLayout.LayoutParams tagButtonLayout = new RelativeLayout.LayoutParams(
-	                RelativeLayout.LayoutParams.MATCH_PARENT,
-	                RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-	        tagButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-
-			// Defining the layout parameters of the Delete tag Buttons
-	        RelativeLayout.LayoutParams deleteButtonLayout = new RelativeLayout.LayoutParams(
-	                RelativeLayout.LayoutParams.WRAP_CONTENT,
-	                RelativeLayout.LayoutParams.WRAP_CONTENT);
-	        deleteButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-	        //deleteButtonLayout.addRule(RelativeLayout.CENTER_VERTICAL);
-			
-			newTagLayout.addView(newTag, tagButtonLayout);
-			newTagLayout.addView(deleteTag, deleteButtonLayout);
-			tagContainer.addView(newTagLayout);
-			deleteTag.setOnClickListener(new View.OnClickListener() {
-
+			tagDelete.setOnClickListener(new View.OnClickListener() {
+				
 				@Override
 				public void onClick(View v) {
-					newTagLayout.setVisibility(View.GONE);
+					tagView.setVisibility(View.GONE);
+					datasource.deleteRecipeTag(tag, recipe.getId());
 				}
-			}
-			);
+			});
+			
+			tags_wrapper.addView(tagView);
 		}
 		
 		Button addTagButton = (Button) findViewById(R.id.addTagButton);

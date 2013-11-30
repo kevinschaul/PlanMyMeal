@@ -413,7 +413,7 @@ public class DataSourceManager
 	public void deleteRecipeTag(Tag tag, long recipeId)
 	{
 		long id = tag.getId();
-		database.delete(TABLE_MEAL_RECIPE_REL, COLUMN_TAG_ID + " = " + id
+		database.delete(TABLE_RECIPE_TAG_REL, COLUMN_TAG_ID + " = " + id
 				+ " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
 		System.out.println("MealTag deleted with tag id: " + id
 				+ " and meal id: " + recipeId);
