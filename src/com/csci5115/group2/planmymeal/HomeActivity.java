@@ -24,6 +24,7 @@ import com.csci5115.group2.planmymeal.database.DataSourceManager;
 public class HomeActivity extends FragmentActivity implements CookableListFragment.Callbacks, TextWatcher, OnFocusChangeListener {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
+	public final static String EXTRA_RECIPE = "com.csci5115.group2.planmymeal.RECIPE";
 	public final static String BUNDLE_SHOWMEALS = "com.csci5115.group2.planmymeal.BUNDLE_SHOWMEALS";
 	public final static String BUNDLE_SHOWRECIPES = "com.csci5115.group2.planmymeal.BUNDLE_SHOWRECIPES";
 	

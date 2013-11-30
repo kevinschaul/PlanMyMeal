@@ -1,0 +1,129 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".EditRecipeActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/edit_recipe_title" >
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/darker_gray" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/view1"
+            android:layout_weight="1" >
+
+            <EditText
+                android:id="@+id/edit_recipe_recipeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:ems="10"
+                android:text="recipe Title"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/edit_recipe_addTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_recipe_recipeName"
+                android:layout_marginTop="32dp"
+                android:ems="10"
+                android:text="New recipe Tag"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edit_recipe_newTagName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/edit_recipe_addTag"
+                android:layout_below="@+id/edit_recipe_addTag"
+                android:layout_toLeftOf="@+id/addTagButton"
+                android:ems="10"
+                android:hint="New Tag Name" />
+
+            <TextView
+                android:id="@+id/edit_recipeTags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/edit_recipe_newTagName"
+                android:layout_below="@+id/addTagButton"
+                android:text="My recipe Tags"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/edit_recipeTags"
+                android:layout_marginTop="78dp"
+                android:text="Recipes in recipe Name"
+                android:textSize="30sp" />
+
+            <ListView
+                android:id="@+id/edit_recipe_recipes_in_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/edit_recipe_recipeName"
+                android:layout_below="@+id/textView1"
+                android:layout_marginTop="10dp" >
+            </ListView>
+
+            <Button
+                android:id="@+id/addTagButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/edit_recipe_recipeName"
+                android:layout_alignTop="@+id/edit_recipe_newTagName"
+                android:text="Add Tag" />
+
+            <HorizontalScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/addTagButton"
+                android:layout_below="@+id/edit_recipeTags" >
+
+                <LinearLayout
+                    android:id="@+id/edit_recipe_tag_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/edit_recipe_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:text="Edit recipe"
+        android:textSize="40sp" />
+
+</RelativeLayout>

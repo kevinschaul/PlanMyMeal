@@ -1,9 +1,12 @@
 package com.csci5115.group2.planmymeal;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
@@ -32,6 +36,7 @@ public class RecipeDetailFragment extends Fragment {
 	 * The dummy content this fragment is presenting.
 	 */
 	private Recipe recipe;
+	private Typeface fontAwesome;
 	
 	// Databases
 	private DataSourceManager datasource;
@@ -50,6 +55,8 @@ public class RecipeDetailFragment extends Fragment {
 		Context context = this.getActivity().getApplicationContext();
 		datasource = new DataSourceManager(context);
 		datasource.open();
+		
+		this.fontAwesome = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf" );
 		
 		Log.v(HomeActivity.TAG, "onCreate");
 
@@ -78,19 +85,14 @@ public class RecipeDetailFragment extends Fragment {
 		
 		if (recipe != null) {
 			Log.v(HomeActivity.TAG, "Recipe exists");
+			
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_recipe_title);
 			name.setText(recipe.getName());
 			
-			TextView time = (TextView) rootView.findViewById(R.id.fragment_recipe_total_time);
+			TextView time = (TextView) rootView.findViewById(R.id.fragment_recipe_time);
 			time.setText(recipe.getReadableTime());
 			
-			// TODO
-			/*
-			TextView servings = (TextView) rootView.findViewById(R.id.fragment_recipe_number_of_servings);
-			servings.setText(Integer.toString(recipe.getNumServings()));
-			*/
-			
-			Button cook = (Button) rootView.findViewById(R.id.fragment_recipe_button_cook);
+			Button cook = (Button) rootView.findViewById(R.id.fragment_recipe_button_Cook);
 			cook.setOnClickListener(clickListener);
 			
 			Button edit = (Button) rootView.findViewById(R.id.fragment_recipe_button_edit);
@@ -98,6 +100,59 @@ public class RecipeDetailFragment extends Fragment {
 			
 			Button delete = (Button) rootView.findViewById(R.id.fragment_recipe_button_delete);
 			delete.setOnClickListener(clickListener);
+			
+			LinearLayout tags_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_recipe_tags_wrapper);
+			List<Tag> tags = recipe.getTags();
+			for (Tag tag : tags) {
+				View tagView = inflater.inflate(R.layout.tag, null);
+				
+				TextView tagName = (TextView) tagView.findViewById(R.id.tag_name);
+				tagName.setText(tag.getName());
+				
+				Button tagDelete = (Button) tagView.findViewById(R.id.tag_button_delete);
+				tagDelete.setTypeface(fontAwesome);
+				
+				tags_wrapper.addView(tagView);
+			}
+			
+			// TODO Use real ingredients
+			// TODO Include unit and amount
+			// TODO Fix layout to accommodate all fields
+			LinearLayout ingredients_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_recipe_ingredients_wrapper);
+			List<Ingredient> ingredients = recipe.getIngredients();
+			
+			Ingredient i1 = new Ingredient();
+			i1.setName("Apple");
+			i1.setAmount(1);
+			i1.setUnit("whole");
+			ingredients.add(i1);
+			
+			for (Ingredient ingredient : ingredients) {
+				View ingredientView = inflater.inflate(R.layout.ingredient, null);
+				
+				TextView ingredientName = (TextView) ingredientView.findViewById(R.id.ingredient_name);
+				ingredientName.setText(ingredient.getName());
+				
+				ingredients_wrapper.addView(ingredientView);
+			}
+			
+			// TODO ingredient steps
+			LinearLayout steps_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_recipe_steps_wrapper);
+			List<RecipeStep> steps = recipe.getSteps();
+			
+			RecipeStep s1 = new RecipeStep();
+			s1.setInstructions("Slice apples.");
+			steps.add(s1);
+			
+			for (int i = 0; i < steps.size(); i++) {
+				RecipeStep step = steps.get(i);
+				View stepView = inflater.inflate(R.layout.recipe_step, null);
+				
+				TextView stepName = (TextView) stepView.findViewById(R.id.step_instruction);
+				stepName.setText(step.getInstructions());
+				
+				steps_wrapper.addView(stepView);
+			}
 			
 		} else {
 			Log.v(HomeActivity.TAG, "Recipe does not exist.");
@@ -134,7 +189,7 @@ public class RecipeDetailFragment extends Fragment {
 		    		startActivity(intent);
 		    		*/
 		    		break;
-		        case R.id.fragment_recipe_button_cook:
+		        case R.id.fragment_recipe_button_Cook:
 		    		intent = new Intent(context, CookActivity.class);
 		    		intent.putExtra(HomeActivity.EXTRA_MEAL, recipe.getId());
 		    		startActivity(intent);
