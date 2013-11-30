@@ -160,6 +160,7 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 				String tagText = newTagText.getText().toString();
 				newTagText.setText("");
 				newTagText.setHint("New Tag Name");
+				
 				//Add tag to meal
 				meal.tags.add(new Tag(tagText));
 				final Tag tag = datasource.createTag(tagText);
