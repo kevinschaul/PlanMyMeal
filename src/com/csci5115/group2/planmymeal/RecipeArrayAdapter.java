@@ -67,7 +67,6 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe>
 	
 	public class RowAddRecipeToMealListener implements OnClickListener {
 		Recipe recipe;
-		Meal meal;
 		
 		public RowAddRecipeToMealListener(Recipe recipe){
 			this.recipe = recipe;
@@ -78,16 +77,9 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe>
 
 			if(((CheckBox) v).isChecked())
 			{		
-				if((datasource.getMealRecipes(meal.getId())).contains(recipe))
-				{
-					//do nothing
-				}
-				else
-				{
 					//TODO: add to recipe list
 					recipeDetailArrayAdapter.add(recipe);
 					recipeDetailArrayAdapter.notifyDataSetChanged();
-				}
 			}
 			else
 			{

@@ -5,7 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -43,8 +45,9 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 	private DataSourceManager datasource;
 	private RecipeArrayAdapter recipeAdapter; 
 	private Typeface fontAwesome;
-	public List<Tag> addedTags = new ArrayList<Tag>();
-	public List<Recipe> addedRecipes = new ArrayList<Recipe>();
+	private List<Tag> addedTags = new ArrayList<Tag>();
+	private List<Recipe> addedRecipes = new ArrayList<Recipe>();
+	private	Meal newMeal =null;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -63,7 +66,7 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 		newMealNameView.setHint("New Meal Name");
 		
 		final EditText newMealTimeView = (EditText) findViewById(R.id.new_meal_mealTime);
-		newMealTimeView.setHint("Meal Time ex) hr.min");
+		newMealTimeView.setHint("Meal Time (in minutes)");
 		
 		final EditText newMealDescriptionView = (EditText) findViewById(R.id.new_meal_mealDescription);
 		newMealDescriptionView.setHint("Meal Decription");
@@ -80,27 +83,43 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 				String mealDescriptionText = newMealDescriptionView.getText().toString();
 				Double mealTimeDouble = Double.parseDouble(mealTimeText);
 				
-				Meal meal = datasource.createNewUserMeal(mealNameText, mealTimeDouble, mealDescriptionText);//NOt working
-				//notifyDataSetChanged:not sure how to do this for prev page
+				if(newMeal == null)
+				{
+					newMeal = datasource.createNewUserMeal(mealNameText, mealTimeDouble, mealDescriptionText);
+					//notifyDataSetChanged:not sure how to do this for prev page
+				}
+				else{
+					// Update meal if anything has changed
+				}
 				
 				//TODO: save added Tags
 				for(Tag tag : addedTags)
 				{
-					if(!datasource.getMealTags(meal.getId()).contains(tag))
+					if(!datasource.getMealTags(newMeal.getId()).contains(tag))
 					{
-						meal.tags.add(new Tag(tag.getName()));
-						datasource.addTagToMeal(tag.getName(), meal.getId());
+						newMeal.tags.add(new Tag(tag.getName()));
+						datasource.addTagToMeal(tag.getName(), newMeal.getId());
 					}
 				}
 				//TODO: save added Recipes
 				for(Recipe recipe : addedRecipes)
 				{
-					if(!datasource.getMealRecipes(meal.getId()).contains(recipe))
+					if(!datasource.getMealRecipes(newMeal.getId()).contains(recipe))
 					{
-						meal.recipes.add(recipe);
-						datasource.addMealRecipe(meal.getId(), recipe.getId());
+						newMeal.recipes.add(recipe);
+						datasource.addMealRecipe(newMeal.getId(), recipe.getId());
 					}
 				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setTitle("Meal Saved");
+				builder.setMessage("Meal: " + newMeal.getName() +" Saved");
+				builder.setNeutralButton("Okay",  new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {   
+						//add meal
+					}
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
 			}
 		}
 		);
