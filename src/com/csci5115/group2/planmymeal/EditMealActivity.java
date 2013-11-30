@@ -6,20 +6,28 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.csci5115.group2.planmymeal.MealTagArrayAdapter.RemoveTagFromMealListener;
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 public class EditMealActivity extends Activity implements TextWatcher, OnFocusChangeListener{
@@ -30,11 +38,12 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 	public final static String BUNDLE_SHOWRECIPES = "com.csci5115.group2.planmymeal.BUNDLE_SHOWRECIPES";
 	
 	public Meal meal;
-	public EditMealActivity view;
+	public View view;
 	public Context context;
 	public LinearLayout tagContainer;
 	private DataSourceManager datasource;
 	private RecipeArrayAdapter recipeAdapter; 
+	private Typeface fontAwesome;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,61 +109,41 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 		EditText search = (EditText) findViewById(R.id.edit_meal_search);
 		search.addTextChangedListener(this);
 		search.setOnFocusChangeListener(this);
-		
-		
-			
+				
 		// Set up tags
 		tagContainer = (LinearLayout)findViewById(R.id.edit_meal_tag_container);
 		
 		//Get tags for id
-		
-		for(final Tag tag : datasource.getMealTags(mealId))
-		{
-			final RelativeLayout newTagLayout = new RelativeLayout(this);
+	    
+		for(final Tag tag : datasource.getMealTags(meal.getId()))
+		{			    
+			final View tagHolder = getLayoutInflater().inflate(R.layout.tag, null);
 			
-			// Defining the RelativeLayout layout parameters.			
-			Button newTag = new Button(this);
-			newTag.setText(tag.getName());
-			newTag.append("              ");
-
-			Button deleteTag = new Button(this);
-			deleteTag.setText("X");
+		    TextView tagName = (TextView) tagHolder.findViewById(R.id.tag_name);
+			tagName.setText(tag.getName());
+	    
+			Button tagDelete = (Button) tagHolder.findViewById(R.id.tag_button_delete);
+			tagDelete.setTypeface(fontAwesome);
 			
-			// Defining the layout parameters of the tag Buttons
-	        RelativeLayout.LayoutParams tagButtonLayout = new RelativeLayout.LayoutParams(
-	                RelativeLayout.LayoutParams.MATCH_PARENT,
-	                RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-	        tagButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-
-			// Defining the layout parameters of the Delete tag Buttons
-	        RelativeLayout.LayoutParams deleteButtonLayout = new RelativeLayout.LayoutParams(
-	                RelativeLayout.LayoutParams.WRAP_CONTENT,
-	                RelativeLayout.LayoutParams.WRAP_CONTENT);
-	        deleteButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			
-			newTagLayout.addView(newTag, tagButtonLayout);
-			newTagLayout.addView(deleteTag, deleteButtonLayout);
-			tagContainer.addView(newTagLayout);
-			deleteTag.setOnClickListener(new View.OnClickListener() {
-
+			tagDelete.setOnClickListener(new View.OnClickListener() {
+				
 				@Override
 				public void onClick(View v) {
-					newTagLayout.setVisibility(View.GONE);
+					tagHolder.setVisibility(View.GONE);
 					datasource.deleteMealTag(tag, meal.getId());
 				}
-			}
-			);
+			});
+
+			tagContainer.addView(tagHolder);
 		}
 		
 		Button addTagButton = (Button) findViewById(R.id.addTagButton);
 		addTagButton.setOnClickListener(new View.OnClickListener() {
 			
-
 			@Override
 			public void onClick(View v)
 			{
-				final RelativeLayout newTagLayout = new RelativeLayout(context); 
+				final View tagHolder = getLayoutInflater().inflate(R.layout.tag, null);
 				
 				EditText newTagText = (EditText) findViewById(R.id.edit_meal_newTagName);
 				String tagText = newTagText.getText().toString();
@@ -166,40 +155,22 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 				final Tag tag = datasource.createTag(tagText);
 				datasource.addTagToMeal(tagText, meal.getId());
 				
-		        Button newTag = new Button(context);
-				newTag.setText(tagText);
-				newTag.append("              ");
+			    TextView tagName = (TextView) tagHolder.findViewById(R.id.tag_name);
+				tagName.setText(tag.getName());
+		    
+				Button tagDelete = (Button) tagHolder.findViewById(R.id.tag_button_delete);
+				tagDelete.setTypeface(fontAwesome);
 				
-				
-				Button deleteTag = new Button(context);
-				deleteTag.setText("X");
-				
-				// Defining the layout parameters of the tag Buttons
-		        RelativeLayout.LayoutParams tagButtonLayout = new RelativeLayout.LayoutParams(
-		                RelativeLayout.LayoutParams.MATCH_PARENT,
-		                RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-		        tagButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-
-				// Defining the layout parameters of the Delete tag Buttons
-		        RelativeLayout.LayoutParams deleteButtonLayout = new RelativeLayout.LayoutParams(
-		                RelativeLayout.LayoutParams.WRAP_CONTENT,
-		                RelativeLayout.LayoutParams.WRAP_CONTENT);
-		        deleteButtonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-				
-				newTagLayout.addView(newTag, tagButtonLayout);
-				newTagLayout.addView(deleteTag, deleteButtonLayout);
-				tagContainer.addView(newTagLayout);
-				deleteTag.setOnClickListener(new View.OnClickListener() {
-
+				tagDelete.setOnClickListener(new View.OnClickListener() {
+					
 					@Override
 					public void onClick(View v) {
-						newTagLayout.setVisibility(View.GONE);
+						tagHolder.setVisibility(View.GONE);
 						datasource.deleteMealTag(tag, meal.getId());
-						
 					}
-				}
-				);
+				});
+
+				tagContainer.addView(tagHolder);
 			}
 		}
 		);
@@ -242,5 +213,5 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
 	}
-
+	
 }
