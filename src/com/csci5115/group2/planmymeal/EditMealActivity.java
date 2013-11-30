@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -30,9 +31,10 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 	
 	public Meal meal;
 	public EditMealActivity view;
+	public Context context;
 	public LinearLayout tagContainer;
 	private DataSourceManager datasource;
-	RecipeArrayAdapter recipeAdapter; 
+	private RecipeArrayAdapter recipeAdapter; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +49,25 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 		Intent intent = getIntent();
 		long mealId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
 		meal = datasource.getMealById(mealId);
+		context = this;
 		
 		EditText editMealNameView = (EditText) findViewById(R.id.edit_meal_mealName);
 		editMealNameView.setText(meal.getName());
 		//TODO: Have Meal Name actually change
+		Button saveButton = (Button) findViewById(R.id.edit_meal_save_button);
+		saveButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v)
+			{
+				//TODO: save new name of meal
+				EditText nameText = (EditText) findViewById(R.id.edit_meal_mealName);
+				String mealNameText = nameText.getText().toString();
+				datasource.renameMeal(meal.getId(), mealNameText);//NOt working
+				//notifyDataSetChanged:not sure how to do this for prev page
+				finish();
+			}
+		}
+		);
 		        
 		// Set up recipes in meal list
 		LinkedList<Recipe> recipes = (LinkedList<Recipe>) datasource.getMealRecipes(meal.getId());
@@ -137,22 +154,23 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 			@Override
 			public void onClick(View v)
 			{
+				final RelativeLayout newTagLayout = new RelativeLayout(context); 
+				
 				EditText newTagText = (EditText) findViewById(R.id.edit_meal_newTagName);
 				String tagText = newTagText.getText().toString();
+				newTagText.setText("");
+				newTagText.setHint("New Tag Name");
 				//Add tag to meal
 				meal.tags.add(new Tag(tagText));
 				final Tag tag = datasource.createTag(tagText);
 				datasource.addTagToMeal(tagText, meal.getId());
-				newTagText.clearComposingText();
 				
-				final RelativeLayout newTagLayout = new RelativeLayout(view);
-								
-		        Button newTag = new Button(view);
+		        Button newTag = new Button(context);
 				newTag.setText(tagText);
 				newTag.append("              ");
 				
 				
-				Button deleteTag = new Button(view);
+				Button deleteTag = new Button(context);
 				deleteTag.setText("X");
 				
 				// Defining the layout parameters of the tag Buttons

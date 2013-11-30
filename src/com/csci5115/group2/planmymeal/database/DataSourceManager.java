@@ -347,6 +347,21 @@ public class DataSourceManager
 		cursor.close();
 		return meal;
 	}
+	
+	public Meal renameMeal(long mealId, String newName)
+	{
+		Meal meal = new Meal();
+		
+		Cursor cursor = database.query(TABLE_MEAL, allMealColumns, COLUMN_ID
+				+ " = " + mealId, null, null, null, null);
+		
+		cursor.moveToFirst();
+		meal = cursorToMeal(cursor);
+		meal.setName(newName);
+		
+		return meal;
+		
+	}
 
 	private Meal cursorToMeal(Cursor cursor)
 	{
