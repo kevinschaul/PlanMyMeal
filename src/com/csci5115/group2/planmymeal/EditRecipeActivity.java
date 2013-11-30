@@ -36,7 +36,7 @@ public class EditRecipeActivity extends Activity
 		datasource.open();
 		
 		Intent intent = getIntent();
-		long recipeId = intent.getLongExtra(HomeActivity.EXTRA_RECIPE, 0);
+		long recipeId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
 		
 		recipe = datasource.getRecipeById(recipeId);
 		
@@ -61,8 +61,6 @@ public class EditRecipeActivity extends Activity
 			Button newTag = new Button(this);
 			newTag.setText(tag.getName());
 			newTag.append("              ");
-			
-
 			
 			Button deleteTag = new Button(this);
 			deleteTag.setText("X");

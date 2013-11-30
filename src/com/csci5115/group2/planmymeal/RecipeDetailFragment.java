@@ -183,11 +183,9 @@ public class RecipeDetailFragment extends Fragment {
 					dialog.show();
 		    		break;
 		        case R.id.fragment_recipe_button_edit:
-		        	/*
 		    		intent = new Intent(context, EditRecipeActivity.class);
 		    		intent.putExtra(HomeActivity.EXTRA_MEAL, recipe.getId());
 		    		startActivity(intent);
-		    		*/
 		    		break;
 		        case R.id.fragment_recipe_button_Cook:
 		    		intent = new Intent(context, CookActivity.class);

@@ -40,6 +40,11 @@
             android:parentActivityName="com.csci5115.group2.planmymeal.HomeActivity" >
         </activity>
         <activity
+            android:name="com.csci5115.group2.planmymeal.EditRecipeActivity"
+            android:label="@string/title_activity_edit_recipe"
+            android:parentActivityName="com.csci5115.group2.planmymeal.HomeActivity" >
+        </activity>
+        <activity
             android:name="com.csci5115.group2.planmymeal.CommunityCookbookActivity"
             android:label="@string/title_activity_community_cookbook" >
         </activity>

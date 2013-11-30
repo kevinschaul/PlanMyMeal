@@ -13,6 +13,7 @@
     <string name="icon_recipe">&#xf022;</string>
     <string name="title_activity_cook">CookActivity</string>
     <string name="title_activity_edit_meal">EditMealActivity</string>
+    <string name="title_activity_edit_recipe">Edit Recipe</string>
     <string name="title_activity_community_cookbook">CommunityCookbookActivity</string>
 
     <string name="action_community_cookbook">Community Cookbook</string>

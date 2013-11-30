@@ -77,46 +77,38 @@
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/edit_recipe_scrollView" >
-                <LinearLayout
+
+                <LinearLayout
                     android:id="@+id/edit_recipe_details_container"
                     android:layout_width="498dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="322dp"
                     android:orientation="vertical" >
                
             <TextView
                 android:id="@+id/edit_recipe_ingredientsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:text="Ingredients"
                 android:textSize="30sp" />
-            <ListView
-                android:id="@+id/edit_recipe_ingredientsList"
-                android:layout_width="351dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/edit_recipe_detailsScrollView" >
-            </ListView>
+            <LinearLayout
+                    android:id="@+id/edit_recipe_ingredientsList"
+                    android:layout_width="498dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
             
              <TextView
                 android:id="@+id/edit_recipe_directionsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/edit_recipe_ingredientsList"
                 android:text="Directions"
                 android:textSize="30sp" />
 
-            <ListView
-                android:id="@+id/edit_recipe_directionsList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignRight="@+id/edit_recipe_recipeName"
-                android:layout_below="@+id/edit_recipe_directionsTitle" >
+             <LinearLayout
+                    android:id="@+id/edit_recipe_directionsList"
+                    android:layout_width="498dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
 
-            </ListView>
              </LinearLayout>
              </ScrollView>
 
