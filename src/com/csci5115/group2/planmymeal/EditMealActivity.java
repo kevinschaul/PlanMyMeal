@@ -40,7 +40,7 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 	public Context context;
 	public LinearLayout tagContainer;
 	private DataSourceManager datasource;
-	private RecipeArrayAdapter recipeAdapter; 
+	private MealRecipesArrayAdapter recipeAdapter; 
 	private Typeface fontAwesome;
 
 	@Override
@@ -80,14 +80,14 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 		// Set up recipes in meal list
 		LinkedList<Recipe> recipes = (LinkedList<Recipe>) datasource.getMealRecipes(meal.getId());
 						
-		RecipeDetailArrayAdapter mealRecipesAdapter = new RecipeDetailArrayAdapter(this, recipes);
+		MealRecipeDetailArrayAdapter mealRecipesAdapter = new MealRecipeDetailArrayAdapter(this, recipes);
 		ListView mealListView = (ListView) findViewById(R.id.edit_meal_recipes_in_meal);
 		mealListView.setAdapter(mealRecipesAdapter);
 
 		// Set up all user recipes
 		List<Recipe> allUserRecipesList = datasource.getAllRecipes();
 				
-		recipeAdapter = new RecipeArrayAdapter(this, allUserRecipesList, meal, mealRecipesAdapter);
+		recipeAdapter = new MealRecipesArrayAdapter(this, allUserRecipesList, meal, mealRecipesAdapter);
 		ListView allUserListView = (ListView) findViewById(R.id.edit_meal_all_recipes);
 		allUserListView.setAdapter(recipeAdapter);
 				

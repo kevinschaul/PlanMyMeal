@@ -27,17 +27,15 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe>
 {
 	private final Context context;
 	private final List<Recipe> recipeValues;
-	private final Meal meal;
 	private DataSourceManager datasource;
 	private RecipeDetailArrayAdapter recipeDetailArrayAdapter;
 	private Filter filter;
 	private List<Cookable> allCookables;
 
-	public RecipeArrayAdapter(Context context, List<Recipe> allUserRecipes, Meal currentMeal, RecipeDetailArrayAdapter recipeDetailAdapter) {
+	public RecipeArrayAdapter(Context context, List<Recipe> allUserRecipes, RecipeDetailArrayAdapter recipeDetailAdapter) {
 		super(context, R.layout.row_recipe, allUserRecipes);
 		this.context = context;
 		this.recipeValues = allUserRecipes;
-		this.meal = currentMeal;
 		this.recipeDetailArrayAdapter = recipeDetailAdapter;
 		this.allCookables = new LinkedList<Cookable>();
 		this.allCookables.addAll(this.recipeValues);
@@ -62,7 +60,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe>
 	    recipeTime.setText(recipe.getReadableTime());
 	    
 		CheckBox addRecipeToMeal = (CheckBox) rowView.findViewById(R.id.add_recipe_to_meal);
-		addRecipeToMeal.setOnClickListener(new RowAddRecipeToMealListener(recipe, meal));		
+		addRecipeToMeal.setOnClickListener(new RowAddRecipeToMealListener(recipe));		
 
 	    return rowView;
 	}
@@ -71,9 +69,8 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe>
 		Recipe recipe;
 		Meal meal;
 		
-		public RowAddRecipeToMealListener(Recipe recipe, Meal currentMeal) {
+		public RowAddRecipeToMealListener(Recipe recipel) {
 			this.recipe = recipe;
-			this.meal = currentMeal;
 		}
 
 		@Override
@@ -87,14 +84,14 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe>
 				}
 				else
 				{
-					datasource.addMealRecipe(meal.getId(), recipe.getId());
+					//TODO: add to recipe list
 					recipeDetailArrayAdapter.add(recipe);
 					recipeDetailArrayAdapter.notifyDataSetChanged();
 				}
 			}
 			else
 			{
-				datasource.deleteMealRecipe(meal.getId(), recipe.getId());
+				//TODO:remove from recipe list
 				recipeDetailArrayAdapter.remove(recipe);
 				recipeDetailArrayAdapter.notifyDataSetChanged();
 			}
