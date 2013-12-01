@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CommunityCookbookActivity"
-    android:focusableInTouchMode="true" >
+    android:focusableInTouchMode="true"
+    android:padding="8dp" >
     
     <TextView
         android:id="@+id/Comm_Cookbook_textTitle"
@@ -26,8 +27,7 @@
         android:baselineAligned="false"
         android:showDividers="middle"
         android:divider="?android:attr/dividerHorizontal"
-        android:layout_marginLeft="16dp"
-		android:layout_marginRight="16dp" >
+         >
 	
 	    <LinearLayout
 	        android:id="@+id/CC_column_0"
@@ -35,15 +35,14 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="6"
 	        android:orientation="vertical"
-	        android:layout_marginLeft="16dp"
-		    android:layout_marginRight="16dp"
+	        android:padding="8dp"
 		    android:animateLayoutChanges="true" >
 	
-		    <AutoCompleteTextView
+		    <EditText
 		        android:id="@+id/CC_search"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:hint="Search by title, tags or ingredients"
+		        android:hint="Filter by title, tags or ingredients"
 		        android:imeOptions="actionSearch"
 		        android:inputType="text" />
 	
@@ -58,6 +57,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:checked="true"
 			        android:text="Meals" />
 			
 			    <CheckBox
@@ -65,6 +65,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:checked="true"
 			        android:text="Recipes" />
 		    </LinearLayout>
 
@@ -74,7 +75,9 @@
 		        android:name="com.csci5115.group2.planmymeal.CCListFragment" 
 		        android:layout_width="fill_parent"
 		        android:layout_height="fill_parent"
-		        tools:layout="@android:layout/list_content" />
+		       
+		       />
+		    <!--  tools:layout="@android:layout/list_content" --> 
 
 	    </LinearLayout>
 	
@@ -85,8 +88,8 @@
 		    android:baselineAligned="false"
 		    android:orientation="horizontal"
 		    android:layout_weight="0"
-		    android:layout_marginLeft="16dp"
-		    android:layout_marginRight="16dp"
+		    android:visibility="gone"
+		    android:padding="8dp"
 		    android:animateLayoutChanges="true" >
 
 		    <FrameLayout
@@ -103,8 +106,8 @@
 		    android:baselineAligned="false"
 		    android:orientation="horizontal"
 		    android:layout_weight="0"
-		    android:layout_marginLeft="16dp"
-		    android:layout_marginRight="16dp"
+		    android:visibility="gone"
+		    android:padding="8dp"
 		    android:animateLayoutChanges="true" >
 
 		    <FrameLayout

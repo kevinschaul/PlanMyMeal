@@ -1,32 +1,34 @@
 package com.csci5115.group2.planmymeal;
 
-import android.content.Context;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 // Samantha Oyen: This used to implement OnClickListener... had to take out.
-public class CommunityCookbookActivity extends FragmentActivity implements OnEditorActionListener, CCListFragment.Callbacks {
+public class CommunityCookbookActivity extends FragmentActivity implements CookableListFragment.Callbacks, TextWatcher, OnFocusChangeListener {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
-	
+	public final static String EXTRA_RECIPE = "com.csci5115.group2.planmymeal.RECIPE";
+	public final static String BUNDLE_SHOWMEALS = "com.csci5115.group2.planmymeal.BUNDLE_SHOWMEALS";
+	public final static String BUNDLE_SHOWRECIPES = "com.csci5115.group2.planmymeal.BUNDLE_SHOWRECIPES";
 	public final static String TAG = "CommunityCookbookActivity";
 	
+	private ArrayAdapter<Cookable> adapter;
 	// Databases
 	private DataSourceManager datasource;
 	
@@ -38,21 +40,47 @@ public class CommunityCookbookActivity extends FragmentActivity implements OnEdi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_cookbook); ////////////////////// Was activity_home
-        
+        setTitle("Community Cookbook");
         // Database Creation
         datasource = new DataSourceManager(this);
         datasource.open();
         
         // List items should be given the 'activated' state when touched.
- 		((CCListFragment) getSupportFragmentManager().findFragmentById(
+ 		/*((CCListFragment) getSupportFragmentManager().findFragmentById(
  				R.id.CC_cookable_list)).setActivateOnItemClick(true);     ///////// change?
+*/        
+        CCListFragment fragment = (CCListFragment) getSupportFragmentManager().findFragmentById(
+ 				R.id.CC_cookable_list);
+        fragment.setActivateOnItemClick(true);
+        adapter = (ArrayAdapter<Cookable>) fragment.getListAdapter();
         
         // Register text listener
-		AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.CC_search);  /// was home_search
+		/*AutoCompleteTextView search = (AutoCompleteTextView) findViewById(R.id.CC_search);  /// was home_search
 		String[] tags = getResources().getStringArray(R.array.tags_array);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags);
 		search.setAdapter(adapter);
-		search.setOnEditorActionListener(this);
+		search.setOnEditorActionListener(this);*/
+        
+        List<Tag> tags = datasource.getAllTags();
+        List<Meal> meals = datasource.getAllUserMeals();
+        List<Recipe> recipes = datasource.getAllUserRecipes();
+        
+        String[] autocompleteStrings = new String[tags.size() + meals.size() + recipes.size()];
+        int i = 0;
+        int j = 0;
+        for (j = 0; j < meals.size(); i++, j++) {
+        	autocompleteStrings[i] = meals.get(j).getName();
+        }
+        for (j = 0; j < recipes.size(); i++, j++) {
+        	autocompleteStrings[i] = recipes.get(j).getName();
+        }
+        for (j = 0; j < tags.size(); i++, j++) {
+        	autocompleteStrings[i] = tags.get(j).getName();
+        }
+        
+		EditText search = (EditText) findViewById(R.id.CC_search);
+		search.addTextChangedListener(this);
+		search.setOnFocusChangeListener(this);
 		
 		CommColumn0 = (LinearLayout) findViewById(R.id.CC_column_0); ///////// in xml???
 		CommColumn1 = (LinearLayout) findViewById(R.id.CC_column_1);
@@ -88,7 +116,7 @@ public class CommunityCookbookActivity extends FragmentActivity implements OnEdi
 	    }
 	}
 	
-	@Override
+	/*@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		boolean handled = false;
 		Log.i("onEditorAction()", Integer.toString(actionId));
@@ -102,7 +130,7 @@ public class CommunityCookbookActivity extends FragmentActivity implements OnEdi
 		}
 		
 		return handled;
-	}
+	}*/
 	
 	@Override
 	public void onItemSelected(String type, long id) {
@@ -157,7 +185,9 @@ public class CommunityCookbookActivity extends FragmentActivity implements OnEdi
 		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
 		        	CommColumn0.setLayoutParams(params0);
 		        	CommColumn1.setLayoutParams(params1);
+		        	CommColumn1.setVisibility(View.GONE);
 		        	CommColumn2.setLayoutParams(params2);
+		        	CommColumn2.setVisibility(View.GONE);
 		            break;
 		        case 2:
 		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
@@ -165,7 +195,9 @@ public class CommunityCookbookActivity extends FragmentActivity implements OnEdi
 		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0);
 		        	CommColumn0.setLayoutParams(params0);
 		        	CommColumn1.setLayoutParams(params1);
+		        	CommColumn1.setVisibility(View.VISIBLE);
 		        	CommColumn2.setLayoutParams(params2);
+		        	CommColumn2.setVisibility(View.GONE);
 		        	break;
 		        case 3:
 		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
@@ -173,13 +205,40 @@ public class CommunityCookbookActivity extends FragmentActivity implements OnEdi
 		        	params2 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
 		        	CommColumn0.setLayoutParams(params0);
 		        	CommColumn1.setLayoutParams(params1);
+		        	CommColumn1.setVisibility(View.VISIBLE);
 		        	CommColumn2.setLayoutParams(params2);
+		        	CommColumn2.setVisibility(View.VISIBLE);
 		        	break;
 		        default:
 		            break;
 			  }
 		  }
 	  }
+	  
+	  @Override
+		public void afterTextChanged(Editable arg0) {
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			adapter.getFilter().filter(s);
+		}
+
+		@Override
+		public void onFocusChange(View v, boolean hasFocus) {
+			switch(v.getId()) {
+			case R.id.CC_search:
+				if (hasFocus) {
+					showColumns(1);
+				}
+				break;
+			}
+		}
 }
 
 
