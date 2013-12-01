@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:padding="6dip"
+    android:background="@drawable/cookable_selector" >
     
     <TextView
         android:id="@+id/row_recipe_detail_array_recipeType"
