@@ -33,8 +33,12 @@ public class EditRecipeActivity extends Activity
 	public Recipe recipe;
 	public EditRecipeActivity view;
 	public LinearLayout tags_wrapper;
+	public LinearLayout ingredients_wrapper;
 	private DataSourceManager datasource;
 	private Typeface fontAwesome;
+	private boolean newIngredient = true;
+	private long currentIngredientId = 0;
+	private View currentIngredientView = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -144,31 +148,70 @@ public class EditRecipeActivity extends Activity
 		});
 
 		// Set up Ingredients List
-		LinearLayout ingredients_wrapper = (LinearLayout) findViewById(R.id.edit_recipe_ingredientsList);
+		ingredients_wrapper = (LinearLayout) findViewById(R.id.edit_recipe_ingredientsList);
 		List<Ingredient> ingredients = datasource.getRecipeIngredients(recipe
 				.getId());
 
-		for (Ingredient ingredient : ingredients)
+		for (final Ingredient ingredient : ingredients)
 		{
-			View ingredientView = getLayoutInflater().inflate(
-					R.layout.ingredient, null);
+			final View ingredientView = getLayoutInflater().inflate(
+					R.layout.row_edit_ingredient, null);
 
-			TextView ingredientName = (TextView) ingredientView
-					.findViewById(R.id.ingredient_name);
-			ingredientName.setText(ingredient.getName());
+				TextView ingredientName = (TextView) ingredientView.findViewById(R.id.row_edit_ingredient_name) ;
+			    ingredientName.setText(ingredient.getName());
+				
+				Button editButton = (Button) ingredientView.findViewById(R.id.row_edit_ingredient_buttonEdit);
+				editButton.setTypeface(fontAwesome);
+				editButton.setOnClickListener(new View.OnClickListener()
+				{
+
+					@Override
+					public void onClick(View v)
+					{
+						// Populate ingredient shtuff
+						((EditText) findViewById(R.id.edit_recipe_ingredient_name))
+						.setText(ingredient.getName());
+						((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
+						.setText(Long.toString(ingredient.getAmount()));
+						((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
+						.setText(ingredient.getUnit());
+						newIngredient = false;
+						currentIngredientId = ingredient.getId();
+						currentIngredientView = ingredientView;
+					}
+				});
+				
+				Button deleteButton = (Button) ingredientView.findViewById(R.id.row_edit_ingredient_buttonDelete);
+				deleteButton.setTypeface(fontAwesome);
+				deleteButton.setOnClickListener(new View.OnClickListener()
+				{
+
+					@Override
+					public void onClick(View v)
+					{
+						ingredientView.setVisibility(View.GONE);
+						datasource.deleteRecipeIngredient(ingredient, recipe.getId());
+						if(ingredient.getId() == currentIngredientId)
+						{
+							newIngredient = true;
+							currentIngredientId = 0;
+							currentIngredientView = null;
+						}
+					}
+				});
 
 			ingredients_wrapper.addView(ingredientView);
 		}
 
-		// Add ingredient Button
+		// Save ingredient Button
 		Button saveIngredient = (Button) findViewById(R.id.edit_recipe_ingredient_save);
 		saveIngredient.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				// Check if valid
-
+				// TODO: Check if valid
+				
 				// Hide keyboard
 				InputMethodManager imm = (InputMethodManager)getSystemService(
 					      Context.INPUT_METHOD_SERVICE);
@@ -176,22 +219,40 @@ public class EditRecipeActivity extends Activity
 			    InputMethodManager.HIDE_NOT_ALWAYS);
 				
 				// Save state
-				String iName = ((EditText) findViewById(R.id.edit_recipe_ingredient_name))
+				final String iName = ((EditText) findViewById(R.id.edit_recipe_ingredient_name))
 						.getText().toString();
-				String iAmount = ((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
+				final String iAmount = ((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
 						.getText().toString();
-				String iUnit = ((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
+				final String iUnit = ((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
 						.getText().toString();
 				long amountLong = Long.parseLong(iAmount);
 				long recipeId = recipe.getId();
+				final Ingredient addedOrUpdatedIngredient;
 				// Save to db
-				datasource.addIngredientToRecipe(iName, amountLong, iUnit,
-						recipeId);
-
-				// Toastr popup for user feedback
-				Toast toast = Toast.makeText(getBaseContext(),
-						"New Ingredient Saved", Toast.LENGTH_SHORT);
-				toast.show();
+				if(newIngredient)
+				{
+					addedOrUpdatedIngredient = datasource.addIngredientToRecipe(iName, amountLong, iUnit,
+							recipeId);
+					newIngredient = true;
+					currentIngredientId = 0;
+					currentIngredientView = null;
+					Toast toast = Toast.makeText(getBaseContext(),
+							"New Ingredient Saved", Toast.LENGTH_SHORT);
+					toast.show();
+				}
+				else
+				{
+					addedOrUpdatedIngredient = datasource.updateRecipeIngredient(currentIngredientId, iName, amountLong, iUnit,
+							recipeId);
+					currentIngredientView.setVisibility(View.GONE);
+					newIngredient = true;
+					currentIngredientId = 0;
+					currentIngredientView = null;
+					Toast toast = Toast.makeText(getBaseContext(),
+							"Ingredient Updated", Toast.LENGTH_SHORT);
+					toast.show();
+				}
+				
 				// Clear data
 				((EditText) findViewById(R.id.edit_recipe_ingredient_name))
 						.setText("");
@@ -200,10 +261,57 @@ public class EditRecipeActivity extends Activity
 				((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
 						.setText("");
 
+
+				final View ingredientView = getLayoutInflater().inflate(
+					R.layout.row_edit_ingredient, null);
+
+				TextView ingredientName = (TextView) ingredientView.findViewById(R.id.row_edit_ingredient_name) ;
+			    ingredientName.setText(iName);
+				
+				Button editButton = (Button) ingredientView.findViewById(R.id.row_edit_ingredient_buttonEdit);
+				editButton.setTypeface(fontAwesome);
+				editButton.setOnClickListener(new View.OnClickListener()
+				{
+
+					@Override
+					public void onClick(View v)
+					{
+						// Populate ingredient shtuff
+						((EditText) findViewById(R.id.edit_recipe_ingredient_name))
+						.setText(iName);
+						((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
+						.setText(iAmount);
+						((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
+						.setText(iUnit);
+						newIngredient = false;
+						currentIngredientId = addedOrUpdatedIngredient.getId();
+						currentIngredientView = ingredientView;
+					}
+				});
+				
+				Button deleteButton = (Button) ingredientView.findViewById(R.id.row_edit_ingredient_buttonDelete);
+				deleteButton.setTypeface(fontAwesome);
+				deleteButton.setOnClickListener(new View.OnClickListener()
+				{
+
+					@Override
+					public void onClick(View v)
+					{
+						ingredientView.setVisibility(View.GONE);
+						datasource.deleteRecipeIngredient(addedOrUpdatedIngredient, recipe.getId());
+						if(addedOrUpdatedIngredient.getId() == currentIngredientId)
+						{
+							newIngredient = true;
+							currentIngredientId = 0;
+							currentIngredientView = null;
+						}
+					}
+				});
+			ingredients_wrapper.addView(ingredientView);
 			}
 		});
 
-		// Set save step button.
+		// Save step button.
 		Button saveStep = (Button) findViewById(R.id.edit_recipe_step_save);
 		saveStep.setOnClickListener(new View.OnClickListener()
 		{

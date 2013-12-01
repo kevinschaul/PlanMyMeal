@@ -813,6 +813,14 @@ public class DataSourceManager
 				return newIngredient;
 	}
 	
+	public void deleteRecipeIngredient(Ingredient i, long recipeId)
+	{
+		long id = i.getId();
+		database.delete(TABLE_RECIPE_INGREDIENT_REL, COLUMN_INGREDIENT_ID + " = " + id
+				+ " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
+		System.out.println("Recipe Ingredient " + i.getName() + " deleted from recipe with id: " + recipeId);
+	}
+	
 	public Ingredient getIngredientById(long id)
 	{
 		Cursor cursor = database.query(TABLE_INGREDIENT,

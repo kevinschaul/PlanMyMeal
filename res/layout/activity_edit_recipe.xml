@@ -147,13 +147,6 @@
                             android:orientation="vertical" >
                         </LinearLayout>
 
-                        <Button
-                            android:id="@+id/edit_recipe_addIngredientButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Add New Ingredient" />
-
                         <TextView
                             android:id="@+id/edit_recipe_directionsTitle"
                             android:layout_width="wrap_content"
@@ -168,12 +161,6 @@
                             android:orientation="vertical" >
                         </LinearLayout>
 
-                        <Button
-                            android:id="@+id/edit_recipe_addStepButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Add New Step" />
                     </LinearLayout>
 
                     <Button
@@ -200,7 +187,6 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true" >
             
-
             <LinearLayout
                 android:id="@+id/edit_recipe_new_stuff_wrapper"
                 android:layout_width="match_parent"
@@ -217,6 +203,7 @@
                         android:id="@+id/edit_recipe_ingredient_name_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal"
                         android:weightSum="2" >
 
@@ -241,6 +228,7 @@
                         android:id="@+id/edit_recipe_ingredient_amount_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal" >
 
                         <TextView
@@ -265,6 +253,7 @@
                         android:id="@+id/edit_recipe_ingredient_unit_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal" >
 
                         <TextView
@@ -288,6 +277,7 @@
                         android:id="@+id/edit_recipe_ingredient_save"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:text="Save Ingredient" />
                 </LinearLayout>
 
@@ -301,6 +291,7 @@
                         android:id="@+id/edit_recipe_step_name_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal"
                         android:weightSum="2" >
 
@@ -325,6 +316,7 @@
                         android:id="@+id/edit_recipe_step_time_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal" >
 
                         <TextView
@@ -349,6 +341,7 @@
                         android:id="@+id/edit_recipe_step_appliances_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="vertical" >
 
                         <TextView
@@ -381,6 +374,7 @@
                         android:id="@+id/edit_recipe_step_active_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal" >
                          <RadioGroup
         					android:id="@+id/radio_step_active_group"
@@ -408,6 +402,7 @@
                         android:id="@+id/edit_recipe_step_save"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:text="Save New Step" />
                 </LinearLayout>
             </LinearLayout>
