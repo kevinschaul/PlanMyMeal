@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -23,6 +24,10 @@ import com.csci5115.group2.planmymeal.database.DataSourceManager;
  */
 public class CCListFragment extends ListFragment {
 
+	
+	public static final String ARG_SHOW_MEALS = "show_meals";
+	public static final String ARG_SHOW_RECIPES = "show_recipes";
+	
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
 	 * activated item position. Only used on tablets.
@@ -156,9 +161,13 @@ public class CCListFragment extends ListFragment {
 	public void setActivateOnItemClick(boolean activateOnItemClick) {
 		// When setting CHOICE_MODE_SINGLE, ListView will automatically
 		// give items the 'activated' state when touched.
-		getListView().setChoiceMode(
+		/*getListView().setChoiceMode(
 				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
-						: ListView.CHOICE_MODE_NONE);
+						: ListView.CHOICE_MODE_NONE);*/
+		ListView listview = getListView();
+		listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		listview.setSelector(R.drawable.cookable_selector);
+		
 	}
 
 	private void setActivatedPosition(int position) {
