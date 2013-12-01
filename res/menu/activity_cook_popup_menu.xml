@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >  
+  
+    <item  
+        android:id="@+id/addTime"  
+        android:title="Add Time"/>  
+      
+    <item  
+        android:id="@+id/nextStep"  
+        android:title="Next Step"/>  
+        
+    <item  
+        android:id="@+id/scrapRecipe"  
+        android:title="Scrap Current Recipe"/>  
+          
+</menu> 
