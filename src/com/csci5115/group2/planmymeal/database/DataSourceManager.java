@@ -962,12 +962,36 @@ public class DataSourceManager
 				database.insert(TABLE_RECIPE_STEP_REL, null, newValues);
 				return newStep;
 	}
+	
+	public RecipeStep updateRecipeStep(long stepId, String instructions, long time, Boolean isActive, List<String> appliancesUsed, long recipeId)
+	{
+		// Update RecipeStep
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_INSTRUCTIONS, instructions);
+		values.put(COLUMN_TIME, time);
+		values.put(COLUMN_ACTIVE, isActive);
+		values.put(COLUMN_APPLIANCES, createApplianceString(appliancesUsed));
+		long insertId = database.update(TABLE_RECIPE_STEP, values, COLUMN_ID + "=" + stepId, null);
+		Cursor cursor = database.query(TABLE_RECIPE_STEP, allRecipeStepColumns,
+				COLUMN_ID + " = " + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		RecipeStep newStep = cursorToRecipeStep(cursor);
+		cursor.close();
+		return newStep;
+	}
 
 	public void deleteRecipeStep(RecipeStep step)
 	{
+		// delete actual step
+		database.delete(TABLE_RECIPE_STEP_REL, COLUMN_RECIPE_STEP_ID + "=" + step.getId(), null);
+		System.out.println("Recipe Step in recipe deleted with id: " + step.getId());
+		// delete actual step
 		long id = step.getId();
 		System.out.println("Recipe Step deleted with id: " + id);
 		database.delete(TABLE_RECIPE_STEP, COLUMN_ID + " = " + id, null);
+		
+		
+		
 	}
 
 	public List<RecipeStep> getRecipeSteps(long recipeId)
@@ -1040,7 +1064,10 @@ public class DataSourceManager
 		{
 			applianceString += appliances.get(i) + ";";
 		}
-		applianceString += appliances.get(appliances.size() - 1);
+		if(appliances.size() > 1)
+		{
+			applianceString += appliances.get(appliances.size() - 1);
+		}
 
 		return applianceString;
 	}

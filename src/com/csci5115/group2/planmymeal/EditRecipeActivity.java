@@ -34,11 +34,15 @@ public class EditRecipeActivity extends Activity
 	public EditRecipeActivity view;
 	public LinearLayout tags_wrapper;
 	public LinearLayout ingredients_wrapper;
+	public LinearLayout steps_wrapper;
 	private DataSourceManager datasource;
 	private Typeface fontAwesome;
 	private boolean newIngredient = true;
 	private long currentIngredientId = 0;
 	private View currentIngredientView = null;
+	private boolean newStep = true;
+	private long currentStepId = 0;
+	private View currentStepView = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -105,13 +109,11 @@ public class EditRecipeActivity extends Activity
 			{
 				final View tagView = getLayoutInflater().inflate(R.layout.tag,
 						null);
-				
-				// Hide keyboard
-				InputMethodManager imm = (InputMethodManager)getSystemService(
-					      Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),      
-			    InputMethodManager.HIDE_NOT_ALWAYS);
 
+				// Hide keyboard
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+						InputMethodManager.HIDE_NOT_ALWAYS);
 
 				EditText newTagText = (EditText) findViewById(R.id.edit_recipe_newTagName);
 
@@ -157,48 +159,52 @@ public class EditRecipeActivity extends Activity
 			final View ingredientView = getLayoutInflater().inflate(
 					R.layout.row_edit_ingredient, null);
 
-				TextView ingredientName = (TextView) ingredientView.findViewById(R.id.row_edit_ingredient_name) ;
-			    ingredientName.setText(ingredient.getName());
-				
-				Button editButton = (Button) ingredientView.findViewById(R.id.row_edit_ingredient_buttonEdit);
-				editButton.setTypeface(fontAwesome);
-				editButton.setOnClickListener(new View.OnClickListener()
-				{
+			TextView ingredientName = (TextView) ingredientView
+					.findViewById(R.id.row_edit_ingredient_name);
+			ingredientName.setText(ingredient.getName());
 
-					@Override
-					public void onClick(View v)
-					{
-						// Populate ingredient shtuff
-						((EditText) findViewById(R.id.edit_recipe_ingredient_name))
-						.setText(ingredient.getName());
-						((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
-						.setText(Long.toString(ingredient.getAmount()));
-						((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
-						.setText(ingredient.getUnit());
-						newIngredient = false;
-						currentIngredientId = ingredient.getId();
-						currentIngredientView = ingredientView;
-					}
-				});
-				
-				Button deleteButton = (Button) ingredientView.findViewById(R.id.row_edit_ingredient_buttonDelete);
-				deleteButton.setTypeface(fontAwesome);
-				deleteButton.setOnClickListener(new View.OnClickListener()
-				{
+			Button editButton = (Button) ingredientView
+					.findViewById(R.id.row_edit_ingredient_buttonEdit);
+			editButton.setTypeface(fontAwesome);
+			editButton.setOnClickListener(new View.OnClickListener()
+			{
 
-					@Override
-					public void onClick(View v)
+				@Override
+				public void onClick(View v)
+				{
+					// Populate ingredient shtuff
+					((EditText) findViewById(R.id.edit_recipe_ingredient_name))
+							.setText(ingredient.getName());
+					((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
+							.setText(Long.toString(ingredient.getAmount()));
+					((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
+							.setText(ingredient.getUnit());
+					newIngredient = false;
+					currentIngredientId = ingredient.getId();
+					currentIngredientView = ingredientView;
+				}
+			});
+
+			Button deleteButton = (Button) ingredientView
+					.findViewById(R.id.row_edit_ingredient_buttonDelete);
+			deleteButton.setTypeface(fontAwesome);
+			deleteButton.setOnClickListener(new View.OnClickListener()
+			{
+
+				@Override
+				public void onClick(View v)
+				{
+					ingredientView.setVisibility(View.GONE);
+					datasource.deleteRecipeIngredient(ingredient,
+							recipe.getId());
+					if (ingredient.getId() == currentIngredientId)
 					{
-						ingredientView.setVisibility(View.GONE);
-						datasource.deleteRecipeIngredient(ingredient, recipe.getId());
-						if(ingredient.getId() == currentIngredientId)
-						{
-							newIngredient = true;
-							currentIngredientId = 0;
-							currentIngredientView = null;
-						}
+						newIngredient = true;
+						currentIngredientId = 0;
+						currentIngredientView = null;
 					}
-				});
+				}
+			});
 
 			ingredients_wrapper.addView(ingredientView);
 		}
@@ -211,13 +217,12 @@ public class EditRecipeActivity extends Activity
 			public void onClick(View v)
 			{
 				// TODO: Check if valid
-				
+
 				// Hide keyboard
-				InputMethodManager imm = (InputMethodManager)getSystemService(
-					      Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),      
-			    InputMethodManager.HIDE_NOT_ALWAYS);
-				
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+						InputMethodManager.HIDE_NOT_ALWAYS);
+
 				// Save state
 				final String iName = ((EditText) findViewById(R.id.edit_recipe_ingredient_name))
 						.getText().toString();
@@ -229,21 +234,22 @@ public class EditRecipeActivity extends Activity
 				long recipeId = recipe.getId();
 				final Ingredient addedOrUpdatedIngredient;
 				// Save to db
-				if(newIngredient)
+				if (newIngredient)
 				{
-					addedOrUpdatedIngredient = datasource.addIngredientToRecipe(iName, amountLong, iUnit,
-							recipeId);
+					addedOrUpdatedIngredient = datasource
+							.addIngredientToRecipe(iName, amountLong, iUnit,
+									recipeId);
 					newIngredient = true;
 					currentIngredientId = 0;
 					currentIngredientView = null;
 					Toast toast = Toast.makeText(getBaseContext(),
 							"New Ingredient Saved", Toast.LENGTH_SHORT);
 					toast.show();
-				}
-				else
+				} else
 				{
-					addedOrUpdatedIngredient = datasource.updateRecipeIngredient(currentIngredientId, iName, amountLong, iUnit,
-							recipeId);
+					addedOrUpdatedIngredient = datasource
+							.updateRecipeIngredient(currentIngredientId, iName,
+									amountLong, iUnit, recipeId);
 					currentIngredientView.setVisibility(View.GONE);
 					newIngredient = true;
 					currentIngredientId = 0;
@@ -252,7 +258,7 @@ public class EditRecipeActivity extends Activity
 							"Ingredient Updated", Toast.LENGTH_SHORT);
 					toast.show();
 				}
-				
+
 				// Clear data
 				((EditText) findViewById(R.id.edit_recipe_ingredient_name))
 						.setText("");
@@ -261,14 +267,15 @@ public class EditRecipeActivity extends Activity
 				((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
 						.setText("");
 
-
 				final View ingredientView = getLayoutInflater().inflate(
-					R.layout.row_edit_ingredient, null);
+						R.layout.row_edit_ingredient, null);
 
-				TextView ingredientName = (TextView) ingredientView.findViewById(R.id.row_edit_ingredient_name) ;
-			    ingredientName.setText(iName);
-				
-				Button editButton = (Button) ingredientView.findViewById(R.id.row_edit_ingredient_buttonEdit);
+				TextView ingredientName = (TextView) ingredientView
+						.findViewById(R.id.row_edit_ingredient_name);
+				ingredientName.setText(iName);
+
+				Button editButton = (Button) ingredientView
+						.findViewById(R.id.row_edit_ingredient_buttonEdit);
 				editButton.setTypeface(fontAwesome);
 				editButton.setOnClickListener(new View.OnClickListener()
 				{
@@ -278,18 +285,20 @@ public class EditRecipeActivity extends Activity
 					{
 						// Populate ingredient shtuff
 						((EditText) findViewById(R.id.edit_recipe_ingredient_name))
-						.setText(iName);
+								.setText(iName);
 						((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
-						.setText(iAmount);
+								.setText(iAmount);
 						((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
-						.setText(iUnit);
+								.setText(iUnit);
+
 						newIngredient = false;
 						currentIngredientId = addedOrUpdatedIngredient.getId();
 						currentIngredientView = ingredientView;
 					}
 				});
-				
-				Button deleteButton = (Button) ingredientView.findViewById(R.id.row_edit_ingredient_buttonDelete);
+
+				Button deleteButton = (Button) ingredientView
+						.findViewById(R.id.row_edit_ingredient_buttonDelete);
 				deleteButton.setTypeface(fontAwesome);
 				deleteButton.setOnClickListener(new View.OnClickListener()
 				{
@@ -298,8 +307,9 @@ public class EditRecipeActivity extends Activity
 					public void onClick(View v)
 					{
 						ingredientView.setVisibility(View.GONE);
-						datasource.deleteRecipeIngredient(addedOrUpdatedIngredient, recipe.getId());
-						if(addedOrUpdatedIngredient.getId() == currentIngredientId)
+						datasource.deleteRecipeIngredient(
+								addedOrUpdatedIngredient, recipe.getId());
+						if (addedOrUpdatedIngredient.getId() == currentIngredientId)
 						{
 							newIngredient = true;
 							currentIngredientId = 0;
@@ -307,7 +317,7 @@ public class EditRecipeActivity extends Activity
 						}
 					}
 				});
-			ingredients_wrapper.addView(ingredientView);
+				ingredients_wrapper.addView(ingredientView);
 			}
 		});
 
@@ -318,20 +328,19 @@ public class EditRecipeActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				// Check if valid
-				
+				// TODO: Check if valid
+
 				// Hide keyboard
-				InputMethodManager imm = (InputMethodManager)getSystemService(
-					      Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),      
-			    InputMethodManager.HIDE_NOT_ALWAYS);
-				
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+						InputMethodManager.HIDE_NOT_ALWAYS);
+
 				// Save Values
-				String iName = ((EditText) findViewById(R.id.edit_recipe_step_name))
+				final String iName = ((EditText) findViewById(R.id.edit_recipe_step_name))
 						.getText().toString();
-				String iTime = ((EditText) findViewById(R.id.edit_recipe_step_time))
+				final String iTime = ((EditText) findViewById(R.id.edit_recipe_step_time))
 						.getText().toString();
-				LinkedList<String> appliancesUsed = new LinkedList();
+				final LinkedList<String> appliancesUsed = new LinkedList<String>();
 				if (((CheckBox) findViewById(R.id.oven_used_chk_box))
 						.isChecked())
 				{
@@ -348,47 +357,218 @@ public class EditRecipeActivity extends Activity
 					appliancesUsed.add("burner");
 				}
 				// get selected radio button from radioGroup
-				int selectedId = ((RadioGroup) findViewById(R.id.radio_step_active_group)).getCheckedRadioButtonId();
-				boolean isActiveStep = selectedId == R.id.step_active;
+				int selectedId = ((RadioGroup) findViewById(R.id.radio_step_active_group))
+						.getCheckedRadioButtonId();
+				final boolean isActiveStep = selectedId == R.id.step_active;
 				long timeLong = Long.parseLong(iTime);
 				long recipeId = recipe.getId();
 				// Save to db
-				datasource.addStepToRecipe(iName, timeLong, isActiveStep, appliancesUsed, recipeId);
+				final RecipeStep addedOrUpdatedStep;
+				if (newStep)
+				{
+					addedOrUpdatedStep = datasource.addStepToRecipe(iName,
+							timeLong, isActiveStep, appliancesUsed, recipeId);
+					newStep = true;
+					currentStepId = 0;
+					currentStepView = null;
+					Toast toast = Toast.makeText(getBaseContext(),
+							"New Recipe Step Saved", Toast.LENGTH_SHORT);
+					toast.show();
+				} else
+				{
+					addedOrUpdatedStep = datasource.updateRecipeStep(
+							currentStepId, iName, timeLong, isActiveStep,
+							appliancesUsed, recipeId);
+					currentStepView.setVisibility(View.GONE);
+					newStep = true;
+					currentStepId = 0;
+					currentStepView = null;
+					Toast toast = Toast.makeText(getBaseContext(),
+							"Recipe Step Updated", Toast.LENGTH_SHORT);
+					toast.show();
+				}
 
-				// Toastr popup for user feedback
-				Toast toast = Toast.makeText(getBaseContext(),
-						"New Step Saved", Toast.LENGTH_SHORT);
-				toast.show();
 				// Clear data
 				((EditText) findViewById(R.id.edit_recipe_step_name))
 						.setText("");
 				((EditText) findViewById(R.id.edit_recipe_step_time))
 						.setText("");
-				((CheckBox) findViewById(R.id.microwave_used_chk_box)).setChecked(false);
-				((CheckBox) findViewById(R.id.oven_used_chk_box)).setChecked(false);
-				((CheckBox) findViewById(R.id.burner_used_chk_box)).setChecked(false);
-				((RadioButton) findViewById(R.id.step_active)).setSelected(true);
-				((RadioButton) findViewById(R.id.step_inactive)).setSelected(false);
+				((CheckBox) findViewById(R.id.microwave_used_chk_box))
+						.setChecked(false);
+				((CheckBox) findViewById(R.id.oven_used_chk_box))
+						.setChecked(false);
+				((CheckBox) findViewById(R.id.burner_used_chk_box))
+						.setChecked(false);
+				((RadioButton) findViewById(R.id.step_active)).setChecked(true);
+
+				final View stepView = getLayoutInflater().inflate(
+						R.layout.row_edit_step, null);
+
+				TextView stepName = (TextView) stepView
+						.findViewById(R.id.row_edit_step_name);
+				stepName.setText(iName);
+
+				Button editButton = (Button) stepView
+						.findViewById(R.id.row_edit_step_buttonEdit);
+				editButton.setTypeface(fontAwesome);
+				editButton.setOnClickListener(new View.OnClickListener()
+				{
+
+					@Override
+					public void onClick(View v)
+					{
+						// Populate step shtuff
+						((EditText) findViewById(R.id.edit_recipe_step_name))
+								.setText(iName);
+						((EditText) findViewById(R.id.edit_recipe_step_time))
+								.setText(iTime);
+						// initialize appliances and active status
+						List<String> appliances = appliancesUsed;
+						((CheckBox) findViewById(R.id.oven_used_chk_box))
+								.setChecked(false);
+						((CheckBox) findViewById(R.id.microwave_used_chk_box))
+								.setChecked(false);
+						((CheckBox) findViewById(R.id.burner_used_chk_box))
+								.setChecked(false);
+						((RadioButton) findViewById(R.id.step_active))
+								.setChecked(true);
+						if (appliances.contains("oven"))
+						{
+							((CheckBox) findViewById(R.id.oven_used_chk_box))
+									.setChecked(true);
+						}
+						if (appliances.contains("microwave"))
+						{
+							((CheckBox) findViewById(R.id.microwave_used_chk_box))
+									.setChecked(true);
+						}
+						if (appliances.contains("burner"))
+						{
+							((CheckBox) findViewById(R.id.burner_used_chk_box))
+									.setChecked(true);
+						}
+						if (!isActiveStep)
+						{
+							((RadioButton) findViewById(R.id.step_inactive))
+									.setChecked(true);
+						}
+
+						newStep = false;
+						currentStepId = addedOrUpdatedStep.getId();
+						currentStepView = stepView;
+					}
+				});
+
+				Button deleteButton = (Button) stepView
+						.findViewById(R.id.row_edit_step_buttonDelete);
+				deleteButton.setTypeface(fontAwesome);
+				deleteButton.setOnClickListener(new View.OnClickListener()
+				{
+
+					@Override
+					public void onClick(View v)
+					{
+						stepView.setVisibility(View.GONE);
+						datasource.deleteRecipeStep(addedOrUpdatedStep);
+						if (addedOrUpdatedStep.getId() == currentStepId)
+						{
+							newStep = true;
+							currentStepId = 0;
+							currentStepView = null;
+						}
+					}
+				});
+
+				steps_wrapper.addView(stepView);
 			}
 		});
 
 		// Set up recipe directions list
-		LinearLayout steps_wrapper = (LinearLayout) findViewById(R.id.edit_recipe_directionsList);
+		steps_wrapper = (LinearLayout) findViewById(R.id.edit_recipe_directionsList);
 		List<RecipeStep> steps = datasource.getRecipeSteps(recipe.getId());
 
-		for (int i = 0; i < steps.size(); i++)
+		for (final RecipeStep step : steps)
 		{
-			RecipeStep step = steps.get(i);
-			View stepView = getLayoutInflater().inflate(R.layout.recipe_step,
-					null);
+			final View stepView = getLayoutInflater().inflate(
+					R.layout.row_edit_step, null);
 
 			TextView stepName = (TextView) stepView
-					.findViewById(R.id.step_instruction);
+					.findViewById(R.id.row_edit_step_name);
 			stepName.setText(step.getInstructions());
+
+			Button editButton = (Button) stepView
+					.findViewById(R.id.row_edit_step_buttonEdit);
+			editButton.setTypeface(fontAwesome);
+			editButton.setOnClickListener(new View.OnClickListener()
+			{
+
+				@Override
+				public void onClick(View v)
+				{
+					// Populate step shtuff
+					((EditText) findViewById(R.id.edit_recipe_step_name))
+							.setText(step.getInstructions());
+					((EditText) findViewById(R.id.edit_recipe_step_time))
+							.setText(Long.toString(step.getTime()));
+					// initialize appliances and active status
+					List<String> appliances = step.getAppliancesUsed();
+					((CheckBox) findViewById(R.id.oven_used_chk_box))
+							.setChecked(false);
+					((CheckBox) findViewById(R.id.microwave_used_chk_box))
+							.setChecked(false);
+					((CheckBox) findViewById(R.id.burner_used_chk_box))
+							.setChecked(false);
+					((RadioButton) findViewById(R.id.step_active))
+							.setChecked(true);
+					if (appliances.contains("oven"))
+					{
+						((CheckBox) findViewById(R.id.oven_used_chk_box))
+								.setChecked(true);
+					}
+					if (appliances.contains("microwave"))
+					{
+						((CheckBox) findViewById(R.id.microwave_used_chk_box))
+								.setChecked(true);
+					}
+					if (appliances.contains("burner"))
+					{
+						((CheckBox) findViewById(R.id.burner_used_chk_box))
+								.setChecked(true);
+					}
+					if (!step.isActiveStep())
+					{
+						((RadioButton) findViewById(R.id.step_inactive))
+								.setChecked(true);
+					}
+
+					newStep = false;
+					currentStepId = step.getId();
+					currentStepView = stepView;
+				}
+			});
+
+			Button deleteButton = (Button) stepView
+					.findViewById(R.id.row_edit_step_buttonDelete);
+			deleteButton.setTypeface(fontAwesome);
+			deleteButton.setOnClickListener(new View.OnClickListener()
+			{
+
+				@Override
+				public void onClick(View v)
+				{
+					stepView.setVisibility(View.GONE);
+					datasource.deleteRecipeStep(step);
+					if (step.getId() == currentStepId)
+					{
+						newStep = true;
+						currentStepId = 0;
+						currentStepView = null;
+					}
+				}
+			});
 
 			steps_wrapper.addView(stepView);
 		}
-
 	}
 
 	@Override

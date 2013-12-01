@@ -5,25 +5,25 @@
     android:padding="6dip" >
 
     <TextView
-        android:id="@+id/row_edit_ingredient_name"
+        android:id="@+id/row_edit_step_name"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
-        android:layout_toLeftOf="@+id/row_edit_ingredient_buttonEdit"
+        android:layout_toLeftOf="@+id/row_edit_step_buttonEdit"
         android:text="Ingredient Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 
     <Button
-        android:id="@+id/row_edit_ingredient_buttonEdit"
+        android:id="@+id/row_edit_step_buttonEdit"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_toLeftOf="@+id/row_edit_ingredient_buttonDelete"
+        android:layout_toLeftOf="@+id/row_edit_step_buttonDelete"
         android:text="@string/icon_edit" />
 
     <Button
-        android:id="@+id/row_edit_ingredient_buttonDelete"
+        android:id="@+id/row_edit_step_buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
