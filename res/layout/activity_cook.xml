@@ -7,72 +7,90 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".CookActivity" >
-    <include  layout="@layout/row_cook_recipe_container" ></include>
 
-    
+    <include
+        android:id="@+id/include1"
+        layout="@layout/row_cook_recipe_container" >
+    </include>
+
     <HorizontalScrollView
         android:id="@+id/myListView"
         android:layout_width="wrap_content"
-        android:layout_height="600dip"
+        android:layout_height="550dip"
+        android:layout_alignParentTop="true"
         android:layout_marginRight="0dp"
         android:layout_marginTop="0dp"
-        android:orientation="horizontal"
-        android:layout_alignParentTop="true"
-        android:weightSum="8"
         android:baselineAligned="false"
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="horizontal"
         android:showDividers="middle"
-        android:divider="?android:attr/dividerHorizontal" >
-        
+        android:weightSum="8" >
 
-             
         <LinearLayout
             android:id="@+id/allRecipesHolder"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal" >
-            
-            <LinearLayout 
+
+            <LinearLayout
                 android:id="@+id/RecipeHolder0"
                 android:layout_width="350dip"
-            	android:layout_height="match_parent"
-            	android:orientation="vertical">  
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
             </LinearLayout>
-            
-            <LinearLayout 
+
+            <LinearLayout
                 android:id="@+id/RecipeHolder1"
                 android:layout_width="350dip"
-            	android:layout_height="match_parent"
-            	android:orientation="vertical"
-            	android:visibility="gone">  
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" >
             </LinearLayout>
-            
-            <LinearLayout 
-            	android:id="@+id/RecipeHolder2"
-            	android:layout_width="350dip"
-            	android:layout_height="match_parent"
-            	android:orientation="vertical"
-            	android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/RecipeHolder2"
+                android:layout_width="350dip"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" >
             </LinearLayout>
-            
-            <LinearLayout 
-            	android:id="@+id/RecipeHolder3"
-            	android:layout_width="350dip"
-            	android:layout_height="match_parent"
-            	android:orientation="vertical"
-            	android:visibility="gone">    
+
+            <LinearLayout
+                android:id="@+id/RecipeHolder3"
+                android:layout_width="350dip"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" >
             </LinearLayout>
-            
         </LinearLayout>
-        
     </HorizontalScrollView>
 
-    
     <Button
         android:id="@+id/button0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/myListView"
         android:layout_alignParentBottom="true"
-        android:text="Remove0" />
-    
+        android:text="Next Step" />
+
+    <TextView
+        android:id="@+id/currentStepDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="700dip"
+        android:layout_alignBaseline="@+id/button0"
+        android:layout_alignBottom="@+id/button0"
+        android:layout_marginLeft="64dp"
+        android:layout_toRightOf="@+id/button0"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/currentStepTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button0"
+        android:layout_alignRight="@+id/include1"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
 </RelativeLayout>
