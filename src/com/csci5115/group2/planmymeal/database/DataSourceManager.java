@@ -415,7 +415,7 @@ public class DataSourceManager
 		long id = tag.getId();
 		database.delete(TABLE_RECIPE_TAG_REL, COLUMN_TAG_ID + " = " + id
 				+ " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
-		System.out.println("MealTag deleted with tag id: " + id
+		System.out.println("ReipeTag deleted with tag id: " + id
 				+ " and meal id: " + recipeId);
 	}
 
@@ -460,7 +460,7 @@ public class DataSourceManager
 				+ "='" + tagName + "'", null, null, null, null);
 
 		cursor.moveToFirst();
-		if (cursor == null || cursor.getLong(0) == 0)
+		if (cursor == null || cursor.getCount() <= 0 || cursor.getLong(0) == 0)
 		{
 			cursor.close();
 
