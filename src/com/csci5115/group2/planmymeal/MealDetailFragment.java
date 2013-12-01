@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -55,6 +56,7 @@ public class MealDetailFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.v("MealDetailFragment", "onCreate");
 		super.onCreate(savedInstanceState);
 		
 		Context context = this.getActivity().getApplicationContext();
@@ -81,6 +83,7 @@ public class MealDetailFragment extends Fragment {
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+		Log.v("MealDetailFragment", "onSaveInstanceState");
 		super.onSaveInstanceState(outState);
 		if (mActivatedPosition != ListView.INVALID_POSITION) {
 			// Serialize and persist the activated item position.
@@ -107,8 +110,6 @@ public class MealDetailFragment extends Fragment {
 				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(recipeListView, savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
 		}
-		
-		recipeListView.setItemChecked(1, true);
 
 		if (meal != null) {
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_meal_title);
@@ -209,13 +210,14 @@ public class MealDetailFragment extends Fragment {
 		}
 	};
 	
-	private void setActivatedPosition(ListView listView, int position) {
-		Log.v("HI", "HERE");
+	private void setActivatedPosition(ListView listView, int position) {		
+		Log.v("MealDetailFragment", "setActivatedPosition");
+		Log.v("MealDetailFragment", "checked item position was: " + Integer.toString(listView.getCheckedItemPosition()));
 		if (position == ListView.INVALID_POSITION) {
-			Log.v("HI", "INVALID");
+			Log.v("MealDetailFragment", "INVALID_POSITION");
 			listView.setItemChecked(mActivatedPosition, false);
 		} else {
-			Log.v("HI", "VALID");
+			Log.v("MealDetailFragment", "VALID_POSITION");
 			listView.setItemChecked(position, true);
 		}
 

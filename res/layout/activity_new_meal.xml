@@ -11,8 +11,7 @@
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/new_meal_title" >
+        android:layout_height="match_parent" >
 
         <View
             android:layout_width="1dp"
@@ -28,16 +27,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_weight="1"  >
-    		
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/new_mealTags"
-                android:layout_marginTop="78dp"
-                android:text="Recipes in Meal Name"
-                android:textSize="30sp" />
 
             <ListView
                 android:id="@+id/new_meal_recipes_in_meal"
@@ -49,15 +38,6 @@
 
             </ListView>
 
-            <Button
-                android:id="@+id/addTagButton"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/new_meal_mealName"
-                android:layout_alignTop="@+id/new_meal_newTagName"
-                android:text="Add Tag" />
-
             <EditText
                 android:id="@+id/new_meal_mealName"
                 android:layout_width="wrap_content"
@@ -65,33 +45,15 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:ems="10"
-                android:hint="New Meal Title"
+                android:hint="Meal Title"
                 android:textSize="40sp" />
-
-            <Button
-                android:id="@+id/new_meal_save_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/new_meal_mealName"
-                android:layout_below="@+id/new_meal_mealName"
-                android:text="Save Meal" />
-
-            <EditText
-                android:id="@+id/new_meal_mealTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/new_meal_mealName"
-                android:ems="10"
-                android:hint="Meal Time" />
 
             <HorizontalScrollView
                 android:id="@+id/new_meal_tag_scroll"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/new_mealTags"
-                android:layout_marginTop="31dp" >
+                android:layout_below="@+id/new_mealTags" >
 
                 <LinearLayout
                     android:id="@+id/new_meal_tag_container"
@@ -101,28 +63,14 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <EditText
-                android:id="@+id/new_meal_newTagName"
+            <TextView
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignRight="@+id/new_meal_mealDescription"
-                android:layout_below="@+id/new_meal_mealDescription"
-                android:ems="10"
-                android:hint="New Tag Name" >
-
-                <requestFocus />
-            </EditText>
-
-            <EditText
-                android:id="@+id/new_meal_mealDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/new_meal_mealTime"
-                android:layout_toLeftOf="@+id/new_meal_save_button"
-                android:ems="10"
-                android:hint="Meal Description" />
+                android:layout_below="@+id/new_meal_tag_scroll"
+                android:text="Recipes in Meal Name"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/new_mealTags"
@@ -132,6 +80,60 @@
                 android:layout_below="@+id/addTagButton"
                 android:text="My Meal Tags"
                 android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/new_meal_newTagName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/new_meal_mealDescription"
+                android:layout_below="@+id/new_meal_mealDescription"
+                android:layout_marginTop="39dp"
+                android:ems="10"
+                android:hint="New Tag Name" >
+
+                <requestFocus />
+            </EditText>
+
+            <Button
+                android:id="@+id/addTagButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/new_meal_newTagName"
+                android:layout_alignLeft="@+id/new_meal_save_button"
+                android:layout_alignRight="@+id/new_meal_save_button"
+                android:text="Add Tag" />
+
+            <EditText
+                android:id="@+id/new_meal_mealDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/new_meal_mealTime"
+                android:layout_marginTop="38dp"
+                android:layout_toLeftOf="@+id/new_meal_save_button"
+                android:ems="10"
+                android:hint="Meal Description" />
+
+            <EditText
+                android:id="@+id/new_meal_mealTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/new_meal_mealName"
+                android:layout_marginTop="29dp"
+                android:layout_toLeftOf="@+id/new_meal_save_button"
+                android:layout_toRightOf="@+id/new_meal_tag_scroll"
+                android:ems="10"
+                android:hint="Meal Time" />
+
+            <Button
+                android:id="@+id/new_meal_save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/new_meal_mealName"
+                android:text="Save Meal" />
 
         </RelativeLayout>
 
