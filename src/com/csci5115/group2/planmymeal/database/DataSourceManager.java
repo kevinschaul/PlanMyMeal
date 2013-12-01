@@ -773,6 +773,59 @@ public class DataSourceManager
 		cursor.close();
 		return newIngredient;
 	}
+	
+	public Ingredient addIngredientToRecipe(String name, double amount, String unit, long recipeId)
+	{
+		// Add to ingredient table 
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_NAME, name);
+		values.put(COLUMN_AMOUNT, amount);
+		values.put(COLUMN_UNIT, unit);
+		long insertId = database.insert(TABLE_INGREDIENT, null, values);
+		Cursor cursor = database.query(TABLE_INGREDIENT, allIngredientColumns,
+				COLUMN_ID + " = " + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		Ingredient newIngredient = cursorToIngredient(cursor);
+		cursor.close();
+
+		// Add to RecipeIngredient table.
+		ContentValues newValues = new ContentValues();
+		newValues.put(COLUMN_INGREDIENT_ID, insertId);
+		newValues.put(COLUMN_RECIPE_ID, recipeId);
+		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, newValues);
+		return newIngredient;
+	}
+	
+	public Ingredient updateRecipeIngredient(long ingredientId, String name, double amount, String unit, long recipeId)
+	{
+		// Add to ingredient table 
+				ContentValues values = new ContentValues();
+				values.put(COLUMN_NAME, name);
+				values.put(COLUMN_AMOUNT, amount);
+				values.put(COLUMN_UNIT, unit);
+				long insertId = database.update(TABLE_INGREDIENT, values, COLUMN_ID + "=" + ingredientId, null);
+				Cursor cursor = database.query(TABLE_INGREDIENT, allIngredientColumns,
+						COLUMN_ID + " = " + insertId, null, null, null, null);
+				cursor.moveToFirst();
+				Ingredient newIngredient = cursorToIngredient(cursor);
+				cursor.close();
+				
+				return newIngredient;
+	}
+	
+	public Ingredient getIngredientById(long id)
+	{
+		Cursor cursor = database.query(TABLE_INGREDIENT,
+				allIngredientColumns, COLUMN_ID + " = " + id,
+				null, null, null, null);
+
+		cursor.moveToFirst();
+		Ingredient newI = cursorToIngredient(cursor);
+
+		// make sure to close the cursor
+		cursor.close();
+		return newI;
+	}
 
 	public void deleteIngredient(Ingredient ingredient)
 	{
@@ -888,6 +941,18 @@ public class DataSourceManager
 		RecipeStep newStep = cursorToRecipeStep(cursor);
 		cursor.close();
 		return newStep;
+	}
+	
+	public RecipeStep addStepToRecipe(String instructions, long time, Boolean isActive, List<String> appliancesUsed, long recipeId)
+	{
+				RecipeStep newStep = createRecipeStep(instructions, time, isActive, appliancesUsed);
+
+				// Add to RecipeStep table.
+				ContentValues newValues = new ContentValues();
+				newValues.put(COLUMN_RECIPE_STEP_ID, newStep.getId());
+				newValues.put(COLUMN_RECIPE_ID, recipeId);
+				database.insert(TABLE_RECIPE_STEP_REL, null, newValues);
+				return newStep;
 	}
 
 	public void deleteRecipeStep(RecipeStep step)

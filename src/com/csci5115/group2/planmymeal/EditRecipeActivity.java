@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,12 +13,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
@@ -95,6 +101,13 @@ public class EditRecipeActivity extends Activity
 			{
 				final View tagView = getLayoutInflater().inflate(R.layout.tag,
 						null);
+				
+				// Hide keyboard
+				InputMethodManager imm = (InputMethodManager)getSystemService(
+					      Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),      
+			    InputMethodManager.HIDE_NOT_ALWAYS);
+
 
 				EditText newTagText = (EditText) findViewById(R.id.edit_recipe_newTagName);
 
@@ -146,18 +159,108 @@ public class EditRecipeActivity extends Activity
 
 			ingredients_wrapper.addView(ingredientView);
 		}
-		
+
 		// Add ingredient Button
-		Button addIngredientButton = (Button) findViewById(R.id.edit_recipe_addIngredientButton);
-		addIngredientButton.setTypeface(fontAwesome);
-
-		addIngredientButton.setOnClickListener(new View.OnClickListener()
+		Button saveIngredient = (Button) findViewById(R.id.edit_recipe_ingredient_save);
+		saveIngredient.setOnClickListener(new View.OnClickListener()
 		{
-
 			@Override
 			public void onClick(View v)
 			{
-				// Switch to add ingredient view.
+				// Check if valid
+
+				// Hide keyboard
+				InputMethodManager imm = (InputMethodManager)getSystemService(
+					      Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),      
+			    InputMethodManager.HIDE_NOT_ALWAYS);
+				
+				// Save state
+				String iName = ((EditText) findViewById(R.id.edit_recipe_ingredient_name))
+						.getText().toString();
+				String iAmount = ((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
+						.getText().toString();
+				String iUnit = ((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
+						.getText().toString();
+				long amountLong = Long.parseLong(iAmount);
+				long recipeId = recipe.getId();
+				// Save to db
+				datasource.addIngredientToRecipe(iName, amountLong, iUnit,
+						recipeId);
+
+				// Toastr popup for user feedback
+				Toast toast = Toast.makeText(getBaseContext(),
+						"New Ingredient Saved", Toast.LENGTH_SHORT);
+				toast.show();
+				// Clear data
+				((EditText) findViewById(R.id.edit_recipe_ingredient_name))
+						.setText("");
+				((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
+						.setText("");
+				((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
+						.setText("");
+
+			}
+		});
+
+		// Set save step button.
+		Button saveStep = (Button) findViewById(R.id.edit_recipe_step_save);
+		saveStep.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				// Check if valid
+				
+				// Hide keyboard
+				InputMethodManager imm = (InputMethodManager)getSystemService(
+					      Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),      
+			    InputMethodManager.HIDE_NOT_ALWAYS);
+				
+				// Save Values
+				String iName = ((EditText) findViewById(R.id.edit_recipe_step_name))
+						.getText().toString();
+				String iTime = ((EditText) findViewById(R.id.edit_recipe_step_time))
+						.getText().toString();
+				LinkedList<String> appliancesUsed = new LinkedList();
+				if (((CheckBox) findViewById(R.id.oven_used_chk_box))
+						.isChecked())
+				{
+					appliancesUsed.add("oven");
+				}
+				if (((CheckBox) findViewById(R.id.microwave_used_chk_box))
+						.isChecked())
+				{
+					appliancesUsed.add("microwave");
+				}
+				if (((CheckBox) findViewById(R.id.burner_used_chk_box))
+						.isChecked())
+				{
+					appliancesUsed.add("burner");
+				}
+				// get selected radio button from radioGroup
+				int selectedId = ((RadioGroup) findViewById(R.id.radio_step_active_group)).getCheckedRadioButtonId();
+				boolean isActiveStep = selectedId == R.id.step_active;
+				long timeLong = Long.parseLong(iTime);
+				long recipeId = recipe.getId();
+				// Save to db
+				datasource.addStepToRecipe(iName, timeLong, isActiveStep, appliancesUsed, recipeId);
+
+				// Toastr popup for user feedback
+				Toast toast = Toast.makeText(getBaseContext(),
+						"New Step Saved", Toast.LENGTH_SHORT);
+				toast.show();
+				// Clear data
+				((EditText) findViewById(R.id.edit_recipe_step_name))
+						.setText("");
+				((EditText) findViewById(R.id.edit_recipe_step_time))
+						.setText("");
+				((CheckBox) findViewById(R.id.microwave_used_chk_box)).setChecked(false);
+				((CheckBox) findViewById(R.id.oven_used_chk_box)).setChecked(false);
+				((CheckBox) findViewById(R.id.burner_used_chk_box)).setChecked(false);
+				((RadioButton) findViewById(R.id.step_active)).setSelected(true);
+				((RadioButton) findViewById(R.id.step_inactive)).setSelected(false);
 			}
 		});
 
@@ -178,6 +281,20 @@ public class EditRecipeActivity extends Activity
 			steps_wrapper.addView(stepView);
 		}
 
+	}
+
+	@Override
+	protected void onResume()
+	{
+		datasource.open();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause()
+	{
+		datasource.close();
+		super.onPause();
 	}
 
 	@Override
