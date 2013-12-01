@@ -59,6 +59,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
         List<Meal> meals = datasource.getAllUserMeals();
         List<Recipe> recipes = datasource.getAllUserRecipes();
         
+        
         String[] autocompleteStrings = new String[tags.size() + meals.size() + recipes.size()];
         int i = 0;
         int j = 0;

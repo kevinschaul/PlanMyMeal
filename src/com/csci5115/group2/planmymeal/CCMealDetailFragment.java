@@ -191,6 +191,12 @@ public class CCMealDetailFragment extends Fragment {
 		    		//intent = new Intent(context, CookActivity.class);///////////////Need to replace!!!
 		    		//intent.putExtra(CommunityCookbookActivity.EXTRA_MEAL, meal.getId());
 		    		///startActivity(intent);
+		        	long mealid= meal.getId();
+		        	datasource.importMeal(mealid);
+		        	intent = new Intent(context, HomeActivity.class);
+		    		//intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
+		    		startActivity(intent);
+		        	
 		    		break;
 		        default:
 		            return;

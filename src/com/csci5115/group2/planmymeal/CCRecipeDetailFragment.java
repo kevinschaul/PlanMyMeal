@@ -134,6 +134,9 @@ public class CCRecipeDetailFragment extends Fragment {
 				
 				steps_wrapper.addView(stepView);
 			}
+			
+			Button importR = (Button) rootView.findViewById(R.id.cc_fragment_recipe_button_import);
+			importR.setOnClickListener(clickListener);
 			// TODO
 			/*
 			TextView servings = (TextView) rootView.findViewById(R.id.fragment_recipe_number_of_servings);
@@ -153,35 +156,23 @@ public class CCRecipeDetailFragment extends Fragment {
 		public void onClick(View v) {
 			Context context = v.getContext();
 			Intent intent;
-			/*
+			
 		    switch (v.getId()) {
-		        case R.id.fragment_meal_button_delete:
-					AlertDialog.Builder builder = new AlertDialog.Builder(context);
-					builder.setTitle("Delete meal?");
-					builder.setMessage("Delete " + meal.getName() + "?");
-					builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {   
-							datasource.deleteMeal(meal);
-						}
-					});
-					builder.setNegativeButton("Cancel", null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
-		    		break;
-		        case R.id.fragment_meal_button_edit:
-		    		intent = new Intent(context, EditMealActivity.class);
-		    		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
+			    case R.id.cc_fragment_recipe_button_import:
+		    		//intent = new Intent(context, CookActivity.class);///////////////Need to replace!!!
+		    		//intent.putExtra(CommunityCookbookActivity.EXTRA_MEAL, meal.getId());
+		    		///startActivity(intent);
+		        	long recipeid= recipe.getId();
+		        	datasource.importRecipe(recipeid);
+		        	intent = new Intent(context, HomeActivity.class);
+		    		//intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
 		    		startActivity(intent);
+		        	
 		    		break;
-		        case R.id.fragment_meal_button_cook:
-		    		intent = new Intent(context, CookActivity.class);
-		    		intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
-		    		startActivity(intent);
-		    		break;
-		        default:
-		            return;
+			     default:
+			        return;
 		    }
-		    */
+		    
 		}
 	};
 }
