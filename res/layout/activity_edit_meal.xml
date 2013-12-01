@@ -117,8 +117,8 @@
                 android:id="@+id/edit_meal_save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/edit_meal_mealName"
-                android:layout_below="@+id/edit_meal_mealName"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/edit_meal_newTagName"
                 android:text="Save Meal" />
 
         </RelativeLayout>
