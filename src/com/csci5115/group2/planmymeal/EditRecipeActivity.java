@@ -66,6 +66,9 @@ public class EditRecipeActivity extends Activity
 
 		EditText recipeNameTextView = (EditText) findViewById(R.id.edit_recipe_recipeName);
 		recipeNameTextView.setText(recipe.getName());
+		
+		EditText recipeNumServings = (EditText) findViewById(R.id.edit_recipe_numServings);
+		recipeNumServings.setText(Long.toString(recipe.getNumServings()));
 
 		EditText newTagText = (EditText) findViewById(R.id.edit_recipe_newTagName);
 		newTagText.setInputType(newTagText.getInputType()

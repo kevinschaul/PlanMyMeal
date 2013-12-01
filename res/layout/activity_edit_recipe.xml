@@ -71,7 +71,7 @@
                             android:layout_marginTop="21dp"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:textSize="20sp" />
                     </LinearLayout>
 
@@ -246,7 +246,7 @@
                             android:layout_weight="1.12"
                             android:ems="10"
                             android:hint="Numerical values only"
-                            android:inputType="number" />
+                            android:inputType="numberDecimal" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -334,7 +334,7 @@
                             android:layout_weight="1.12"
                             android:ems="10"
                             android:hint="Numerical values only"
-                            android:inputType="number" />
+                            android:inputType="numberDecimal" />
                     </LinearLayout>
 
                     <LinearLayout

@@ -70,7 +70,7 @@ public class DataSourceManager
 	public static final String TABLE_RECIPE = "recipe";
 	public static final String COLUMN_RECIPE_NUM_SERVINGS = "numServings";
 	private static String[] allRecipeColumns =
-	{ COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION, COLUMN_USER,
+	{ COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION, COLUMN_RECIPE_NUM_SERVINGS, COLUMN_USER,
 			COLUMN_CC };
 	// Database creation
 	private static final String RECIPE_DATABASE_CREATE = "create table "
@@ -727,8 +727,9 @@ public class DataSourceManager
 		recipe.setName(cursor.getString(1));
 		recipe.setTime(cursor.getLong(2));
 		recipe.setDescription(cursor.getString(3));
-		recipe.setBelongsToUser(cursor.getInt(4) == 1);
-		recipe.setBelongsToCommunity(cursor.getInt(5) == 1);
+		recipe.setNumServings(cursor.getInt(4));
+		recipe.setBelongsToUser(cursor.getInt(5) == 1);
+		recipe.setBelongsToCommunity(cursor.getInt(6) == 1);
 		recipe.setType("Recipe");
 		recipe.setSteps(new LinkedList<RecipeStep>());
 		recipe.setIngredients(new LinkedList<Ingredient>());
@@ -1436,7 +1437,6 @@ public class DataSourceManager
 
 		// Green Bean Steps
 		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS, "Preheat oven to 350F.");
 		values.put(COLUMN_TIME, .2);
 		values.put(COLUMN_ACTIVE, 0);
 		long greenBeanStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
