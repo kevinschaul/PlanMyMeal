@@ -980,6 +980,25 @@ public class DataSourceManager
 		cursor.close();
 		return newStep;
 	}
+	
+	public Recipe updateRecipe(long id, String name, double time,
+			String description, Integer numServings)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_NAME, name);
+		values.put(COLUMN_TIME, time);
+		values.put(COLUMN_DESCRIPTION, description);
+		values.put(COLUMN_RECIPE_NUM_SERVINGS, numServings);
+		values.put(COLUMN_USER, 1);
+		values.put(COLUMN_CC, 0);
+		long insertId = database.update(TABLE_RECIPE, values, COLUMN_ID + "=" + id, null);
+		Cursor cursor = database.query(TABLE_RECIPE, allRecipeColumns,
+				COLUMN_ID + " = " + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		Recipe newRecipe = cursorToRecipe(cursor);
+		cursor.close();
+		return newRecipe;
+	}
 
 	public void deleteRecipeStep(RecipeStep step)
 	{

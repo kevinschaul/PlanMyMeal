@@ -580,6 +580,34 @@ public class EditRecipeActivity extends Activity
 
 			steps_wrapper.addView(stepView);
 		}
+		
+		Button saveRecipeButton = (Button) findViewById(R.id.saveRecipeButton);
+		saveRecipeButton.setTypeface(fontAwesome);
+		saveRecipeButton.setOnClickListener(new View.OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				// Check if input is valid
+				String recipeName = ((EditText) findViewById(R.id.edit_recipe_recipeName)).getText().toString();
+				int numServings = Integer.parseInt(((EditText) findViewById(R.id.edit_recipe_numServings)).getText().toString());
+				String recipeDescription = "";
+				double recipeTime = 5.5;
+				
+				
+				// Update in db
+				datasource.updateRecipe(recipe.getId(), recipeName, recipeTime,
+						recipeDescription, numServings);
+				// Pop up
+				Toast toast = Toast.makeText(getBaseContext(),
+						"Recipe Saved", Toast.LENGTH_SHORT);
+				toast.show();
+				// Go to home activity
+				Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+	    		startActivity(intent);
+			}
+		});
 	}
 
 	@Override
