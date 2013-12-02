@@ -61,8 +61,16 @@ public class EditRecipeActivity extends Activity
 
 		Intent intent = getIntent();
 		long recipeId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
-
-		recipe = datasource.getRecipeById(recipeId);
+		if(recipeId > 0)
+		{
+			recipe = datasource.getRecipeById(recipeId);
+		}
+		else
+		{
+			// Create new recipe entry
+			recipe = datasource.createNewUserRecipe("", 0, "", 0);
+		}
+		
 
 		EditText recipeNameTextView = (EditText) findViewById(R.id.edit_recipe_recipeName);
 		recipeNameTextView.setText(recipe.getName());

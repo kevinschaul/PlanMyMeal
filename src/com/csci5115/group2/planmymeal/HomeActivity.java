@@ -110,7 +110,8 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	    		startActivity(intent);
 	            return true;
 	        case R.id.action_new_recipe:
-	    		intent = new Intent(this, EditMealActivity.class);
+	        	intent = new Intent(getBaseContext(), EditRecipeActivity.class);
+	    		intent.putExtra(HomeActivity.EXTRA_MEAL, 0);
 	    		startActivity(intent);
 	            return true;
 	        case R.id.action_settings:
