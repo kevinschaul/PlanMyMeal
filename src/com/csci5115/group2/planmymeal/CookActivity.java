@@ -131,7 +131,8 @@ public class CookActivity extends Activity implements OnClickListener {
 		
 		currentStep = new RecipeStep();
 		currentStep.setTime(1);
-		currentStepTimer = createTimer(currentStep.getTime()*60000);
+		long time = (long) currentStep.getTime()*60000;
+		currentStepTimer = createTimer(time);
 		setCurrentStep();
 		
 		//currentStepTimer = createTimer();
@@ -468,7 +469,7 @@ public class CookActivity extends Activity implements OnClickListener {
 		
 		currentStep = MaxStep;
 		currentStepDescription.setText(currentStep.getInstructions());
-		currentStepTime.setText(Long.toString(currentStep.getTime()));
+		currentStepTime.setText(Double.toString(currentStep.getTime()));
 		currentStepDescription.refreshDrawableState();
 		currentStepTime.refreshDrawableState();
 		switch(currentRecipe){
@@ -499,7 +500,8 @@ public class CookActivity extends Activity implements OnClickListener {
 		}
 
 		currentStepTimer.cancel();
-		currentStepTimer = createTimer(currentStep.getTime()*60000);//.onTick(currentStep.getTime()*60000);
+		long time = (long) currentStep.getTime()*60000;
+		currentStepTimer = createTimer(time);//.onTick(currentStep.getTime()*60000);
 		currentStepTimer.start();
 	}
 	

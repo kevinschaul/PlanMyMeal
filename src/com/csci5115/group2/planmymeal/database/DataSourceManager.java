@@ -362,7 +362,7 @@ public class DataSourceManager
 		Meal meal = new Meal();
 		meal.setId(cursor.getLong(0));
 		meal.setName(cursor.getString(1));
-		meal.setTime(cursor.getLong(2));
+		meal.setTime(cursor.getDouble(2));
 		meal.setDescription(cursor.getString(3));
 		meal.setBelongsToUser(cursor.getInt(4) == 1);
 		meal.setBelongsToCommunity(cursor.getInt(5) == 1);
@@ -725,7 +725,7 @@ public class DataSourceManager
 		Recipe recipe = new Recipe();
 		recipe.setId(cursor.getLong(0));
 		recipe.setName(cursor.getString(1));
-		recipe.setTime(cursor.getLong(2));
+		recipe.setTime(cursor.getDouble(2));
 		recipe.setDescription(cursor.getString(3));
 		recipe.setNumServings(cursor.getInt(4));
 		recipe.setBelongsToUser(cursor.getInt(5) == 1);
@@ -929,7 +929,7 @@ public class DataSourceManager
 		Ingredient ingredient = new Ingredient();
 		ingredient.setId(cursor.getLong(0));
 		ingredient.setName(cursor.getString(1));
-		ingredient.setAmount(cursor.getLong(2));
+		ingredient.setAmount(cursor.getDouble(2));
 		ingredient.setUnit(cursor.getString(3));
 		return ingredient;
 	}
@@ -1060,7 +1060,7 @@ public class DataSourceManager
 		RecipeStep step = new RecipeStep();
 		step.setId(cursor.getLong(0));
 		step.setInstructions(cursor.getString(1));
-		step.setTime(cursor.getLong(2));
+		step.setTime(cursor.getDouble(2));
 		step.setActiveStep(cursor.getInt(3) == 1);
 		step.setAppliancesUsed(getAppliances(cursor.getString(4)));
 		return step;
@@ -1129,7 +1129,7 @@ public class DataSourceManager
 	{
 		UserSettings settings = new UserSettings();
 		settings.setId(cursor.getLong(0));
-		settings.setReminderTime(cursor.getLong(1));
+		settings.setReminderTime(cursor.getDouble(1));
 		settings.setReminderSound(cursor.getString(2));
 		settings.setStartSound(cursor.getString(3));
 		settings.setNumOvens(cursor.getInt(4));
@@ -1380,7 +1380,7 @@ public class DataSourceManager
 
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Brown Sugar");
-		values.put(COLUMN_AMOUNT, .3);
+		values.put(COLUMN_AMOUNT, (double).3);
 		values.put(COLUMN_UNIT, "Cup");
 		long brownSugarId = database.insert(TABLE_INGREDIENT, null, values);
 
