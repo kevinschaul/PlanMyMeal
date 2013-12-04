@@ -34,6 +34,8 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	private DataSourceManager datasource;
 	
 	private ArrayAdapter<Cookable> adapter;
+	private static CookableListFragment cookable_list_fragment;
+	public static MealDetailFragment meal_detail_fragment;
 	
 	private static LinearLayout homeColumn0;
 	private static LinearLayout homeColumn1;
@@ -51,16 +53,15 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
         datasource.open();
         
         // List items should be given the 'activated' state when touched.
-        CookableListFragment fragment = (CookableListFragment) getSupportFragmentManager().findFragmentById(
+        cookable_list_fragment = (CookableListFragment) getSupportFragmentManager().findFragmentById(
  				R.id.home_cookable_list);
-        fragment.setActivateOnItemClick(true);
-        adapter = (ArrayAdapter<Cookable>) fragment.getListAdapter();
+        cookable_list_fragment.setActivateOnItemClick(true);
+        adapter = (ArrayAdapter<Cookable>) cookable_list_fragment.getListAdapter();
         
         // Register text listener
         List<Tag> tags = datasource.getAllTags();
         List<Meal> meals = datasource.getAllUserMeals();
         List<Recipe> recipes = datasource.getAllUserRecipes();
-        
         
         String[] autocompleteStrings = new String[tags.size() + meals.size() + recipes.size()];
         int i = 0;
@@ -155,12 +156,22 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	  protected void onResume() {
 	    datasource.open();
 	    super.onResume();
+	    cookable_list_fragment.updateData();
 	  }
 
 	  @Override
 	  protected void onPause() {
 		datasource.close();
 	    super.onPause();
+	  }
+	  
+	  public static void updateData() {
+		  if (cookable_list_fragment != null) {
+			  cookable_list_fragment.updateData();
+		  }
+		  if (currentColumns == 2 && meal_detail_fragment != null) {
+			  meal_detail_fragment.updateData();
+		  }
 	  }
 	  
 	  public static void showColumns(int numberOfColumns) {
@@ -239,6 +250,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {
 	    	if (currentColumns > 1) {
+	    		cookable_list_fragment.updateData();
 	    		showColumns(currentColumns - 1);
 	    	} else {
 	    		moveTaskToBack(true);

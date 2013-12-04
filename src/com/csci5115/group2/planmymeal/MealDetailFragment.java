@@ -46,6 +46,9 @@ public class MealDetailFragment extends Fragment {
 	
 	// Databases
 	private DataSourceManager datasource;
+	private List<Recipe> recipes;
+	private View rootView;
+	private ListView recipeListView;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -58,6 +61,8 @@ public class MealDetailFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		Log.v("MealDetailFragment", "onCreate");
 		super.onCreate(savedInstanceState);
+		
+		HomeActivity.meal_detail_fragment = this;
 		
 		Context context = this.getActivity().getApplicationContext();
 		datasource = new DataSourceManager(context);
@@ -94,14 +99,12 @@ public class MealDetailFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_meal_detail,
-				container, false);
+		
+		rootView = inflater.inflate(R.layout.fragment_meal_detail, container, false);
 		
 		Log.v("MealDetailFragment", "onCreateView()");
 		
-		Context context = rootView.getContext();
-		
-		ListView recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
+		recipeListView = (ListView) rootView.findViewById(R.id.fragment_meal_recipe_list);
 		recipeListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		recipeListView.setSelector(R.drawable.cookable_selector);
 		
@@ -118,11 +121,7 @@ public class MealDetailFragment extends Fragment {
 			TextView time = (TextView) rootView.findViewById(R.id.fragment_meal_time);
 			time.setText(meal.getReadableTime());
 			
-			List<Recipe> recipes = datasource.getMealRecipes(meal.getId());
-
-			RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
-			recipeListView.setAdapter(adapter);
-			recipeListView.setOnItemClickListener(itemClickListener);
+			updateData();
 			
 			Button cook = (Button) rootView.findViewById(R.id.fragment_meal_button_cook);
 			cook.setOnClickListener(clickListener);
@@ -151,11 +150,19 @@ public class MealDetailFragment extends Fragment {
 		return rootView;
 	}
 	
+	public void updateData() {
+		Context context = rootView.getContext();
+		recipes = datasource.getMealRecipes(meal.getId());
+
+		RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
+		recipeListView.setAdapter(adapter);
+		recipeListView.setOnItemClickListener(itemClickListener);
+	}
+	
 	public AdapterView.OnItemClickListener itemClickListener = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			
 			// Item selected must be a recipe, so split the view evenly between all columns.
 			HomeActivity.showColumns(3);
@@ -190,6 +197,8 @@ public class MealDetailFragment extends Fragment {
 					builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {   
 							datasource.deleteMeal(meal);
+							HomeActivity.showColumns(1);
+							HomeActivity.updateData();
 						}
 					});
 					builder.setNegativeButton("Cancel", null);

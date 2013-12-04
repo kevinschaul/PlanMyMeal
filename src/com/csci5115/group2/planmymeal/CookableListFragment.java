@@ -7,8 +7,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
@@ -83,16 +84,6 @@ public class CookableListFragment extends ListFragment {
 		Context context = this.getActivity().getApplicationContext();
 		datasource = new DataSourceManager(context);
 		datasource.open();
-		
-		List<Cookable> cookables = new LinkedList<Cookable>();
-		
-		List<Meal> meals = datasource.getAllUserMeals();
-		cookables.addAll(meals);
-		
-		List<Recipe> recipes = datasource.getAllUserRecipes();
-		cookables.addAll(recipes);
-		
-		setListAdapter(new CookableArrayAdapterSplit(getActivity(), cookables));
 	}
 	
 	@Override
@@ -105,7 +96,9 @@ public class CookableListFragment extends ListFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
+		
+		updateData();
+		
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState != null
 				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
@@ -153,6 +146,19 @@ public class CookableListFragment extends ListFragment {
 			// Serialize and persist the activated item position.
 			outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
 		}
+	}
+	
+	public void updateData() {
+		List<Cookable> cookables = new LinkedList<Cookable>();
+		
+		List<Meal> meals = datasource.getAllUserMeals();
+		cookables.addAll(meals);
+		
+		List<Recipe> recipes = datasource.getAllUserRecipes();
+		cookables.addAll(recipes);
+		
+		ListAdapter adapter = new CookableArrayAdapterSplit(getActivity(), cookables);
+		setListAdapter(adapter);
 	}
 
 	/**
