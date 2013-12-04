@@ -34,8 +34,8 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	private DataSourceManager datasource;
 	
 	private ArrayAdapter<Cookable> adapter;
-	private CookableListFragment cookable_list_fragment;
-	private MealDetailFragment meal_detail_fragment;
+	private static CookableListFragment cookable_list_fragment;
+	public static MealDetailFragment meal_detail_fragment;
 	
 	private static LinearLayout homeColumn0;
 	private static LinearLayout homeColumn1;
@@ -164,6 +164,16 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 		datasource.close();
 	    super.onPause();
 	  }
+	  
+	  public static void updateData() {
+          if (cookable_list_fragment != null) {
+                  cookable_list_fragment.updateData();
+          }
+          // TODO This is probably the wrong thing to check
+          if (currentColumns == 2 && meal_detail_fragment != null) {
+                  meal_detail_fragment.updateData();
+          }
+	  }
 
 	  public static void showColumns(int numberOfColumns) {
 		  
@@ -243,6 +253,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	    	if (currentColumns > 1) {
 	    		cookable_list_fragment.updateData();
 	    		showColumns(currentColumns - 1);
+	    		updateData();
 	    	} else {
 	    		moveTaskToBack(true);
 	    	}

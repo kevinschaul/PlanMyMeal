@@ -62,6 +62,8 @@ public class MealDetailFragment extends Fragment {
 		Log.v("MealDetailFragment", "onCreate");
 		super.onCreate(savedInstanceState);
 		
+		HomeActivity.meal_detail_fragment = this;
+		
 		Context context = this.getActivity().getApplicationContext();
 		datasource = new DataSourceManager(context);
 		datasource.open();
@@ -81,6 +83,7 @@ public class MealDetailFragment extends Fragment {
 	public void onDestroy() {
 		super.onDestroy();
 		
+		HomeActivity.meal_detail_fragment = null;
 		datasource.close();
 	}
 	
@@ -196,6 +199,7 @@ public class MealDetailFragment extends Fragment {
 						public void onClick(DialogInterface dialog, int id) {   
 							datasource.deleteMeal(meal);
 							HomeActivity.showColumns(1);
+							HomeActivity.updateData();
 						}
 					});
 					builder.setNegativeButton("Cancel", null);

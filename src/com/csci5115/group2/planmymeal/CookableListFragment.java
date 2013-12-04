@@ -149,16 +149,22 @@ public class CookableListFragment extends ListFragment {
 	}
 	
 	public void updateData() {
+		Context context = this.getActivity().getApplicationContext();
+		DataSourceManager mdatasource = new DataSourceManager(context);
+		mdatasource.open();
+		
 		List<Cookable> cookables = new LinkedList<Cookable>();
 		
-		List<Meal> meals = datasource.getAllUserMeals();
+		List<Meal> meals = mdatasource.getAllUserMeals();
 		cookables.addAll(meals);
 		
-		List<Recipe> recipes = datasource.getAllUserRecipes();
+		List<Recipe> recipes = mdatasource.getAllUserRecipes();
 		cookables.addAll(recipes);
 		
 		ListAdapter adapter = new CookableArrayAdapterSplit(getActivity(), cookables);
 		setListAdapter(adapter);
+		
+		mdatasource.close();
 	}
 
 	/**
