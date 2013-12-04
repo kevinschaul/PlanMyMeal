@@ -1456,6 +1456,8 @@ public class DataSourceManager
 
 		// Green Bean Steps
 		values = new ContentValues();
+		values.put(COLUMN_INSTRUCTIONS,
+				"Preheat oven to 350 F.");
 		values.put(COLUMN_TIME, .2);
 		values.put(COLUMN_ACTIVE, 0);
 		long greenBeanStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
