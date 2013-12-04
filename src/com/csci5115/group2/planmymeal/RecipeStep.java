@@ -7,7 +7,7 @@ import android.text.format.Time;
 public class RecipeStep {
 	private long id;
 	private String instructions;
-	private long time;
+	private double time;
 	private boolean activeStep;
 	private List<String> appliancesUsed;
 	
@@ -30,11 +30,11 @@ public class RecipeStep {
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
 	}
-	public long getTime() {
+	public double getTime() {
 		return time;
 	}
-	public void setTime(long time) {
-		this.time = time;
+	public void setTime(double d) {
+		this.time = d;
 	}
 	public List<String> getAppliancesUsed() {
 		return appliancesUsed;
