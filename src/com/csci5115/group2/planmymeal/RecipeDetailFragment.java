@@ -41,6 +41,9 @@ public class RecipeDetailFragment extends Fragment {
 	private Typeface fontAwesome;
 	private boolean fromMeal = false;
 	private long mealId;
+	private View rootView;
+	private LayoutInflater inflater;
+	private long recipeId;
 	
 	// Databases
 	private DataSourceManager datasource;
@@ -70,9 +73,8 @@ public class RecipeDetailFragment extends Fragment {
 			// Load the dummy content specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			long id = arguments.getLong(ARG_ITEM_ID);
-			Log.v(HomeActivity.TAG, Long.toString(id));
-			recipe = datasource.getRecipeById(id);
+			recipeId = arguments.getLong(ARG_ITEM_ID);
+			recipe = datasource.getRecipeById(recipeId);
 		}
 		
 		if (arguments.containsKey(ARG_FROM_MEAL) && arguments.containsKey(ARG_FROM_MEAL_ID)) {
@@ -89,16 +91,22 @@ public class RecipeDetailFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(LayoutInflater _inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_recipe_detail,
+		rootView = _inflater.inflate(R.layout.fragment_recipe_detail,
 				container, false);
 		
+		inflater = _inflater;
+
+		fillInMealData();
+
+		return rootView;
+	}
+	
+	private void fillInMealData() {
+		//recipe = datasource.getRecipeById(recipeId);
+		
 		if (recipe != null) {
-			Log.v(HomeActivity.TAG, "Recipe exists");
-			
-			long recipeId = recipe.getId();
-			
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_recipe_title);
 			name.setText(recipe.getName());
 			
@@ -113,6 +121,7 @@ public class RecipeDetailFragment extends Fragment {
 			
 			Button delete = (Button) rootView.findViewById(R.id.fragment_recipe_button_delete);
 			delete.setOnClickListener(clickListener);
+			
 			if (fromMeal) {
 				delete.setText("Remove from meal");
 			}
@@ -157,12 +166,11 @@ public class RecipeDetailFragment extends Fragment {
 				
 				steps_wrapper.addView(stepView);
 			}
-			
-		} else {
-			Log.v(HomeActivity.TAG, "Recipe does not exist.");
 		}
-
-		return rootView;
+	}
+	
+	public void updateData() {
+		fillInMealData();
 	}
 	
 	public View.OnClickListener clickListener = new OnClickListener() {
