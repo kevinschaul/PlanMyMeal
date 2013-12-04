@@ -179,8 +179,10 @@ public class RecipeDetailFragment extends Fragment {
 						builder.setTitle("Remove recipe?");
 						builder.setMessage("Remove " + recipe.getName() + " from meal?");
 						builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {   
+							public void onClick(DialogInterface dialog, int id) {
 								datasource.deleteMealRecipe(mealId, recipe.getId());
+								HomeActivity.showColumns(2);
+								HomeActivity.updateData();
 							}
 						});
 						builder.setNegativeButton("Cancel", null);
@@ -193,6 +195,8 @@ public class RecipeDetailFragment extends Fragment {
 						builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {   
 								datasource.deleteRecipe(recipe);
+								HomeActivity.showColumns(1);
+								HomeActivity.updateData();
 							}
 						});
 						builder.setNegativeButton("Cancel", null);
