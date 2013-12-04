@@ -70,8 +70,8 @@ public class DataSourceManager
 	public static final String TABLE_RECIPE = "recipe";
 	public static final String COLUMN_RECIPE_NUM_SERVINGS = "numServings";
 	private static String[] allRecipeColumns =
-	{ COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION, COLUMN_RECIPE_NUM_SERVINGS, COLUMN_USER,
-			COLUMN_CC };
+	{ COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DESCRIPTION,
+			COLUMN_RECIPE_NUM_SERVINGS, COLUMN_USER, COLUMN_CC };
 	// Database creation
 	private static final String RECIPE_DATABASE_CREATE = "create table "
 			+ TABLE_RECIPE + "(" + COLUMN_ID
@@ -221,11 +221,13 @@ public class DataSourceManager
 	public Meal importMeal(long mealId)
 	{
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_CC, 1);
-		database.update(TABLE_MEAL, values, COLUMN_ID + "=" + mealId, null);
+		values.put(COLUMN_USER, 1);
+		long newId = database.update(TABLE_MEAL, values, COLUMN_ID + "=" + mealId, null);
 		Cursor cursor = database.query(TABLE_MEAL, allMealColumns, COLUMN_ID
 				+ " = " + mealId, null, null, null, null);
+		cursor.moveToFirst();
 		Meal mealToImport = cursorToMeal(cursor);
+		cursor.close();
 		return mealToImport;
 	}
 
@@ -578,11 +580,13 @@ public class DataSourceManager
 	public Recipe importRecipe(long recipeId)
 	{
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_CC, 1);
+		values.put(COLUMN_USER, 1);
 		database.update(TABLE_RECIPE, values, COLUMN_ID + "=" + recipeId, null);
 		Cursor cursor = database.query(TABLE_RECIPE, allRecipeColumns,
 				COLUMN_ID + " = " + recipeId, null, null, null, null);
+		cursor.moveToFirst();
 		Recipe recipeToImport = cursorToRecipe(cursor);
+		cursor.close();
 		return recipeToImport;
 	}
 
@@ -774,10 +778,11 @@ public class DataSourceManager
 		cursor.close();
 		return newIngredient;
 	}
-	
-	public Ingredient addIngredientToRecipe(String name, double amount, String unit, long recipeId)
+
+	public Ingredient addIngredientToRecipe(String name, double amount,
+			String unit, long recipeId)
 	{
-		// Add to ingredient table 
+		// Add to ingredient table
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME, name);
 		values.put(COLUMN_AMOUNT, amount);
@@ -796,37 +801,40 @@ public class DataSourceManager
 		database.insert(TABLE_RECIPE_INGREDIENT_REL, null, newValues);
 		return newIngredient;
 	}
-	
-	public Ingredient updateRecipeIngredient(long ingredientId, String name, double amount, String unit, long recipeId)
+
+	public Ingredient updateRecipeIngredient(long ingredientId, String name,
+			double amount, String unit, long recipeId)
 	{
-		// Add to ingredient table 
-				ContentValues values = new ContentValues();
-				values.put(COLUMN_NAME, name);
-				values.put(COLUMN_AMOUNT, amount);
-				values.put(COLUMN_UNIT, unit);
-				long insertId = database.update(TABLE_INGREDIENT, values, COLUMN_ID + "=" + ingredientId, null);
-				Cursor cursor = database.query(TABLE_INGREDIENT, allIngredientColumns,
-						COLUMN_ID + " = " + insertId, null, null, null, null);
-				cursor.moveToFirst();
-				Ingredient newIngredient = cursorToIngredient(cursor);
-				cursor.close();
-				
-				return newIngredient;
+		// Add to ingredient table
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_NAME, name);
+		values.put(COLUMN_AMOUNT, amount);
+		values.put(COLUMN_UNIT, unit);
+		long insertId = database.update(TABLE_INGREDIENT, values, COLUMN_ID
+				+ "=" + ingredientId, null);
+		Cursor cursor = database.query(TABLE_INGREDIENT, allIngredientColumns,
+				COLUMN_ID + " = " + insertId, null, null, null, null);
+		cursor.moveToFirst();
+		Ingredient newIngredient = cursorToIngredient(cursor);
+		cursor.close();
+
+		return newIngredient;
 	}
-	
+
 	public void deleteRecipeIngredient(Ingredient i, long recipeId)
 	{
 		long id = i.getId();
-		database.delete(TABLE_RECIPE_INGREDIENT_REL, COLUMN_INGREDIENT_ID + " = " + id
-				+ " and " + COLUMN_RECIPE_ID + "=" + recipeId, null);
-		System.out.println("Recipe Ingredient " + i.getName() + " deleted from recipe with id: " + recipeId);
+		database.delete(TABLE_RECIPE_INGREDIENT_REL, COLUMN_INGREDIENT_ID
+				+ " = " + id + " and " + COLUMN_RECIPE_ID + "=" + recipeId,
+				null);
+		System.out.println("Recipe Ingredient " + i.getName()
+				+ " deleted from recipe with id: " + recipeId);
 	}
-	
+
 	public Ingredient getIngredientById(long id)
 	{
-		Cursor cursor = database.query(TABLE_INGREDIENT,
-				allIngredientColumns, COLUMN_ID + " = " + id,
-				null, null, null, null);
+		Cursor cursor = database.query(TABLE_INGREDIENT, allIngredientColumns,
+				COLUMN_ID + " = " + id, null, null, null, null);
 
 		cursor.moveToFirst();
 		Ingredient newI = cursorToIngredient(cursor);
@@ -951,20 +959,24 @@ public class DataSourceManager
 		cursor.close();
 		return newStep;
 	}
-	
-	public RecipeStep addStepToRecipe(String instructions, long time, Boolean isActive, List<String> appliancesUsed, long recipeId)
-	{
-				RecipeStep newStep = createRecipeStep(instructions, time, isActive, appliancesUsed);
 
-				// Add to RecipeStep table.
-				ContentValues newValues = new ContentValues();
-				newValues.put(COLUMN_RECIPE_STEP_ID, newStep.getId());
-				newValues.put(COLUMN_RECIPE_ID, recipeId);
-				database.insert(TABLE_RECIPE_STEP_REL, null, newValues);
-				return newStep;
+	public RecipeStep addStepToRecipe(String instructions, long time,
+			Boolean isActive, List<String> appliancesUsed, long recipeId)
+	{
+		RecipeStep newStep = createRecipeStep(instructions, time, isActive,
+				appliancesUsed);
+
+		// Add to RecipeStep table.
+		ContentValues newValues = new ContentValues();
+		newValues.put(COLUMN_RECIPE_STEP_ID, newStep.getId());
+		newValues.put(COLUMN_RECIPE_ID, recipeId);
+		database.insert(TABLE_RECIPE_STEP_REL, null, newValues);
+		return newStep;
 	}
-	
-	public RecipeStep updateRecipeStep(long stepId, String instructions, long time, Boolean isActive, List<String> appliancesUsed, long recipeId)
+
+	public RecipeStep updateRecipeStep(long stepId, String instructions,
+			long time, Boolean isActive, List<String> appliancesUsed,
+			long recipeId)
 	{
 		// Update RecipeStep
 		ContentValues values = new ContentValues();
@@ -972,7 +984,8 @@ public class DataSourceManager
 		values.put(COLUMN_TIME, time);
 		values.put(COLUMN_ACTIVE, isActive);
 		values.put(COLUMN_APPLIANCES, createApplianceString(appliancesUsed));
-		long insertId = database.update(TABLE_RECIPE_STEP, values, COLUMN_ID + "=" + stepId, null);
+		long insertId = database.update(TABLE_RECIPE_STEP, values, COLUMN_ID
+				+ "=" + stepId, null);
 		Cursor cursor = database.query(TABLE_RECIPE_STEP, allRecipeStepColumns,
 				COLUMN_ID + " = " + insertId, null, null, null, null);
 		cursor.moveToFirst();
@@ -980,7 +993,7 @@ public class DataSourceManager
 		cursor.close();
 		return newStep;
 	}
-	
+
 	public Recipe updateRecipe(long id, String name, double time,
 			String description, Integer numServings)
 	{
@@ -991,7 +1004,8 @@ public class DataSourceManager
 		values.put(COLUMN_RECIPE_NUM_SERVINGS, numServings);
 		values.put(COLUMN_USER, 1);
 		values.put(COLUMN_CC, 0);
-		long insertId = database.update(TABLE_RECIPE, values, COLUMN_ID + "=" + id, null);
+		long insertId = database.update(TABLE_RECIPE, values, COLUMN_ID + "="
+				+ id, null);
 		Cursor cursor = database.query(TABLE_RECIPE, allRecipeColumns,
 				COLUMN_ID + " = " + insertId, null, null, null, null);
 		cursor.moveToFirst();
@@ -1003,15 +1017,15 @@ public class DataSourceManager
 	public void deleteRecipeStep(RecipeStep step)
 	{
 		// delete actual step
-		database.delete(TABLE_RECIPE_STEP_REL, COLUMN_RECIPE_STEP_ID + "=" + step.getId(), null);
-		System.out.println("Recipe Step in recipe deleted with id: " + step.getId());
+		database.delete(TABLE_RECIPE_STEP_REL, COLUMN_RECIPE_STEP_ID + "="
+				+ step.getId(), null);
+		System.out.println("Recipe Step in recipe deleted with id: "
+				+ step.getId());
 		// delete actual step
 		long id = step.getId();
 		System.out.println("Recipe Step deleted with id: " + id);
 		database.delete(TABLE_RECIPE_STEP, COLUMN_ID + " = " + id, null);
-		
-		
-		
+
 	}
 
 	public List<RecipeStep> getRecipeSteps(long recipeId)
@@ -1084,7 +1098,7 @@ public class DataSourceManager
 		{
 			applianceString += appliances.get(i) + ";";
 		}
-		if(appliances.size() > 1)
+		if (appliances.size() > 1)
 		{
 			applianceString += appliances.get(appliances.size() - 1);
 		}
@@ -1199,7 +1213,7 @@ public class DataSourceManager
 		values.put(COLUMN_USER, 1);
 		values.put(COLUMN_CC, 1);
 		long mashedPotatoesId = database.insert(TABLE_RECIPE, null, values);
-		
+
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Green Bean Cassarole");
 		values.put(COLUMN_TIME, 1.5);
@@ -1217,7 +1231,6 @@ public class DataSourceManager
 		values.put(COLUMN_USER, 1);
 		values.put(COLUMN_CC, 1);
 		long stuffingId = database.insert(TABLE_RECIPE, null, values);
-
 
 		values = new ContentValues();
 		values.put(COLUMN_MEAL_ID, thanksgivingId);
@@ -1380,7 +1393,7 @@ public class DataSourceManager
 
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Brown Sugar");
-		values.put(COLUMN_AMOUNT, (double).3);
+		values.put(COLUMN_AMOUNT, (double) .3);
 		values.put(COLUMN_UNIT, "Cup");
 		long brownSugarId = database.insert(TABLE_INGREDIENT, null, values);
 
@@ -1456,8 +1469,7 @@ public class DataSourceManager
 
 		// Green Bean Steps
 		values = new ContentValues();
-		values.put(COLUMN_INSTRUCTIONS,
-				"Preheat oven to 350 F.");
+		values.put(COLUMN_INSTRUCTIONS, "Preheat oven to 350 F.");
 		values.put(COLUMN_TIME, .2);
 		values.put(COLUMN_ACTIVE, 0);
 		long greenBeanStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
@@ -1635,7 +1647,7 @@ public class DataSourceManager
 		values.put(COLUMN_USER, 0);
 		values.put(COLUMN_CC, 1);
 		long meal2Id = database.insert(TABLE_MEAL, null, values);
-		
+
 		// Initialize User Settings
 		values = new ContentValues();
 		values.put(COLUMN_REMINDER_TIME, 0);
