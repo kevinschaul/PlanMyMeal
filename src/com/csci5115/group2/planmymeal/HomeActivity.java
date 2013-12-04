@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +38,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	private static LinearLayout homeColumn0;
 	private static LinearLayout homeColumn1;
 	private static LinearLayout homeColumn2;
+	private static int currentColumns = 1;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,6 +180,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 		  		  	homeColumn1.setVisibility(View.GONE);
 		  		  	homeColumn2.setLayoutParams(params2);
 		  		  	homeColumn2.setVisibility(View.GONE);
+		  		  	currentColumns = 1;
 		            break;
 		        case 2:
 		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3);
@@ -188,6 +191,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 		  		  	homeColumn1.setVisibility(View.VISIBLE);
 		  		  	homeColumn2.setLayoutParams(params2);
 		  		  	homeColumn2.setVisibility(View.GONE);
+		  		    currentColumns = 2;
 		        	break;
 		        case 3:
 		        	params0 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 2);
@@ -198,6 +202,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 		  		  	homeColumn1.setVisibility(View.VISIBLE);
 		  		  	homeColumn2.setLayoutParams(params2);
 		  		  	homeColumn2.setVisibility(View.VISIBLE);
+		  		    currentColumns = 3;
 		        	break;
 		        default:
 		            break;
@@ -228,5 +233,18 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 			}
 			break;
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	    	if (currentColumns > 1) {
+	    		showColumns(currentColumns - 1);
+	    	} else {
+	    		moveTaskToBack(true);
+	    	}
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 }
