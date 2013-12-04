@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -52,6 +53,7 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(R.layout.activity_new_meal);
         setTitle("New Meal");
 		context = this;
@@ -70,59 +72,6 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 		
 		final EditText newMealDescriptionView = (EditText) findViewById(R.id.new_meal_mealDescription);
 		newMealDescriptionView.setHint("Meal Decription");
-		
-		//TODO: Create New Meal With all stuff
-		Button saveButton = (Button) findViewById(R.id.new_meal_save_button);
-		saveButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v)
-			{
-				//TODO: save new name of meal
-				String mealNameText = newMealNameView.getText().toString();
-				String mealTimeText = newMealTimeView.getText().toString();
-				String mealDescriptionText = newMealDescriptionView.getText().toString();
-				Double mealTimeDouble = Double.parseDouble(mealTimeText);
-				
-				if(newMeal == null)
-				{
-					newMeal = datasource.createNewUserMeal(mealNameText, mealTimeDouble, mealDescriptionText);
-					//notifyDataSetChanged:not sure how to do this for prev page
-				}
-				else{
-					// Update meal if anything has changed
-				}
-				
-				//TODO: save added Tags
-				for(Tag tag : addedTags)
-				{
-					if(!datasource.getMealTags(newMeal.getId()).contains(tag))
-					{
-						newMeal.tags.add(new Tag(tag.getName()));
-						datasource.addTagToMeal(tag.getName(), newMeal.getId());
-					}
-				}
-				//TODO: save added Recipes
-				for(Recipe recipe : addedRecipes)
-				{
-					if(!datasource.getMealRecipes(newMeal.getId()).contains(recipe))
-					{
-						newMeal.recipes.add(recipe);
-						datasource.addMealRecipe(newMeal.getId(), recipe.getId());
-					}
-				}
-				AlertDialog.Builder builder = new AlertDialog.Builder(context);
-				builder.setTitle("Meal Saved");
-				builder.setMessage("Meal: " + newMeal.getName() +" Saved");
-				builder.setNeutralButton("Okay",  new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {   
-						//add meal
-					}
-				});
-				AlertDialog dialog = builder.create();
-				dialog.show();
-			}
-		}
-		);
 		        
 		// Set up recipes in meal list
 		//TODO:Populate all 						
@@ -219,13 +168,64 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 			}
 		}
 		);
+		//TODO: Create New Meal With all stuff
+		Button saveButton = (Button) findViewById(R.id.new_meal_save_button);
+		saveButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v)
+			{
+				//TODO: save new name of meal
+				String mealNameText = newMealNameView.getText().toString();
+				String mealTimeText = newMealTimeView.getText().toString();
+				String mealDescriptionText = newMealDescriptionView.getText().toString();
+				Double mealTimeDouble = Double.parseDouble(mealTimeText);
+					
+				if(newMeal == null)
+				{
+					newMeal = datasource.createNewUserMeal(mealNameText, mealTimeDouble, mealDescriptionText);
+					//notifyDataSetChanged:not sure how to do this for prev page
+				}
+				else{
+					// Update meal if anything has changed
+				}
+				
+				//TODO: save added Tags
+				for(Tag tag : addedTags)
+				{
+					if(!datasource.getMealTags(newMeal.getId()).contains(tag))
+					{
+						newMeal.tags.add(new Tag(tag.getName()));
+						datasource.addTagToMeal(tag.getName(), newMeal.getId());
+					}
+				}
+				//TODO: save added Recipes
+				for(Recipe recipe : addedRecipes)
+				{
+					if(!datasource.getMealRecipes(newMeal.getId()).contains(recipe))
+					{
+						newMeal.recipes.add(recipe);
+						datasource.addMealRecipe(newMeal.getId(), recipe.getId());
+					}
+				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setTitle("Meal Saved");
+				builder.setMessage("Meal: " + newMeal.getName() +" Saved");
+				builder.setNeutralButton("Okay",  new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {   
+						//add meal
+					}
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
+			}
+		}
+		);
 		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.community_cookbook, menu);
+		// Inflate the menu; this adds items to the action bar if it is present.\
 		return true;
 	}
 	
