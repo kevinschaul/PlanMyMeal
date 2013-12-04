@@ -645,11 +645,4 @@ public class EditRecipeActivity extends Activity
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		HomeActivity.updateData();
-	}
-
 }

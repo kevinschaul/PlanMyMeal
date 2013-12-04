@@ -213,10 +213,4 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 	public void onFocusChange(View v, boolean hasFocus) {
 	}
 	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		HomeActivity.updateData();
-	}
-	
 }
