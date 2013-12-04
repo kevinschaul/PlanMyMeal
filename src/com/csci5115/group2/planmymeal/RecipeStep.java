@@ -7,12 +7,13 @@ import android.text.format.Time;
 public class RecipeStep {
 	private long id;
 	private String instructions;
-	private long time;
+	private double time;
 	private boolean activeStep;
 	private List<String> appliancesUsed;
-	
+	private boolean completed;
 	
 	public RecipeStep(){
+		completed = false;
 		//default Constructor
 	}
 
@@ -30,11 +31,11 @@ public class RecipeStep {
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
 	}
-	public long getTime() {
+	public double getTime() {
 		return time;
 	}
-	public void setTime(long time) {
-		this.time = time;
+	public void setTime(double d) {
+		this.time = d;
 	}
 	public List<String> getAppliancesUsed() {
 		return appliancesUsed;
@@ -47,6 +48,13 @@ public class RecipeStep {
 	}
 	public void setActiveStep(boolean activeStep) {
 		this.activeStep = activeStep;
+	}
+	public void setCompleted(){
+		this.completed = true;
+	}
+	
+	public boolean isCompleted(){
+		return this.completed;
 	}
 	
 	

@@ -3,7 +3,7 @@ package com.csci5115.group2.planmymeal;
 public class UserSettings
 {
 	private long id;
-	private long reminderTime;
+	private double reminderTime;
 	private String reminderSound;
 	private String startSound;
 	private int numOvens;
@@ -17,13 +17,13 @@ public class UserSettings
 	{
 		this.id = id;
 	}
-	public long getReminderTime()
+	public double getReminderTime()
 	{
 		return reminderTime;
 	}
-	public void setReminderTime(long reminderTime)
+	public void setReminderTime(double d)
 	{
-		this.reminderTime = reminderTime;
+		this.reminderTime = d;
 	}
 	public String getReminderSound()
 	{

@@ -4,7 +4,7 @@ public class Ingredient {
 
 	private long id;
 	private String name;
-	private long amount;
+	private double amount;
 	private String unit;
 	
 	
@@ -35,10 +35,10 @@ public class Ingredient {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public long getAmount() {
+	public double getAmount() {
 		return amount;
 	}
-	public void setAmount(long amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	public String getUnit() {

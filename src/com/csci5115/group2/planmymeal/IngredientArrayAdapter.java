@@ -3,6 +3,7 @@ package com.csci5115.group2.planmymeal;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.R.string;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 
 public class IngredientArrayAdapter extends ArrayAdapter<Ingredient>{
 	
@@ -32,9 +34,14 @@ public class IngredientArrayAdapter extends ArrayAdapter<Ingredient>{
 	    View rowView = inflater.inflate(R.layout.row_ingredient, parent, false);
 	    
 	    TextView ingredientName = (TextView) rowView.findViewById(R.id.row_ingredient_name);
-	    
+	    //TextView ingredientDetails = (TextView) rowView.findViewById(R.id.row_ingredient_details);
+	     
 	    Ingredient ingred = values.get(position);
-	    ingredientName.setText(ingred.getName());
+	    //String[] ingredientInfo = {ingred.getName(), ingred.getAmount() + " " + ingred.getUnit()};
+	    ingredientName.setText(ingred.getName() + "\n" + ingred.getAmount() + " " + ingred.getUnit());
+	    //ingredientName.setPadding(0, 0, 0, 0);
+	    //ingredientDetails.setText();
+	    //ingredientDetails.setPadding(0,0,0,0);
 	    
 	    return rowView;
 	}

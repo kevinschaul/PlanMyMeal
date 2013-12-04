@@ -187,7 +187,7 @@ public class EditRecipeActivity extends Activity
 					((EditText) findViewById(R.id.edit_recipe_ingredient_name))
 							.setText(ingredient.getName());
 					((EditText) findViewById(R.id.edit_recipe_ingredient_amount))
-							.setText(Long.toString(ingredient.getAmount()));
+							.setText(Double.toString(ingredient.getAmount()));
 					((EditText) findViewById(R.id.edit_recipe_ingredient_unit))
 							.setText(ingredient.getUnit());
 					newIngredient = false;
@@ -520,7 +520,7 @@ public class EditRecipeActivity extends Activity
 					((EditText) findViewById(R.id.edit_recipe_step_name))
 							.setText(step.getInstructions());
 					((EditText) findViewById(R.id.edit_recipe_step_time))
-							.setText(Long.toString(step.getTime()));
+							.setText(Double.toString(step.getTime()));
 					// initialize appliances and active status
 					List<String> appliances = step.getAppliancesUsed();
 					((CheckBox) findViewById(R.id.oven_used_chk_box))
