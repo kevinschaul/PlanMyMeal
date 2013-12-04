@@ -1633,31 +1633,7 @@ public class DataSourceManager
 		values.put(COLUMN_USER, 0);
 		values.put(COLUMN_CC, 1);
 		long meal2Id = database.insert(TABLE_MEAL, null, values);
-
-		// Other Recipes
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Beef Stew");
-		values.put(COLUMN_TIME, 7.2);
-		values.put(COLUMN_DESCRIPTION, "Old Family Favorite");
-		values.put(COLUMN_RECIPE_NUM_SERVINGS, 3);
-		values.put(COLUMN_USER, 1);
-		values.put(COLUMN_CC, 0);
-		long beefStewId = database.insert(TABLE_RECIPE, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_NAME, "Lutefisk");
-		values.put(COLUMN_TIME, 240.5);
-		values.put(COLUMN_DESCRIPTION, "Traditional Scandinavian Dish");
-		values.put(COLUMN_RECIPE_NUM_SERVINGS, 12);
-		values.put(COLUMN_USER, 1);
-		values.put(COLUMN_CC, 0);
-		long lutefiskId = database.insert(TABLE_RECIPE, null, values);
-
-		values = new ContentValues();
-		values.put(COLUMN_MEAL_ID, meal2Id);
-		values.put(COLUMN_RECIPE_ID, lutefiskId);
-		database.insert(TABLE_MEAL_RECIPE_REL, null, values);
-
+		
 		// Initialize User Settings
 		values = new ContentValues();
 		values.put(COLUMN_REMINDER_TIME, 0);
