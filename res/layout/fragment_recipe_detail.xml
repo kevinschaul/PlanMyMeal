@@ -38,6 +38,8 @@
 		</LinearLayout>
     </RelativeLayout>
     
+    <View style="@style/Divider" />
+    
     <Button
         android:id="@+id/fragment_recipe_button_Cook"
         android:text="Cook recipe"

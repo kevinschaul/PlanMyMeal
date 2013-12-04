@@ -166,6 +166,8 @@ public class MealDetailFragment extends Fragment {
 			Recipe recipe = (Recipe) parent.getItemAtPosition(position);
 			Bundle arguments = new Bundle();
 			arguments.putLong(RecipeDetailFragment.ARG_ITEM_ID, recipe.getId());
+			arguments.putBoolean(RecipeDetailFragment.ARG_FROM_MEAL, true);
+			arguments.putLong(RecipeDetailFragment.ARG_FROM_MEAL_ID, meal.getId());
 			RecipeDetailFragment fragment = new RecipeDetailFragment();
 			fragment.setArguments(arguments);
 			getFragmentManager().beginTransaction()
