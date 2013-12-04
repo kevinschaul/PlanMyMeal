@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,6 +42,7 @@ public class MealDetailFragment extends Fragment {
 	 */
 	private Meal meal;
 	private Typeface fontAwesome;
+	private long mealId;
 	
 	// Databases
 	private DataSourceManager datasource;
@@ -74,8 +74,8 @@ public class MealDetailFragment extends Fragment {
 			// Load the dummy content specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			long id = getArguments().getLong(ARG_ITEM_ID);
-			meal = datasource.getMealById(id);
+			mealId = getArguments().getLong(ARG_ITEM_ID);
+			meal = datasource.getMealById(mealId);
 		}
 	}
 	
@@ -114,15 +114,35 @@ public class MealDetailFragment extends Fragment {
 				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(recipeListView, savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
 		}
+		
+		updateData();
+		fillInMealData();
+		
+		LinearLayout tags_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_meal_tags_wrapper);
+		List<Tag> tags = datasource.getMealTags(meal.getId());
+		for (Tag tag : tags) {
+			View tagView = inflater.inflate(R.layout.tag, null);
+			
+			TextView tagName = (TextView) tagView.findViewById(R.id.tag_name);
+			tagName.setText(tag.getName());
+			
+			Button tagDelete = (Button) tagView.findViewById(R.id.tag_button_delete);
+			tagDelete.setTypeface(fontAwesome);
+			
+			tags_wrapper.addView(tagView);
+		}
 
+		return rootView;
+	}
+	
+	public void fillInMealData() {
+		meal = datasource.getMealById(mealId);
 		if (meal != null) {
 			TextView name = (TextView) rootView.findViewById(R.id.fragment_meal_title);
 			name.setText(meal.getName());
 			
 			TextView time = (TextView) rootView.findViewById(R.id.fragment_meal_time);
 			time.setText(meal.getReadableTime());
-			
-			updateData();
 			
 			Button cook = (Button) rootView.findViewById(R.id.fragment_meal_button_cook);
 			cook.setOnClickListener(clickListener);
@@ -132,23 +152,7 @@ public class MealDetailFragment extends Fragment {
 			
 			Button delete = (Button) rootView.findViewById(R.id.fragment_meal_button_delete);
 			delete.setOnClickListener(clickListener);
-			
-			LinearLayout tags_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_meal_tags_wrapper);
-			List<Tag> tags = datasource.getMealTags(meal.getId());
-			for (Tag tag : tags) {
-				View tagView = inflater.inflate(R.layout.tag, null);
-				
-				TextView tagName = (TextView) tagView.findViewById(R.id.tag_name);
-				tagName.setText(tag.getName());
-				
-				Button tagDelete = (Button) tagView.findViewById(R.id.tag_button_delete);
-				tagDelete.setTypeface(fontAwesome);
-				
-				tags_wrapper.addView(tagView);
-			}
 		}
-
-		return rootView;
 	}
 	
 	public void updateData() {
@@ -158,6 +162,8 @@ public class MealDetailFragment extends Fragment {
 		RecipeDetailArrayAdapter adapter = new RecipeDetailArrayAdapter(context, recipes);
 		recipeListView.setAdapter(adapter);
 		recipeListView.setOnItemClickListener(itemClickListener);
+		
+		fillInMealData();
 	}
 	
 	public AdapterView.OnItemClickListener itemClickListener = new OnItemClickListener() {
