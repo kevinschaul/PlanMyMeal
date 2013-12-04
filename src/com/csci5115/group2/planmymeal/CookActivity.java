@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -50,6 +51,8 @@ public class CookActivity extends Activity implements OnClickListener {
 	public Recipe recipe2;
 	public Recipe recipe3;
 	public LinkedList<Recipe> allRecipesList;
+	
+	
 	RecipeStepsArrayAdapter recipeStepAdapter0;
 	RecipeStepsArrayAdapter recipeStepAdapter1;
 	RecipeStepsArrayAdapter recipeStepAdapter2;
@@ -60,6 +63,8 @@ public class CookActivity extends Activity implements OnClickListener {
 	public TextView currentStepTime;
 	public int currentRecipe;
 	public Button nextStep;
+	public Button add30Seconds;
+	public Button timeline;
 	public CountDownTimer currentStepTimer;
 	
 	public LinkedList<string> StepOrder;
@@ -70,6 +75,9 @@ public class CookActivity extends Activity implements OnClickListener {
 	
 	public Uri notification;
 	public Ringtone r;
+	
+	public LinkedList<RecipeStep> allRecipeSteps;
+	public int currentRecipeStep;
 	
 
 	@Override
@@ -112,8 +120,14 @@ public class CookActivity extends Activity implements OnClickListener {
 		
 		currentStepDescription = (TextView)findViewById(R.id.currentStepDescription);
 		currentStepTime = (TextView)findViewById(R.id.currentStepTime);
-		nextStep = (Button)findViewById(R.id.button0);
+		nextStep = (Button)findViewById(R.id.nextStepButton);
 		nextStep.setOnClickListener(this);	
+		
+		timeline = (Button)findViewById(R.id.timelineButton);
+		timeline.setOnClickListener(this);
+		
+		add30Seconds = (Button)findViewById(R.id.addTime);
+		add30Seconds.setOnClickListener(this);
 		
 		currentStep = new RecipeStep();
 		currentStep.setTime(1);
@@ -145,6 +159,8 @@ public class CookActivity extends Activity implements OnClickListener {
 				public void onTick(long millisUntilFinished) {
 					currentStepTime.setText(makeTimeString(millisUntilFinished));
 					timeTilFinished = millisUntilFinished;
+					currentStepTime.setBackgroundColor(getColor(millisUntilFinished));
+					currentStepDescription.setBackgroundColor(getColor(millisUntilFinished));
 				}
 
 				public void onFinish() {
@@ -152,6 +168,20 @@ public class CookActivity extends Activity implements OnClickListener {
 					r.play();
 					nextStep.callOnClick();
 				}
+				
+				public int getColor(long millisUntilFinished) {
+					if(millisUntilFinished <= 30000)
+					{
+						return Color.RED;
+					}
+					else if(millisUntilFinished <= 60000)
+					{
+						return Color.YELLOW;
+					}
+					
+					return Color.GREEN;
+				}
+							
 		 };
 		return newTimer;		
 	}
@@ -185,69 +215,63 @@ public class CookActivity extends Activity implements OnClickListener {
 	}
 	
 	public void removeRecipeStep(int recipe){
-		List<RecipeStep> newSteps = new LinkedList<RecipeStep>();
+		//List<RecipeStep> newSteps = new LinkedList<RecipeStep>();
+		//newSteps = recipe0.getSteps();
+		//newSteps.remove(0);
+		//if(newSteps.isEmpty())
+		//{
+		//	hideRecipe(0);
+		//}
+		//else
+		//{
+		//	recipe0.setSteps(newSteps);
+		// allRecipes.refreshDrawableState();
+		//	recipeStepAdapter0.notifyDataSetChanged();
+		//	recipeHolder0.refreshDrawableState();
+		//}
+		
 		
 		switch(recipe){
 			case 0:
-				newSteps = recipe0.getSteps();
-				newSteps.remove(0);
-				if(newSteps.isEmpty())
-				{
-					hideRecipe(0);
-				}
-				else
-				{
-					recipe0.setSteps(newSteps);
-					allRecipes.refreshDrawableState();
-					recipeStepAdapter0.notifyDataSetChanged();
-					recipeHolder0.refreshDrawableState();
-				}
+				completeStepInRecipe(recipe0);
+				allRecipes.refreshDrawableState();
+				recipeStepAdapter0.notifyDataSetChanged();
+				recipeHolder0.refreshDrawableState();
 				break;
 			case 1:
-				newSteps = recipe1.getSteps();
-				newSteps.remove(0);
-				if(newSteps.isEmpty())
-				{
-					hideRecipe(1);
-				}
-				else
-				{
-					recipe1.setSteps(newSteps);
-					allRecipes.refreshDrawableState();
-					recipeStepAdapter1.notifyDataSetChanged();
-					recipeHolder1.refreshDrawableState();
-				}
+				completeStepInRecipe(recipe1);
+				allRecipes.refreshDrawableState();
+				recipeStepAdapter1.notifyDataSetChanged();
+				recipeHolder1.refreshDrawableState();
 				break;
 			case 2:
-				newSteps = recipe2.getSteps();
-				newSteps.remove(0);
-				if(newSteps.isEmpty())
-				{
-					hideRecipe(2);
-				}
-				else
-				{
-					recipe2.setSteps(newSteps);
-					allRecipes.refreshDrawableState();
-					recipeStepAdapter2.notifyDataSetChanged();
-					recipeHolder2.refreshDrawableState();
-				}
+				completeStepInRecipe(recipe2);
+				allRecipes.refreshDrawableState();
+				recipeStepAdapter2.notifyDataSetChanged();
+				recipeHolder2.refreshDrawableState();
 				break;
 			case 3:
-				newSteps = recipe3.getSteps();
-				newSteps.remove(0);
-				if(newSteps.isEmpty())
-				{
-					hideRecipe(3);
-				}
-				else
-				{
-					recipe3.setSteps(newSteps);
-					allRecipes.refreshDrawableState();
-					recipeStepAdapter3.notifyDataSetChanged();
-					recipeHolder3.refreshDrawableState();
-				}
+				completeStepInRecipe(recipe3);
+				allRecipes.refreshDrawableState();
+				recipeStepAdapter3.notifyDataSetChanged();
+				recipeHolder3.refreshDrawableState();
 				break;
+		}
+	}
+	
+	public void completeStepInRecipe(Recipe r)
+	{
+		List<RecipeStep> newSteps = r.getSteps();
+		for(int i = 0; i < newSteps.size(); i++)
+		{
+			RecipeStep curStep = newSteps.get(i);
+			if(!curStep.isCompleted())
+			{
+				curStep.setCompleted();
+				newSteps.set(i, curStep);
+				r.setSteps(newSteps);
+				break;
+			}
 		}
 	}
 	
@@ -340,8 +364,31 @@ public class CookActivity extends Activity implements OnClickListener {
 			Intent intent;
 			
 		    switch (v.getId()) {
-		        case R.id.button0:
-		            PopupMenu popup = new PopupMenu(this, nextStep);
+		        case R.id.nextStepButton:	
+		        	removeRecipeStep(currentRecipe);
+		        	setCurrentStep();
+		        	break;
+		        case R.id.timelineButton:
+		        	break;
+		        case R.id.addTime:
+		        	currentStepTime.setBackgroundColor(Color.WHITE);
+    	        	currentStepDescription.setBackgroundColor(Color.WHITE);
+    	        	currentStepTimer.cancel();
+    	        	currentStepTimer = createTimer(timeTilFinished + 30000);
+    	        	currentStepTimer.start();
+    	        	currentStepTime.refreshDrawableState();
+    	    		//intent = new Intent(this, EditMealActivity.class);
+    	    		//startActivity(intent);
+    	            break;
+    	        default:
+    	        	return;
+		    }
+	}
+		        	
+		        	
+		        	
+	
+		          /*  PopupMenu popup = new PopupMenu(this, nextStep);
 		            MenuInflater inflater = popup.getMenuInflater();
 		            inflater.inflate(R.menu.activity_cook_popup_menu, popup.getMenu());
 		            popup.show();
@@ -392,6 +439,11 @@ public class CookActivity extends Activity implements OnClickListener {
 		            return;
 		    }
 	}
+	*/
+	
+	public void setStepOrder(){
+		
+	}
 	
 	
 	public void setCurrentStep(){
@@ -419,7 +471,32 @@ public class CookActivity extends Activity implements OnClickListener {
 		currentStepTime.setText(Long.toString(currentStep.getTime()));
 		currentStepDescription.refreshDrawableState();
 		currentStepTime.refreshDrawableState();
-
+		switch(currentRecipe){
+			case 0:
+				recipeStepAdapter0.isCurrentRecipe = true;
+				recipeStepAdapter1.isCurrentRecipe = false;
+				recipeStepAdapter2.isCurrentRecipe = false;
+				recipeStepAdapter3.isCurrentRecipe = false;
+				break;
+			case 1:
+				recipeStepAdapter0.isCurrentRecipe = false;
+				recipeStepAdapter1.isCurrentRecipe = true;
+				recipeStepAdapter2.isCurrentRecipe = false;
+				recipeStepAdapter3.isCurrentRecipe = false;
+				break;
+			case 2:
+				recipeStepAdapter0.isCurrentRecipe = false;
+				recipeStepAdapter1.isCurrentRecipe = false;
+				recipeStepAdapter2.isCurrentRecipe = true;
+				recipeStepAdapter3.isCurrentRecipe = false;
+				break;
+			case 3:
+				recipeStepAdapter0.isCurrentRecipe = false;
+				recipeStepAdapter1.isCurrentRecipe = false;
+				recipeStepAdapter2.isCurrentRecipe = false;
+				recipeStepAdapter3.isCurrentRecipe = true;
+				break;
+		}
 
 		currentStepTimer.cancel();
 		currentStepTimer = createTimer(currentStep.getTime()*60000);//.onTick(currentStep.getTime()*60000);
@@ -533,9 +610,217 @@ public class CookActivity extends Activity implements OnClickListener {
 		recipeHolder3.setVisibility(View.VISIBLE);
 	}
 	
+	
 	public void CreateFakeRecipes(){
 		
+		LinkedList<Ingredient> ingredients0 = new LinkedList<Ingredient>();
+		LinkedList<RecipeStep> recipeSteps0 = new LinkedList<RecipeStep>();
 		
+		LinkedList<Ingredient> ingredients1 = new LinkedList<Ingredient>();
+		LinkedList<RecipeStep> recipeSteps1 = new LinkedList<RecipeStep>();
+		
+		LinkedList<Ingredient> ingredients2 = new LinkedList<Ingredient>();
+		LinkedList<RecipeStep> recipeSteps2 = new LinkedList<RecipeStep>();
+		
+		LinkedList<Ingredient> ingredients3 = new LinkedList<Ingredient>();
+		LinkedList<RecipeStep> recipeSteps3 = new LinkedList<RecipeStep>();
+		
+		Ingredient crust = new Ingredient("Graham Cracker Crust", 1, "Whole");
+		Ingredient tofu = new Ingredient("Extra Firm Silk Tofu", 25, "Ounces");
+		Ingredient keyLime = new Ingredient("Key Lime Juice", 1, "Fourth Cup");
+		Ingredient sugar = new Ingredient("Sugar", 1, "Cup");
+		Ingredient salt = new Ingredient("Salt", 1, "Tsp");
+		Ingredient cornstarch = new Ingredient("Cornstarch", 1, "Tsp.");
+		
+		ingredients0.add(crust);
+		ingredients0.add(tofu);
+		ingredients0.add(sugar);
+		ingredients0.add(keyLime);
+		ingredients0.add(salt);
+		ingredients0.add(cornstarch);
+		
+		RecipeStep o = new RecipeStep();
+		o.setInstructions("Place graham cracker crust in 9 inch pie plate");
+		o.setTime(1);
+		RecipeStep tw = new RecipeStep();
+		tw.setInstructions("In blender, combine tofu, lime juice, sugar, salt and cornstarch.");
+		tw.setTime(5);
+		RecipeStep th = new RecipeStep();
+		th.setInstructions("Process until liquid is smooth and thick");
+		th.setTime(3);
+		RecipeStep f = new RecipeStep();
+		f.setInstructions("Pour into crust and place in freezer");
+		f.setTime(120);
+		
+		recipeSteps0.add(o);
+		recipeSteps0.add(tw);
+		recipeSteps0.add(th);
+		recipeSteps0.add(f);
+		recipe0.setName("Key Lime Pie");
+		recipe0.setIngredients(ingredients0);
+		recipe0.setSteps(recipeSteps0);
+		
+		
+		Ingredient cabbage = new Ingredient("Shredded Cabbage", 1, "Lb.");
+		Ingredient carrots = new Ingredient("Carrots", 1, "Lb.");
+		Ingredient tahini = new Ingredient("Tahini", 1, "Cup");
+		Ingredient mapleSyrup = new Ingredient("Maple Syrup", 1, "Cup");
+		Ingredient ciderVinegar = new Ingredient("Cider Vinegar", 1, "Cup");
+		Ingredient vegenaise = new Ingredient("Vegenaise", 3, "Tbsp");
+		Ingredient hempSeed = new Ingredient("Hemp Seed", 1, "Cup");
+		Ingredient onion = new Ingredient("Onion", 1, "Small");
+		Ingredient greenApple = new Ingredient("Green Apple", 1, "Small");
+		
+		
+		ingredients1.add(cabbage);
+		ingredients1.add(carrots);
+		ingredients1.add(tahini);
+		ingredients1.add(mapleSyrup);
+		ingredients1.add(ciderVinegar);
+		ingredients1.add(vegenaise);
+		ingredients1.add(hempSeed);
+		ingredients1.add(onion);
+		ingredients1.add(greenApple);
+		
+		RecipeStep one = new RecipeStep();
+		one.setInstructions("Add all ingredients into large mixing bowl");
+		one.setTime(3);
+		RecipeStep two = new RecipeStep();
+		two.setTime(3);
+		two.setInstructions("Start tossing ingredients with a large spoon");
+		RecipeStep three = new RecipeStep();
+		three.setInstructions("Place in Fridge, cover and chill");
+		three.setTime(120);
+		
+		recipeSteps1.add(one);
+		recipeSteps1.add(two);
+		recipeSteps1.add(three);
+		
+		recipe1 = new Recipe();
+		recipe2 = new Recipe();
+		recipe3 = new Recipe();
+		
+		recipe1.setName("Vegan Summer Slaw");
+		recipe1.setIngredients(ingredients1);
+		recipe1.setSteps(recipeSteps1);
+		
+		Ingredient cornMeal = new Ingredient("Cornmeal", 2, "Cups");
+		Ingredient flour = new Ingredient("Flour", 1, "Cup");
+		Ingredient bakingPowder = new Ingredient("Baking Powder", 2, "Tsp");
+		Ingredient canolaOil = new Ingredient("Canola Oil", 1, "Cup");
+		mapleSyrup = new Ingredient("Maple Syrup", 2, "Tbsp");
+		Ingredient soyMilk = new Ingredient("Soy Milk", 2, "Cups");
+		Ingredient vinegar = new Ingredient("Apple Cider Vinegar", 2, "Tsp");
+		salt = new Ingredient("Salt", 1, "Tsp");
+
+		ingredients2.add(cornMeal);
+		ingredients2.add(flour);
+		ingredients2.add(bakingPowder);
+		ingredients2.add(canolaOil);
+		ingredients2.add(canolaOil);
+		ingredients2.add(mapleSyrup);
+		ingredients2.add(soyMilk);
+		ingredients2.add(vinegar);
+		ingredients2.add(salt);
+		
+		
+		one = new RecipeStep();
+		one.setInstructions("Preheat the oven to 350F");
+		one.setTime(10);
+		two = new RecipeStep();
+		two.setInstructions("Line baking pan with parchmentpaper");
+		two.setTime(2);
+		three = new RecipeStep();
+		three.setInstructions("Wisk together soymilk and vinegar in medium bowl");
+		three.setTime(3);
+		RecipeStep four = new RecipeStep();
+		four.setInstructions("In a seperate Large bowl, combine all dry ingredients");
+		four.setTime(3);
+		RecipeStep five = new RecipeStep();
+		five.setInstructions("Add oil and maple syrup to soymilk mixture, wisk until foamy");
+		five.setTime(3);
+		RecipeStep six = new RecipeStep();
+		six.setInstructions("Pour wet ingredients into dry ingredients and mix");
+		six.setTime(1);
+		RecipeStep seven = new RecipeStep();
+		seven.setInstructions("Pour batter into baking pan, bake for 35 minutes");
+		seven.setTime(35);
+		
+		recipeSteps2.add(one);
+		recipeSteps2.add(two);
+		recipeSteps2.add(three);
+		recipeSteps2.add(four);
+		recipeSteps2.add(five);
+		recipeSteps2.add(six);
+		recipeSteps2.add(seven);
+		
+		recipe2.setName("Vegan Cornbread");
+		recipe2.setSteps(recipeSteps2);
+		recipe2.setIngredients(ingredients2);
+		
+		Ingredient oil = new Ingredient("Oil", 1, "tbsp");
+		Ingredient garlic = new Ingredient("Garlic", 3, "Cloves");
+		Ingredient bellPepper = new Ingredient("Bell Pepper", 2, "Whole");
+		onion = new Ingredient("Onion", 1, "Whole");
+		Ingredient greenBeans = new Ingredient("Green Beans", 4, "Cup");
+		Ingredient friedOnions = new Ingredient("FrenchFried Onions", 1, "Cup");
+		Ingredient cumin = new Ingredient("Cumin", 1, "tbsp");
+		Ingredient chiliPowder = new Ingredient("Chili Powder", 3, "tbsp");
+		Ingredient cayenne = new Ingredient("Cayenne", 1, "Pinch");
+		Ingredient beans = new Ingredient("Beans", 4, "Cans");
+		Ingredient tomato = new Ingredient("Tomato", 1, "Whole");
+		Ingredient oregeno = new Ingredient("Oregano", 2, "tsp");
+		Ingredient mushrooms = new Ingredient("Mushrooms", 1, "Can");
+		Ingredient cocoaPowder = new Ingredient("Cocoa Powder", 1, "tbsp");
+		
+		
+		
+		ingredients3.add(oil);
+		ingredients3.add(garlic);
+		ingredients3.add(bellPepper);
+		ingredients3.add(onion);
+		ingredients3.add(salt);
+		ingredients3.add(keyLime);
+		ingredients3.add(greenBeans);
+		ingredients3.add(friedOnions);
+		ingredients3.add(cumin);
+		ingredients3.add(chiliPowder);
+		ingredients3.add(cayenne);
+		ingredients3.add(beans);
+		ingredients3.add(tomato);
+		ingredients3.add(oregeno);
+		ingredients3.add(mushrooms);
+		ingredients3.add(cocoaPowder);
+		
+		one = new RecipeStep();
+		one.setInstructions("Heat oil in a large pot over medium");
+		one.setTime(2);
+		two = new RecipeStep();
+		two.setInstructions("Add garlic, peppers, onion, carrot and saute until soft");
+		two.setTime(6);
+		three = new RecipeStep();
+		three.setInstructions("Add the rest of the ingredients and cover");
+		three.setTime(3);
+		four = new RecipeStep();
+		four.setInstructions("Cook for 40 minutes");
+		four.setTime(40);
+		
+		recipeSteps3.add(one);
+		recipeSteps3.add(two);
+		recipeSteps3.add(three);
+		recipeSteps3.add(four);
+		
+		recipe3.setName("Vegan Chili");
+		recipe3.setIngredients(ingredients3);
+		recipe3.setSteps(recipeSteps3);
+		
+		calculateRecipeTime(recipe0);
+		calculateRecipeTime(recipe1);
+		calculateRecipeTime(recipe2);
+		calculateRecipeTime(recipe3);
+		
+		
+		/*
 		LinkedList<Ingredient> ingredients0 = new LinkedList<Ingredient>();
 		LinkedList<RecipeStep> recipeSteps0 = new LinkedList<RecipeStep>();
 		
@@ -770,5 +1055,7 @@ public class CookActivity extends Activity implements OnClickListener {
 		calculateRecipeTime(recipe1);
 		calculateRecipeTime(recipe2);
 		calculateRecipeTime(recipe3);
-	}
+		*/
+	}	
+	
 }

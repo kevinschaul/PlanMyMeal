@@ -10,9 +10,10 @@ public class RecipeStep {
 	private long time;
 	private boolean activeStep;
 	private List<String> appliancesUsed;
-	
+	private boolean completed;
 	
 	public RecipeStep(){
+		completed = false;
 		//default Constructor
 	}
 
@@ -47,6 +48,13 @@ public class RecipeStep {
 	}
 	public void setActiveStep(boolean activeStep) {
 		this.activeStep = activeStep;
+	}
+	public void setCompleted(){
+		this.completed = true;
+	}
+	
+	public boolean isCompleted(){
+		return this.completed;
 	}
 	
 	

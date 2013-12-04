@@ -2,15 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="0dip" >
+    android:paddingBottom="1dip"
+    android:layout_marginBottom="1dip">
 
     <TextView
         android:id="@+id/row_ingredient_name"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
         android:text="Meal name"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_marginBottom="1dp"
+        android:padding="0dp"
+        android:textAppearance="?android:attr/textAppearanceSmall">
+    </TextView>
 
 </RelativeLayout>
