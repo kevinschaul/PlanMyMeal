@@ -31,12 +31,16 @@ public class RecipeDetailFragment extends Fragment {
 	 * represents.
 	 */
 	public static final String ARG_ITEM_ID = "item_id";
+	public static final String ARG_FROM_MEAL = "from_meal";
+	public static final String ARG_FROM_MEAL_ID = "from_meal_id";
 
 	/**
 	 * The dummy content this fragment is presenting.
 	 */
 	private Recipe recipe;
 	private Typeface fontAwesome;
+	private boolean fromMeal = false;
+	private long mealId;
 	
 	// Databases
 	private DataSourceManager datasource;
@@ -59,14 +63,21 @@ public class RecipeDetailFragment extends Fragment {
 		this.fontAwesome = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf" );
 		
 		Log.v(HomeActivity.TAG, "onCreate");
+		
+		Bundle arguments = getArguments();
 
-		if (getArguments().containsKey(ARG_ITEM_ID)) {
+		if (arguments.containsKey(ARG_ITEM_ID)) {
 			// Load the dummy content specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			long id = getArguments().getLong(ARG_ITEM_ID);
+			long id = arguments.getLong(ARG_ITEM_ID);
 			Log.v(HomeActivity.TAG, Long.toString(id));
 			recipe = datasource.getRecipeById(id);
+		}
+		
+		if (arguments.containsKey(ARG_FROM_MEAL) && arguments.containsKey(ARG_FROM_MEAL_ID)) {
+			fromMeal = getArguments().getBoolean(ARG_FROM_MEAL);
+			mealId = arguments.getLong(ARG_FROM_MEAL_ID);
 		}
 	}
 	
@@ -102,6 +113,9 @@ public class RecipeDetailFragment extends Fragment {
 			
 			Button delete = (Button) rootView.findViewById(R.id.fragment_recipe_button_delete);
 			delete.setOnClickListener(clickListener);
+			if (fromMeal) {
+				delete.setText("Remove from meal");
+			}
 			
 			LinearLayout tags_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_recipe_tags_wrapper);
 			List<Tag> tags = recipe.getTags();
@@ -160,17 +174,31 @@ public class RecipeDetailFragment extends Fragment {
 			
 		    switch (v.getId()) {
 		        case R.id.fragment_recipe_button_delete:
-					AlertDialog.Builder builder = new AlertDialog.Builder(context);
-					builder.setTitle("Delete recipe?");
-					builder.setMessage("Delete " + recipe.getName() + "?");
-					builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {   
-							datasource.deleteRecipe(recipe);
-						}
-					});
-					builder.setNegativeButton("Cancel", null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
+		        	if (fromMeal) {
+						AlertDialog.Builder builder = new AlertDialog.Builder(context);
+						builder.setTitle("Remove recipe?");
+						builder.setMessage("Remove " + recipe.getName() + " from meal?");
+						builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {   
+								datasource.deleteMealRecipe(mealId, recipe.getId());
+							}
+						});
+						builder.setNegativeButton("Cancel", null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
+		        	} else {
+						AlertDialog.Builder builder = new AlertDialog.Builder(context);
+						builder.setTitle("Delete recipe?");
+						builder.setMessage("Delete " + recipe.getName() + "?");
+						builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {   
+								datasource.deleteRecipe(recipe);
+							}
+						});
+						builder.setNegativeButton("Cancel", null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
+		        	}
 		    		break;
 		        case R.id.fragment_recipe_button_edit:
 		    		intent = new Intent(context, EditRecipeActivity.class);
