@@ -169,6 +169,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 		  if (cookable_list_fragment != null) {
 			  cookable_list_fragment.updateData();
 		  }
+		  // TODO This is probably the wrong thing to check
 		  if (currentColumns == 2 && meal_detail_fragment != null) {
 			  meal_detail_fragment.updateData();
 		  }
