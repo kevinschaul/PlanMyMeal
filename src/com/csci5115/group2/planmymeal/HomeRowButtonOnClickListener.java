@@ -1,13 +1,11 @@
 package com.csci5115.group2.planmymeal;
 
-import com.csci5115.group2.planmymeal.database.DataSourceManager;
-
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 public class HomeRowButtonOnClickListener implements OnClickListener {
 	Cookable cookable;
@@ -43,8 +41,17 @@ public class HomeRowButtonOnClickListener implements OnClickListener {
 	
 	private void onClickButtonEdit(View v, Cookable cookable) {
 		Context context = v.getContext();
-        Intent intent = new Intent(context, EditMealActivity.class);
-        intent.putExtra(HomeActivity.EXTRA_MEAL, cookable.getId());
-        context.startActivity(intent);
+		Intent intent;
+		
+		String type = cookable.getType();
+		if (type == "Meal") {
+			intent = new Intent(context, EditMealActivity.class);
+	        intent.putExtra(HomeActivity.EXTRA_MEAL, cookable.getId());
+	        context.startActivity(intent);
+		} else if (type == "Recipe") {
+			intent = new Intent(context, EditRecipeActivity.class);
+	        intent.putExtra(HomeActivity.EXTRA_RECIPE, cookable.getId());
+	        context.startActivity(intent);
+		}
 	}
 }

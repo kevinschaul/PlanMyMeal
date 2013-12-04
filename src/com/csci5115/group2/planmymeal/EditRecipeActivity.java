@@ -60,7 +60,7 @@ public class EditRecipeActivity extends Activity
 				"fontawesome-webfont.ttf");
 
 		Intent intent = getIntent();
-		long recipeId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
+		long recipeId = intent.getLongExtra(HomeActivity.EXTRA_RECIPE, 0);
 		if(recipeId > 0)
 		{
 			recipe = datasource.getRecipeById(recipeId);

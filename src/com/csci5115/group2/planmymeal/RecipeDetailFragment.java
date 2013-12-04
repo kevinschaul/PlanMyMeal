@@ -174,7 +174,7 @@ public class RecipeDetailFragment extends Fragment {
 		    		break;
 		        case R.id.fragment_recipe_button_edit:
 		    		intent = new Intent(context, EditRecipeActivity.class);
-		    		intent.putExtra(HomeActivity.EXTRA_MEAL, recipe.getId());
+		    		intent.putExtra(HomeActivity.EXTRA_RECIPE, recipe.getId());
 		    		startActivity(intent);
 		    		break;
 		        case R.id.fragment_recipe_button_Cook:
