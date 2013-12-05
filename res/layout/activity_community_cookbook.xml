@@ -6,22 +6,13 @@
     android:focusableInTouchMode="true"
     android:padding="8dp" >
     
-    <TextView
-        android:id="@+id/Comm_Cookbook_textTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:text="Community Cookbook"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="42sp" />
+    
 
     <LinearLayout
         android:id="@+id/CC_mainWrapper"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/Comm_Cookbook_textTitle"
+        
         android:orientation="horizontal"
         android:weightSum="6"
         android:baselineAligned="false"
@@ -46,28 +37,7 @@
 		        android:imeOptions="actionSearch"
 		        android:inputType="text" />
 	
-		    <LinearLayout
-		        android:id="@+id/CC_searchCheckBoxWrapper"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:orientation="horizontal" >
-	
-			    <CheckBox
-			        android:id="@+id/CC_checkBoxMeals"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_vertical"
-			        android:checked="true"
-			        android:text="Meals" />
-			
-			    <CheckBox
-			        android:id="@+id/CC_CheckBoxRecipes"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_vertical"
-			        android:checked="true"
-			        android:text="Recipes" />
-		    </LinearLayout>
+		    
 
 		     
 		    <fragment

@@ -32,12 +32,9 @@
 	    android:layout_marginTop="8dp" />
     <Button
         android:id="@+id/cc_fragment_recipe_button_import"
-        android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_gravity="center_horizontal"
-    	android:textSize="18dp"
+        style="@style/ActionButton"
         android:text="Import Recipe"
-        style="?android:attr/borderlessButtonStyle" />
+         />
 	<View
 	    style="@style/Divider"
 	    android:layout_marginBottom="8dp" />

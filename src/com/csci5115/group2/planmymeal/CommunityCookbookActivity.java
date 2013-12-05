@@ -2,6 +2,7 @@ package com.csci5115.group2.planmymeal;
 
 import java.util.List;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -41,6 +42,8 @@ public class CommunityCookbookActivity extends FragmentActivity implements CCLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_cookbook); ////////////////////// Was activity_home
         setTitle("Community Cookbook");
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         // Database Creation
         datasource = new DataSourceManager(this);
         datasource.open();
@@ -112,9 +115,14 @@ public class CommunityCookbookActivity extends FragmentActivity implements CCLis
             return true;
 	        
 	        default:
-	            return super.onOptionsItemSelected(item);
+	        		
+	        	intent = new Intent(getApplicationContext(), HomeActivity.class);
+	            startActivityForResult(intent, 0);
+	            return true;
+	            //return super.onOptionsItemSelected(item);
 	    }
 	}
+	
 	
 	/*@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
