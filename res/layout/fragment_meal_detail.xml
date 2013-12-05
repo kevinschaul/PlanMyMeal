@@ -58,13 +58,19 @@
         android:layout_height="wrap_content"
         android:text="Tags"
         style="@style/DetailLabel" />
-    
-    <LinearLayout
-        android:id="@+id/fragment_meal_tags_wrapper"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+	    
+        <LinearLayout
+	        android:id="@+id/fragment_meal_tags_wrapper"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	    </LinearLayout>
+    </HorizontalScrollView>
 
     <TextView
         android:id="@+id/fragment_meal_recipes_label"

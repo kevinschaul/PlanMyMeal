@@ -5,7 +5,8 @@
     android:orientation="horizontal"
     android:background="@drawable/tag_background"
     android:layout_marginRight="6dp"
-    android:layout_marginLeft="6dp" >
+    android:layout_marginLeft="6dp"
+    android:layout_weight="1" >
 
     <TextView
         android:id="@+id/tag_name"
