@@ -29,7 +29,7 @@ public class SettingsActivity extends Activity implements OnClickListener, OnEdi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
-		
+		setTitle("Settings");
 		// Database Creation
         datasource = new DataSourceManager(this);
         datasource.open();

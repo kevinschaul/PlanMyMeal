@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
@@ -188,14 +189,15 @@ public class CCMealDetailFragment extends Fragment {
 			Intent intent;
 		    switch (v.getId()) {
 		        case R.id.cc_fragment_meal_button_import:
-		    		//intent = new Intent(context, CookActivity.class);///////////////Need to replace!!!
-		    		//intent.putExtra(CommunityCookbookActivity.EXTRA_MEAL, meal.getId());
-		    		///startActivity(intent);
+		    		
 		        	long mealid= meal.getId();
 		        	datasource.importMeal(mealid);
-		        	intent = new Intent(context, HomeActivity.class);
-		    		//intent.putExtra(HomeActivity.EXTRA_MEAL, meal.getId());
-		    		startActivity(intent);
+		        	CharSequence text = "Meal Imported";
+					Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+					toast.show();
+		        	//intent = new Intent(context, HomeActivity.class);
+		    		
+		    		//startActivity(intent);
 		        	
 		    		break;
 		        default:
