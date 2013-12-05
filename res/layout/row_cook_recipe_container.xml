@@ -24,7 +24,7 @@
 	        <ListView
 	            android:id="@+id/recipeCookSteps"
 	            android:layout_width="300dip"
-	            android:layout_height="500dip"
+	            android:layout_height="match_parent"
 	            android:layout_marginLeft="0dip"
 	            android:layout_marginTop="0dip">
 	        </ListView>  
