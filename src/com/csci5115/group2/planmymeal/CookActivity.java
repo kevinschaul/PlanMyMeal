@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -87,7 +88,6 @@ public class CookActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_cook);
 		allRecipes = (HorizontalScrollView) findViewById(R.id.myListView);
 		Intent intent = getIntent();
-	
 		
 		notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 		r = RingtoneManager.getRingtone(getApplicationContext(), notification);
@@ -215,6 +215,14 @@ public class CookActivity extends Activity implements OnClickListener {
 			}
 		}.start();
 		*/
+		allRecipes.scrollBy(-100, -100);
+		allRecipes.refreshDrawableState();
+		//allRecipes.scrollBy(100, 100);
+		allRecipes.setScrollbarFadingEnabled(false);
+		//allRecipes.setScrollX(-25);
+		allRecipes.refreshDrawableState();
+		
+		
 	
 		
 		
@@ -746,10 +754,12 @@ public class CookActivity extends Activity implements OnClickListener {
 		ListView cookSteps =(ListView) findViewById(R.id.recipeCookSteps);
 		recipeStepsListView0.setLayoutParams(cookSteps.getLayoutParams());
 		recipeStepsListView0.setAdapter(recipeStepAdapter0);
-		
+		myText0.setTextSize(25);
 		recipeHolder0.addView(myText0);
 		recipeHolder0.addView(recipeIngredients0);
 		recipeHolder0.addView(recipeStepsListView0);
+		recipeStepsListView0.setScrollBarDefaultDelayBeforeFade(30);
+		recipeStepsListView0.setScrollBarFadeDuration(30);
 	}
 	
 	public void calculateRecipeTime(Recipe recipe){
@@ -775,7 +785,10 @@ public class CookActivity extends Activity implements OnClickListener {
 		ListView cookSteps =(ListView) findViewById(R.id.recipeCookSteps);
 		recipeStepsListView1.setLayoutParams(cookSteps.getLayoutParams());
 		recipeStepsListView1.setAdapter(recipeStepAdapter1);
+		recipeStepsListView1.setScrollBarDefaultDelayBeforeFade(5);
+		recipeStepsListView1.setScrollBarFadeDuration(30);
 		
+		myText1.setTextSize(25);
 		recipeHolder1.addView(myText1);
 		recipeHolder1.addView(recipeIngredients1);
 		recipeHolder1.addView(recipeStepsListView1);
@@ -800,7 +813,10 @@ public class CookActivity extends Activity implements OnClickListener {
 		ListView cookSteps =(ListView) findViewById(R.id.recipeCookSteps);
 		recipeStepsListView2.setLayoutParams(cookSteps.getLayoutParams());
 		recipeStepsListView2.setAdapter(recipeStepAdapter2);
+		recipeStepsListView2.setScrollBarDefaultDelayBeforeFade(5);
+		recipeStepsListView2.setScrollBarFadeDuration(30);
 		
+		myText2.setTextSize(25);
 		recipeHolder2.addView(myText2);
 		recipeHolder2.addView(recipeIngredients2);
 		recipeHolder2.addView(recipeStepsListView2);
@@ -821,11 +837,14 @@ public class CookActivity extends Activity implements OnClickListener {
 		ListView cookSteps =(ListView) findViewById(R.id.recipeCookSteps);
 		recipeStepsListView3.setLayoutParams(cookSteps.getLayoutParams());
 		recipeStepsListView3.setAdapter(recipeStepAdapter3);	
+		recipeStepsListView3.setScrollBarDefaultDelayBeforeFade(5);
+		recipeStepsListView3.setScrollBarFadeDuration(30);
 		
 		recipeHolder3.addView(myText3);
 		recipeHolder3.addView(recipeIngredients3);
 		recipeHolder3.addView(recipeStepsListView3);
 		recipeHolder3.setVisibility(View.VISIBLE);
+		myText3.setTextSize(25);
 	}
 	
 	
