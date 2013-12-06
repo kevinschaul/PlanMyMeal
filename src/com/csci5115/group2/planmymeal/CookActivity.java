@@ -87,7 +87,7 @@ public class CookActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_cook);
 		allRecipes = (HorizontalScrollView) findViewById(R.id.myListView);
 		Intent intent = getIntent();
-		Long mealId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
+	
 		
 		notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 		r = RingtoneManager.getRingtone(getApplicationContext(), notification);
@@ -97,14 +97,75 @@ public class CookActivity extends Activity implements OnClickListener {
         datasource = new DataSourceManager(this);
         datasource.open();
 		
-        numRecipes = 4;
+        
         
         //Meal meal = datasource.getMealById(mealId);
 		
 		//List<Recipe> recipes = datasource.getMealRecipes(mealId);// meal.getRecipes();
 		
 		recipe0 = new Recipe();
-		CreateFakeRecipes();	
+		recipe1 = new Recipe();
+		recipe2 = new Recipe();
+		recipe3 = new Recipe();
+		recipeStepAdapter0 = new RecipeStepsArrayAdapter(this, (LinkedList)recipe0.getSteps());
+		recipeStepAdapter1 = new RecipeStepsArrayAdapter(this, (LinkedList)recipe0.getSteps());
+		recipeStepAdapter2 = new RecipeStepsArrayAdapter(this, (LinkedList)recipe0.getSteps());
+		recipeStepAdapter3 = new RecipeStepsArrayAdapter(this, (LinkedList)recipe0.getSteps());
+		Long mealId = intent.getLongExtra(HomeActivity.EXTRA_MEAL, 0);
+		//String test = intent.getClass().toString();
+		//Long mealId = intent.getLongExtra(RecipeDetailFragment.ARG_ITEM_ID, 0);
+		String type = intent.getStringExtra(HomeActivity.TAG);
+		if(type.equals("Meal"))
+		{
+			List<Long> recipes = datasource.getRecipeIdsForMeal(mealId);
+			numRecipes = recipes.size();
+			LinkedList<Recipe> recipesToFill = new LinkedList<Recipe>();
+			for(Long l: recipes)
+			{
+				recipesToFill.add(datasource.getRecipeById(l));
+			}
+			for(int i = 0; i < recipesToFill.size(); i++)
+			{
+				switch(i){
+				case 0:
+					recipe0 = recipesToFill.get(i);
+					recipe0.setSteps(datasource.getRecipeSteps(recipe0.getId()));
+					recipe0.setIngredients(datasource.getRecipeIngredients(recipe0.id));
+					break;
+				case 1:
+					recipe1 = recipesToFill.get(i);
+					recipe1.setSteps(datasource.getRecipeSteps(recipe1.getId()));
+					recipe1.setIngredients(datasource.getRecipeIngredients(recipe1.id));
+					break;
+				case 2:
+					recipe2 = recipesToFill.get(i);
+					recipe2.setSteps(datasource.getRecipeSteps(recipe2.getId()));
+					recipe2.setIngredients(datasource.getRecipeIngredients(recipe2.id));
+					break;
+				case 3:
+					recipe3 = recipesToFill.get(i);
+					recipe3.setSteps(datasource.getRecipeSteps(recipe3.getId()));
+					recipe3.setIngredients(datasource.getRecipeIngredients(recipe3.id));
+					break;
+				}	
+			}
+		}
+		else
+		{
+			numRecipes = 1;
+			//List<Long> recipes = datasource.getRecipeIdsForMeal(mealId);
+			Recipe recipestext = datasource.getRecipeById(mealId);
+			recipestext.setSteps(datasource.getRecipeSteps(mealId));
+			recipestext.setIngredients(datasource.getRecipeIngredients(mealId));
+			recipe0 = recipestext;
+			//allRecipesList.add(recipe0);
+		}
+		
+		//List<Long> recipes = datasource.getRecipeIdsForMeal(mealId);
+		//Recipe recipestext = datasource.getRecipeById(mealId);
+		
+		
+		//CreateFakeRecipes();	
 		
 		
 		recipeHolder0 = (LinearLayout)findViewById(R.id.RecipeHolder0);
@@ -122,6 +183,7 @@ public class CookActivity extends Activity implements OnClickListener {
 		currentStepDescription = (TextView)findViewById(R.id.currentStepDescription);
 		currentStepTime = (TextView)findViewById(R.id.currentStepTime);
 		currentStepTime.setOnClickListener(this);
+		currentStepTime.setClickable(false);
 		nextStepButton = (Button)findViewById(R.id.nextStepButton);
 		nextStepButton.setOnClickListener(this);	
 		
@@ -222,32 +284,48 @@ public class CookActivity extends Activity implements OnClickListener {
 	}
 	
 	public void removeRecipeStep(int recipe){
-		allRecipeStepsCurrent++;
+		if(allRecipeStepsCurrent < allRecipeSteps.size())
+		{
+			currentStep = allRecipeSteps.get(allRecipeStepsCurrent);
 		switch(recipe){
 			case 0:
 				recipe0.completeStepInRecipe();
 				allRecipes.refreshDrawableState();
 				recipeStepAdapter0.notifyDataSetChanged();
 				recipeHolder0.refreshDrawableState();
+				allRecipeStepsCurrent++;
 				break;
 			case 1:
 				recipe1.completeStepInRecipe();
 				allRecipes.refreshDrawableState();
 				recipeStepAdapter1.notifyDataSetChanged();
 				recipeHolder1.refreshDrawableState();
+				allRecipeStepsCurrent++;
 				break;
 			case 2:
 				recipe2.completeStepInRecipe();
 				allRecipes.refreshDrawableState();
 				recipeStepAdapter2.notifyDataSetChanged();
 				recipeHolder2.refreshDrawableState();
+				allRecipeStepsCurrent++;
 				break;
 			case 3:
 				recipe3.completeStepInRecipe();
 				allRecipes.refreshDrawableState();
 				recipeStepAdapter3.notifyDataSetChanged();
 				recipeHolder3.refreshDrawableState();
+				allRecipeStepsCurrent++;
 				break;
+		}
+		}
+		else
+		{
+			currentStepTimer.cancel();
+			currentStepDescription.setText("Meal Complete!");
+			currentStepDescription.refreshDrawableState();	
+			currentStepTime.setText("");
+			currentStepTime.refreshDrawableState();
+			allRecipeStepsCurrent++;
 		}
 	}
 	
@@ -296,10 +374,13 @@ public class CookActivity extends Activity implements OnClickListener {
 			newSteps = recipe0.getSteps();
 			newSteps.clear();
 			recipe0.setSteps(newSteps);
-			setStepOrder();
-			allRecipes.refreshDrawableState();
-        	recipeStepAdapter0.notifyDataSetChanged();
-        	recipeHolder0.refreshDrawableState();
+			if(!allRecipesComplete(allRecipesList))
+			{
+				resetStepOrder(recipe0);
+				allRecipes.refreshDrawableState();
+	        	recipeStepAdapter0.notifyDataSetChanged();
+	        	recipeHolder0.refreshDrawableState();
+			}
 			break;
 		case 1:
 			recipeHolder1.setVisibility(View.GONE);
@@ -307,10 +388,13 @@ public class CookActivity extends Activity implements OnClickListener {
 			newSteps = recipe1.getSteps();
 			newSteps.clear();
 			recipe1.setSteps(newSteps);
-			//setStepOrder();
+			if(!allRecipesComplete(allRecipesList))
+			{
+			resetStepOrder(recipe1);
 			allRecipes.refreshDrawableState();
         	recipeStepAdapter1.notifyDataSetChanged();
         	recipeHolder1.refreshDrawableState();
+			}
 			break;
 		case 2:
 			recipeHolder2.setVisibility(View.GONE);
@@ -318,10 +402,13 @@ public class CookActivity extends Activity implements OnClickListener {
 			newSteps = recipe2.getSteps();
 			newSteps.clear();
 			recipe2.setSteps(newSteps);
-			//setStepOrder();
+			if(!allRecipesComplete(allRecipesList))
+			{
+			resetStepOrder(recipe2);
 			allRecipes.refreshDrawableState();
         	recipeStepAdapter2.notifyDataSetChanged();
         	recipeHolder2.refreshDrawableState();
+			}
 			break;
 		case 3:
 			recipeHolder3.setVisibility(View.GONE);
@@ -329,10 +416,13 @@ public class CookActivity extends Activity implements OnClickListener {
 			newSteps = recipe3.getSteps();
 			newSteps.clear();
 			recipe3.setSteps(newSteps);
-			//setStepOrder();
+			if(!allRecipesComplete(allRecipesList))
+			{
+			resetStepOrder(recipe3);
 			allRecipes.refreshDrawableState();
         	recipeStepAdapter3.notifyDataSetChanged();
         	recipeHolder3.refreshDrawableState();
+			}
 			break;
 		}
 		setCurrentStep();
@@ -359,18 +449,51 @@ public class CookActivity extends Activity implements OnClickListener {
 			
 		    switch (v.getId()) {
 		        case R.id.nextStepButton:
-		         	removeRecipeStep(currentRecipe);   
-		        	setCurrentStep();   
+		        		removeRecipeStep(currentRecipe);
+		        		if(!allRecipesComplete(allRecipesList))
+						{
+							setCurrentStep();					
+						}
+						else
+						{
+							currentStepDescription.setText("Meal Complete!");
+							currentStepDescription.refreshDrawableState();
+							currentStepTime.setText("");
+							currentStepTime.refreshDrawableState();
+							currentStepTimer.cancel();
+						}
+		        		//setCurrentStep();
 		        	break;
 		        case R.id.timelineButton:
+		        	AlertDialog.Builder timeLine = new AlertDialog.Builder(context);
+		        	timeLine.setTitle("Timeline!");        	
+		        	String[] itemsOther = new String[allRecipeSteps.size()];
+		        	for(int i = 0; i < allRecipeSteps.size(); i++)
+		        	{
+		        		
+		        		itemsOther[i] = allRecipeSteps.get(i).getInstructions() + "\n Done in: " + makeTimeString((long) allRecipeSteps.get(i).getTime()*60000);
+		        	}
+		        	
+		        	
+		        	timeLine.setItems(itemsOther,  new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							//datasource.deleteMealRecipe(mealId, recipe.getId());
+							
+							}
+		        	});
+					//builder.setNegativeButton("Cancel", null);
+					AlertDialog dialog = timeLine.create();
+					dialog.show();
 		        	break;
 		        case R.id.currentStepTime:
+		        	r.play();
 		        	AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		        	builder.setTitle("Times Up!");
 		        	builder.setCancelable(false);
 		        	String[] items = { "Add 30 Seconds", "Go To Next Step", "Scrap Recipe" };
 		        	builder.setItems(items,  new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
+							r.stop();
 							//datasource.deleteMealRecipe(mealId, recipe.getId());
 							switch(id){
 							case 0:
@@ -381,79 +504,28 @@ public class CookActivity extends Activity implements OnClickListener {
 								break;
 							case 2:
 								hideRecipe(currentRecipe);
+								if(!allRecipesComplete(allRecipesList))
+								{
+									setCurrentStep();					
+								}
+								else
+								{
+									currentStepDescription.setText("Meal Complete!");
+									currentStepDescription.refreshDrawableState();
+									currentStepTimer.cancel();
+								}
 								break;
 							}
 						}
 					});
 					//builder.setNegativeButton("Cancel", null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
+					AlertDialog dialog1 = builder.create();
+					dialog1.show();
 					break;
-		        	
-					/*
-		        	PopupMenu popup = new PopupMenu(this, currentStepTime);
-				    MenuInflater inflater = popup.getMenuInflater();
-				    inflater.inflate(R.menu.activity_cook_popup_menu, popup.getMenu());
-				    popup.show();
-				    
-				    
-				    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {  
-				        public boolean onMenuItemClick(MenuItem item) {  
-				        	Intent intent;
-				        	if(r.isPlaying())
-				        	{
-				        		r.stop();
-				        	}
-				        	nextStepButton.setEnabled(false);
-				        	add30SecondsButton.setEnabled(false);
-				        	timelineButton.setEnabled(false);
-				        	
-				        	
-				    	    switch (item.getItemId()) {
-				    	        case R.id.nextStep:
-				    	        	removeRecipeStep(currentRecipe);
-						        	setCurrentStep();
-						        	nextStepButton.setEnabled(true);
-						        	add30SecondsButton.setEnabled(true);
-						        	timelineButton.setEnabled(true);
-				    	            break;
-				    	        case R.id.addTime:
-				    	        	
-				    	        	currentStepTimer.cancel();
-				    	        	currentStepTimer = createTimer(timeTilFinished + 30000);
-				    	        	currentStepTimer.start();
-				    	        	currentStepTime.refreshDrawableState();
-				    	        	nextStepButton.setEnabled(true);
-						        	add30SecondsButton.setEnabled(true);
-						        	timelineButton.setEnabled(true);
-				    	    		//intent = new Intent(this, EditMealActivity.class);
-				    	    		//startActivity(intent);
-				    	            break;
-				    	        case R.id.scrapRecipe:
-				    	        	hideRecipe(currentRecipe);
-				    	        	nextStepButton.setEnabled(true);
-						        	add30SecondsButton.setEnabled(true);
-						        	timelineButton.setEnabled(true);
-				    	    		//intent = new Intent(this, EditMealActivity.class);
-				    	    		//startActivity(intent);
-				    	            break;
-				    	        default:
-				    	        	removeRecipeStep(currentRecipe);
-				    	        	nextStepButton.setEnabled(true);
-						        	add30SecondsButton.setEnabled(true);
-						        	timelineButton.setEnabled(true);
-						        	setCurrentStep();
-						        	break;
-				    	    }
-				        
-				         return true;  
-				        }  
-				       }); 
-				    break;
-				    */
 		        case R.id.addTime:
 		        	currentStepTime.setBackgroundColor(Color.WHITE);
     	        	currentStepDescription.setBackgroundColor(Color.WHITE);
+    	        	//currentStepTime.setEnabled(false);
     	        	currentStepTimer.cancel();
     	        	currentStepTimer = createTimer(timeTilFinished + 30000);
     	        	currentStepTimer.start();
@@ -461,8 +533,6 @@ public class CookActivity extends Activity implements OnClickListener {
     	    		//intent = new Intent(this, EditMealActivity.class);
     	    		//startActivity(intent);
     	            break;
-		        case R.id.scrapRecipe:
-		        	break;
     	        default:
     	        	return;
 		    }
@@ -498,18 +568,34 @@ public class CookActivity extends Activity implements OnClickListener {
 		currentStep = allRecipeSteps.get(allRecipeStepsCurrent);
 	}
 	
-	public void resetStepOrder(){
+	public void resetStepOrder(Recipe recipe){
 		RecipeStep test = currentStep;
 		allRecipeSteps.clear();
 		LinkedList<Recipe> dummyRecipes = new LinkedList<Recipe>();
 		for(Recipe r: allRecipesList)
 		{
-			Recipe dummyRecipe = new Recipe();
-			dummyRecipe.setSteps(r.cloneSteps());
-			dummyRecipe.timeBasedOnUnCompletedSteps();
-			dummyRecipes.add(dummyRecipe);
+			if(!recipe.equals(r))
+			{
+				Recipe dummyRecipe = new Recipe();
+				dummyRecipe.setSteps(r.cloneSteps());
+				dummyRecipe.timeBasedOnUnCompletedSteps();
+				dummyRecipes.add(dummyRecipe);
+			}
 		}
-		
+		int i = 0;
+		allRecipeStepsCurrent = 0;
+		RecipeStep nextStep = new RecipeStep();
+		for(Recipe r: dummyRecipes)
+		{
+			for(RecipeStep rs: r.getSteps())
+			{
+				if(rs.isCompleted())
+				{
+					allRecipeSteps.add(rs);
+					allRecipeStepsCurrent++;
+				}
+			}
+		}
 		while(!allRecipesComplete(dummyRecipes))
 		{
 			Recipe next = dummyRecipes.get(0);
@@ -520,9 +606,16 @@ public class CookActivity extends Activity implements OnClickListener {
 					next = r;
 				}
 			}
+			nextStep = next.getFirstUncompletedStep();
+			if(nextStep.getInstructions() == currentStep.getInstructions())
+			{
+				
+			}
 			allRecipeSteps.add(next.getFirstUncompletedStep());
 			next.completeStepInRecipe();
+			i++;
 		}	
+		currentStep = allRecipeSteps.get(allRecipeStepsCurrent);
 	}
 
 	
@@ -542,6 +635,8 @@ public class CookActivity extends Activity implements OnClickListener {
 	
 	public void setCurrentStep(){
 		currentStep = allRecipeSteps.get(allRecipeStepsCurrent);
+		if(!allRecipesComplete(allRecipesList))
+		{
 		
 		RecipeStep dummyStep = new RecipeStep();
 		dummyStep.setTime(-1);
@@ -550,7 +645,7 @@ public class CookActivity extends Activity implements OnClickListener {
 		int recipe = 0;
 		for(Recipe r : allRecipesList){		
 			if(r.getFirstUncompletedStep() != null){	
-				if(r.getFirstUncompletedStep().getInstructions() == currentStep.getInstructions()){					
+				if((r.getFirstUncompletedStep().getInstructions() == currentStep.getInstructions()) && (r.getFirstUncompletedStep().getTime() == currentStep.getTime())){					
 					currentStep = r.getFirstUncompletedStep();
 					currentRecipe = recipe;
 				}
@@ -561,8 +656,22 @@ public class CookActivity extends Activity implements OnClickListener {
 		
 		currentStepDescription.setText(currentStep.getInstructions());
 		currentStepTime.setText(Double.toString(currentStep.getTime()));
+		//currentStepTime.setEnabled(false);
+		//currentStepTime.setClickable(false);
 		currentStepDescription.refreshDrawableState();
 		currentStepTime.refreshDrawableState();
+		Recipe curRecipe = allRecipesList.get(currentRecipe);
+		int recipeCol = 0;
+		for(Recipe r: allRecipesList)
+		{
+			for(RecipeStep rs: r.getSteps())
+			{
+				if(rs.getInstructions().equals(currentStep.getInstructions()) && (rs.getTime() == currentStep.getTime())){
+					currentRecipe = recipeCol;
+				}
+			}
+			recipeCol++;
+		}
 		switch(currentRecipe){
 			case 0:
 				recipeStepAdapter0.isCurrentRecipe = true;
@@ -603,6 +712,13 @@ public class CookActivity extends Activity implements OnClickListener {
 		long time = (long) currentStep.getTime()*60000;
 		currentStepTimer = createTimer(time);//.onTick(currentStep.getTime()*60000);
 		currentStepTimer.start();
+		}
+		else
+		{
+			currentStepDescription.setText("Meal Complete!");
+			currentStepDescription.refreshDrawableState();
+			currentStepTimer.cancel();
+		}
 	}
 	
 	public String makeTimeString(long millis){

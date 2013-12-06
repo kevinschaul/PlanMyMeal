@@ -36,6 +36,7 @@ public class HomeRowButtonOnClickListener implements OnClickListener {
 		Context context = v.getContext();
         Intent intent = new Intent(context, CookActivity.class);
         intent.putExtra(HomeActivity.EXTRA_MEAL, cookable.getId());
+        intent.putExtra(HomeActivity.TAG, cookable.type);
         context.startActivity(intent);
 	}
 	
