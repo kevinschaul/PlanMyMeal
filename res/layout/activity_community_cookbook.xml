@@ -33,7 +33,7 @@
 		        android:id="@+id/CC_search"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:hint="Filter by meal name"
+		        android:hint="Filter by meal or recipe name"
 		        android:imeOptions="actionSearch"
 		        android:inputType="text" />
 	
