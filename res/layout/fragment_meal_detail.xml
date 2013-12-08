@@ -44,7 +44,14 @@
         android:id="@+id/fragment_meal_button_cook"
         android:text="Cook meal"
         style="@style/ActionButton" />
-        
+    
+    <TextView
+        android:id="@+id/fragment_meal_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cook time"
+        style="@style/DetailLabel" />
+    
     <TextView
         android:id="@+id/fragment_meal_time"
         android:layout_width="wrap_content"

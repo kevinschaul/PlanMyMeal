@@ -9,24 +9,29 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
-        android:gravity="center_vertical"
         android:layout_toLeftOf="@+id/row_edit_ingredient_buttonEdit"
+        android:gravity="center_vertical"
         android:text="Ingredient Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-
     <Button
         android:id="@+id/row_edit_ingredient_buttonEdit"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_toLeftOf="@+id/row_edit_ingredient_buttonDelete"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:text="@string/icon_edit" />
 
     <Button
         android:id="@+id/row_edit_ingredient_buttonDelete"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:text="@string/icon_delete" />
 
 </RelativeLayout>

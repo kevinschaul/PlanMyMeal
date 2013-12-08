@@ -36,15 +36,15 @@
     </string-array>
     <string name="settings_cooking_alerts_next_step_reminder_time_text"> Next Step Remainder Time </string>
     <string-array name="reminder_alarm_type">
-        <item>Ding</item>
-        <item>Beep</item>
-        <item>Quack</item>
+        <item>Sound 1</item>
+        <item>Sound 2</item>
+        <item>Sound 3</item>
         
         </string-array>
     <string-array name="start_step_alarm_type">
-        <item>Ding</item>
-        <item>Beep</item>
-        <item>Quack</item>
+        <item>Sound 1</item>
+        <item>Sound 2</item>
+        <item>Sound 3</item>
         
         </string-array>
     <string-array name="number_appliances"><item>0</item>
@@ -52,6 +52,14 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+    </string-array>
+    <string-array name="number_burners"><item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
     </string-array>
         <string name="title_activity_new_meal"></string>
 

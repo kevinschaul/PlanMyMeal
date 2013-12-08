@@ -89,13 +89,17 @@ public class CookActivity extends Activity implements OnClickListener {
 		allRecipes = (HorizontalScrollView) findViewById(R.id.myListView);
 		Intent intent = getIntent();
 		
-		notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-		r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+		
 		
 		
         // Database Creation
         datasource = new DataSourceManager(this);
         datasource.open();
+        
+        UserSettings settings = datasource.getUserSettings();
+        int startSoundType = settings.getStartSoundAlarmValue();
+        notification = RingtoneManager.getDefaultUri(startSoundType);
+		r = RingtoneManager.getRingtone(getApplicationContext(), notification);
 		
         
         

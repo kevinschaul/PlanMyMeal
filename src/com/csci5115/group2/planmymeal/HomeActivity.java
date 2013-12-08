@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
-// Samantha Oyen: This used to implement OnClickListener... had to take out.
 public class HomeActivity extends FragmentActivity implements CookableListFragment.Callbacks, TextWatcher, OnFocusChangeListener {
 	
 	public final static String EXTRA_MEAL = "com.csci5115.group2.planmymeal.MEAL";
@@ -30,7 +29,7 @@ public class HomeActivity extends FragmentActivity implements CookableListFragme
 	
 	public final static String TAG = "HomeActivity";
 	
-	// Databases
+	// Database
 	private DataSourceManager datasource;
 	
 	private ArrayAdapter<Cookable> adapter;

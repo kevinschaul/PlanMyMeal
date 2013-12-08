@@ -1,0 +1,149 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EditStepFragment" >
+
+    <TextView
+        android:id="@+id/edit_recipe_addNewStep_title"
+        style="@style/CookableTitle"
+        android:layout_alignParentLeft="true"
+        android:text="New Step Information" />
+
+    <LinearLayout
+        android:id="@+id/edit_recipe_step_name_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <TextView
+            android:id="@+id/edit_recipe_step_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.76"
+            android:text="Step Name"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/edit_recipe_step_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.09"
+            android:ems="10"
+            android:hint="Type Step Name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edit_recipe_step_time_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/edit_recipe_step_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.65"
+            android:text="Time step takes (in Minutes)"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/edit_recipe_step_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.12"
+            android:ems="10"
+            android:hint="Time in Minutes"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edit_recipe_step_appliances_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/edit_recipe_appliances_used_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Appliances Used"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <CheckBox
+            android:id="@+id/oven_used_chk_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oven" />
+
+        <CheckBox
+            android:id="@+id/burner_used_chk_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Burner" />
+
+        <CheckBox
+            android:id="@+id/microwave_used_chk_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Microwave" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edit_recipe_step_active_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
+
+        <RadioGroup
+            android:id="@+id/radio_step_active_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/step_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Active Step"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <RadioButton
+                android:id="@+id/step_inactive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Non-Active Step"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edit_recipe_ingredient_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/edit_recipe_ingredient_cancel"
+            style="@style/BadButton"
+            android:layout_width="217dp"
+            android:layout_height="wrap_content"
+            android:text="Undo Changes" />
+
+        <Button
+            android:id="@+id/edit_recipe_step_save"
+            style="@style/ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Save New Step" />
+    </LinearLayout>
+
+</LinearLayout>

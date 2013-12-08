@@ -121,13 +121,20 @@ public class MealDetailFragment extends Fragment {
 		LinearLayout tags_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_meal_tags_wrapper);
 		List<Tag> tags = datasource.getMealTags(meal.getId());
 		for (Tag tag : tags) {
-			View tagView = inflater.inflate(R.layout.tag, null);
+			final View tagView = inflater.inflate(R.layout.tag, null);
 			
 			TextView tagName = (TextView) tagView.findViewById(R.id.tag_name);
 			tagName.setText(tag.getName());
 			
 			Button tagDelete = (Button) tagView.findViewById(R.id.tag_button_delete);
 			tagDelete.setTypeface(fontAwesome);
+			
+			tagDelete.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					tagView.setVisibility(View.GONE);
+				}
+			});
 			
 			tags_wrapper.addView(tagView);
 		}

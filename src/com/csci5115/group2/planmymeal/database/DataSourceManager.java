@@ -180,8 +180,8 @@ public class DataSourceManager
 	private static final String SETTINGS_DATABASE_CREATE = "create table "
 			+ TABLE_SETTINGS + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_REMINDER_TIME
-			+ " real not null, " + COLUMN_REMINDER_SOUND + " text not null, "
-			+ COLUMN_START_SOUND + " text not null, " + COLUMN_NUM_OVENS
+			+ " integer not null, " + COLUMN_REMINDER_SOUND + " integer not null, "
+			+ COLUMN_START_SOUND + " integer not null, " + COLUMN_NUM_OVENS
 			+ " integer not null," + COLUMN_NUM_MICROWAVES
 			+ " integer not null," + COLUMN_NUM_BURNERS + " integer not null);";
 
@@ -829,6 +829,7 @@ public class DataSourceManager
 				null);
 		System.out.println("Recipe Ingredient " + i.getName()
 				+ " deleted from recipe with id: " + recipeId);
+		database.delete(TABLE_INGREDIENT, COLUMN_ID + " = " + id, null);
 	}
 
 	public Ingredient getIngredientById(long id)
@@ -943,7 +944,7 @@ public class DataSourceManager
 	}
 
 	// RECIPE STEP DATA ACCESS METHODS
-	public RecipeStep createRecipeStep(String instructions, long time,
+	public RecipeStep createRecipeStep(String instructions, double time,
 			Boolean isActive, List<String> appliancesUsed)
 	{
 		ContentValues values = new ContentValues();
@@ -960,7 +961,7 @@ public class DataSourceManager
 		return newStep;
 	}
 
-	public RecipeStep addStepToRecipe(String instructions, long time,
+	public RecipeStep addStepToRecipe(String instructions, double time,
 			Boolean isActive, List<String> appliancesUsed, long recipeId)
 	{
 		RecipeStep newStep = createRecipeStep(instructions, time, isActive,
@@ -975,7 +976,7 @@ public class DataSourceManager
 	}
 
 	public RecipeStep updateRecipeStep(long stepId, String instructions,
-			long time, Boolean isActive, List<String> appliancesUsed,
+			double time, Boolean isActive, List<String> appliancesUsed,
 			long recipeId)
 	{
 		// Update RecipeStep
@@ -1094,11 +1095,11 @@ public class DataSourceManager
 	private String createApplianceString(List<String> appliances)
 	{
 		String applianceString = "";
-		for (int i = 1; i < appliances.size(); i++)
+		for (int i = 0; i < appliances.size(); i++)
 		{
 			applianceString += appliances.get(i) + ";";
 		}
-		if (appliances.size() > 1)
+		if (appliances.size() >= 1)
 		{
 			applianceString += appliances.get(appliances.size() - 1);
 		}
@@ -1107,8 +1108,8 @@ public class DataSourceManager
 	}
 
 	// SETTINGS DATA ACCESS METHODS
-	public UserSettings updateUserSettings(long id, long reminderTime,
-			String reminderSound, String startSound, int numOvens,
+	public UserSettings updateUserSettings(long id, int reminderTime,
+			int reminderSound, int startSound, int numOvens,
 			int numMicrowaves, int numBurners)
 	{
 		ContentValues values = new ContentValues();
@@ -1143,9 +1144,9 @@ public class DataSourceManager
 	{
 		UserSettings settings = new UserSettings();
 		settings.setId(cursor.getLong(0));
-		settings.setReminderTime(cursor.getDouble(1));
-		settings.setReminderSound(cursor.getString(2));
-		settings.setStartSound(cursor.getString(3));
+		settings.setReminderTime(cursor.getInt(1));
+		settings.setReminderSound(cursor.getInt(2));
+		settings.setStartSound(cursor.getInt(3));
 		settings.setNumOvens(cursor.getInt(4));
 		settings.setNumMicrowaves(cursor.getInt(5));
 		settings.setNumBurners(cursor.getInt(6));
@@ -1170,7 +1171,7 @@ public class DataSourceManager
 		// Thanksgiving Meal
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME, "Thanksgiving");
-		values.put(COLUMN_TIME, 5.5);
+		values.put(COLUMN_TIME, 290);
 		values.put(COLUMN_DESCRIPTION, "Thanksgiving description");
 		values.put(COLUMN_USER, 1);
 		values.put(COLUMN_CC, 0);
@@ -1198,7 +1199,7 @@ public class DataSourceManager
 		// Thanksgiving Recipes
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Apple Pie");
-		values.put(COLUMN_TIME, 2.2);
+		values.put(COLUMN_TIME, 45);
 		values.put(COLUMN_DESCRIPTION, "Grandma's Original Recipe");
 		values.put(COLUMN_RECIPE_NUM_SERVINGS, 8);
 		values.put(COLUMN_USER, 1);
@@ -1207,7 +1208,7 @@ public class DataSourceManager
 
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Mashed Potatoes");
-		values.put(COLUMN_TIME, 3);
+		values.put(COLUMN_TIME, 90);
 		values.put(COLUMN_DESCRIPTION, "Sah good!");
 		values.put(COLUMN_RECIPE_NUM_SERVINGS, 6);
 		values.put(COLUMN_USER, 1);
@@ -1216,7 +1217,7 @@ public class DataSourceManager
 
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Green Bean Cassarole");
-		values.put(COLUMN_TIME, 1.5);
+		values.put(COLUMN_TIME, 30);
 		values.put(COLUMN_DESCRIPTION, "Out the can");
 		values.put(COLUMN_RECIPE_NUM_SERVINGS, 8);
 		values.put(COLUMN_USER, 1);
@@ -1225,7 +1226,7 @@ public class DataSourceManager
 
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Stuffing");
-		values.put(COLUMN_TIME, 1);
+		values.put(COLUMN_TIME, 50);
 		values.put(COLUMN_DESCRIPTION, "Homemade.");
 		values.put(COLUMN_RECIPE_NUM_SERVINGS, 6);
 		values.put(COLUMN_USER, 1);
@@ -1246,7 +1247,7 @@ public class DataSourceManager
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS,
 				"Fill 4 quart pot with potoatos and enough water to cover the top.");
-		values.put(COLUMN_TIME, .05);
+		values.put(COLUMN_TIME, 3);
 		values.put(COLUMN_ACTIVE, 1);
 		long mashedPotatoStep1 = database.insert(TABLE_RECIPE_STEP, null,
 				values);
@@ -1254,7 +1255,7 @@ public class DataSourceManager
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS,
 				"Cook on stove on high heat until the potatos are tender.");
-		values.put(COLUMN_TIME, .75);
+		values.put(COLUMN_TIME, 35);
 		values.put(COLUMN_ACTIVE, 0);
 		long mashedPotatoStep2 = database.insert(TABLE_RECIPE_STEP, null,
 				values);
@@ -1262,14 +1263,14 @@ public class DataSourceManager
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS,
 				"Take off stove and mash up all the ingredients");
-		values.put(COLUMN_TIME, .1);
+		values.put(COLUMN_TIME, 8);
 		values.put(COLUMN_ACTIVE, 1);
 		long mashedPotatoStep3 = database.insert(TABLE_RECIPE_STEP, null,
 				values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Top with chives and serve.");
-		values.put(COLUMN_TIME, .05);
+		values.put(COLUMN_TIME, 2);
 		values.put(COLUMN_ACTIVE, 1);
 		long mashedPotatoStep4 = database.insert(TABLE_RECIPE_STEP, null,
 				values);
@@ -1297,25 +1298,25 @@ public class DataSourceManager
 		// Apple Pie Steps
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Preheat oven to 350F.");
-		values.put(COLUMN_TIME, .1);
+		values.put(COLUMN_TIME, 8);
 		values.put(COLUMN_ACTIVE, 1);
 		long applePieStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Cut up apples.");
-		values.put(COLUMN_TIME, .1);
+		values.put(COLUMN_TIME, 10);
 		values.put(COLUMN_ACTIVE, 1);
 		long applePieStep2 = database.insert(TABLE_RECIPE_STEP, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Mix up all the ingredients");
-		values.put(COLUMN_TIME, .1);
+		values.put(COLUMN_TIME, 5);
 		values.put(COLUMN_ACTIVE, 1);
 		long applePieStep3 = database.insert(TABLE_RECIPE_STEP, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Bake for 30 minutes.");
-		values.put(COLUMN_TIME, .5);
+		values.put(COLUMN_TIME, 30);
 		values.put(COLUMN_ACTIVE, 0);
 		long applePieStep4 = database.insert(TABLE_RECIPE_STEP, null, values);
 
@@ -1470,27 +1471,27 @@ public class DataSourceManager
 		// Green Bean Steps
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Preheat oven to 350 F.");
-		values.put(COLUMN_TIME, .2);
+		values.put(COLUMN_TIME, 1);
 		values.put(COLUMN_ACTIVE, 0);
 		long greenBeanStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS,
 				"Put all ingredients except the onions in a 8 x 8 baking pan.");
-		values.put(COLUMN_TIME, .1);
+		values.put(COLUMN_TIME, 5);
 		values.put(COLUMN_ACTIVE, 1);
 		long greenBeanStep2 = database.insert(TABLE_RECIPE_STEP, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Bake for 20 minues");
-		values.put(COLUMN_TIME, .33);
+		values.put(COLUMN_TIME, 20);
 		values.put(COLUMN_ACTIVE, 0);
 		long greenBeanStep3 = database.insert(TABLE_RECIPE_STEP, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS,
 				"Take pan out, sprinkle on onion crunchies, and serve.");
-		values.put(COLUMN_TIME, .05);
+		values.put(COLUMN_TIME, 5);
 		values.put(COLUMN_ACTIVE, 1);
 		long greenBeanStep4 = database.insert(TABLE_RECIPE_STEP, null, values);
 
@@ -1517,27 +1518,27 @@ public class DataSourceManager
 		// Stuffing Steps
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Preheat oven to 350F.");
-		values.put(COLUMN_TIME, .2);
+		values.put(COLUMN_TIME, 3);
 		values.put(COLUMN_ACTIVE, 0);
 		long stuffingStep1 = database.insert(TABLE_RECIPE_STEP, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS,
 				"Chop up all bread into 1 inch square cubes.");
-		values.put(COLUMN_TIME, .15);
+		values.put(COLUMN_TIME, 8);
 		values.put(COLUMN_ACTIVE, 1);
 		long stuffingStep2 = database.insert(TABLE_RECIPE_STEP, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS,
 				"Pour cream and melted butter over bread in baking dish.");
-		values.put(COLUMN_TIME, .1);
+		values.put(COLUMN_TIME, 3);
 		values.put(COLUMN_ACTIVE, 1);
 		long stuffingStep3 = database.insert(TABLE_RECIPE_STEP, null, values);
 
 		values = new ContentValues();
 		values.put(COLUMN_INSTRUCTIONS, "Bake for 30 minutes and serve.");
-		values.put(COLUMN_TIME, .5);
+		values.put(COLUMN_TIME, 30);
 		values.put(COLUMN_ACTIVE, 0);
 		long stuffingStep4 = database.insert(TABLE_RECIPE_STEP, null, values);
 
@@ -1642,20 +1643,20 @@ public class DataSourceManager
 		// Meal 2
 		values = new ContentValues();
 		values.put(COLUMN_NAME, "Sam Initial Meal 2");
-		values.put(COLUMN_TIME, 6.8);
+		values.put(COLUMN_TIME, 80);
 		values.put(COLUMN_DESCRIPTION, "Initial Description 2");
 		values.put(COLUMN_USER, 0);
 		values.put(COLUMN_CC, 1);
 		long meal2Id = database.insert(TABLE_MEAL, null, values);
 
-		// Initialize User Settings
+		// Initialize User Settings - numbers are indexes for the drop down.
 		values = new ContentValues();
-		values.put(COLUMN_REMINDER_TIME, 0);
-		values.put(COLUMN_REMINDER_SOUND, "Quack");
-		values.put(COLUMN_START_SOUND, "Beep");
-		values.put(COLUMN_NUM_OVENS, 1);
-		values.put(COLUMN_NUM_MICROWAVES, 1);
-		values.put(COLUMN_NUM_BURNERS, 4);
+		values.put(COLUMN_REMINDER_TIME, 0);  // 0 - 2
+		values.put(COLUMN_REMINDER_SOUND, 1); // 0 - 2
+		values.put(COLUMN_START_SOUND, 2); // 0 - 2
+		values.put(COLUMN_NUM_OVENS, 1); // 0 - 4
+		values.put(COLUMN_NUM_MICROWAVES, 1); // 0 - 4
+		values.put(COLUMN_NUM_BURNERS, 4); // 0 - 6
 		database.insert(TABLE_SETTINGS, null, values);
 	}
 
@@ -1677,6 +1678,19 @@ public class DataSourceManager
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_STEP_REL);
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_SETTINGS);
 		onCreate(database);
+	}
+
+	public RecipeStep getRecipeStepById(long stepId)
+	{
+		Cursor cursor = database.query(TABLE_RECIPE_STEP, allRecipeStepColumns,
+				COLUMN_ID + " = " + stepId, null, null, null, null);
+
+		cursor.moveToFirst();
+		RecipeStep newStep = cursorToRecipeStep(cursor);
+
+		// make sure to close the cursor
+		cursor.close();
+		return newStep;
 	}
 
 }
