@@ -180,8 +180,8 @@ public class DataSourceManager
 	private static final String SETTINGS_DATABASE_CREATE = "create table "
 			+ TABLE_SETTINGS + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_REMINDER_TIME
-			+ " real not null, " + COLUMN_REMINDER_SOUND + " text not null, "
-			+ COLUMN_START_SOUND + " text not null, " + COLUMN_NUM_OVENS
+			+ " real not null, " + COLUMN_REMINDER_SOUND + " integer not null, "
+			+ COLUMN_START_SOUND + " integer not null, " + COLUMN_NUM_OVENS
 			+ " integer not null," + COLUMN_NUM_MICROWAVES
 			+ " integer not null," + COLUMN_NUM_BURNERS + " integer not null);";
 
@@ -1107,8 +1107,8 @@ public class DataSourceManager
 	}
 
 	// SETTINGS DATA ACCESS METHODS
-	public UserSettings updateUserSettings(long id, long reminderTime,
-			String reminderSound, String startSound, int numOvens,
+	public UserSettings updateUserSettings(long id, double reminderTime,
+			int reminderSound, int startSound, int numOvens,
 			int numMicrowaves, int numBurners)
 	{
 		ContentValues values = new ContentValues();
@@ -1144,8 +1144,8 @@ public class DataSourceManager
 		UserSettings settings = new UserSettings();
 		settings.setId(cursor.getLong(0));
 		settings.setReminderTime(cursor.getDouble(1));
-		settings.setReminderSound(cursor.getString(2));
-		settings.setStartSound(cursor.getString(3));
+		settings.setReminderSound(cursor.getInt(2));
+		settings.setStartSound(cursor.getInt(3));
 		settings.setNumOvens(cursor.getInt(4));
 		settings.setNumMicrowaves(cursor.getInt(5));
 		settings.setNumBurners(cursor.getInt(6));
@@ -1651,8 +1651,8 @@ public class DataSourceManager
 		// Initialize User Settings
 		values = new ContentValues();
 		values.put(COLUMN_REMINDER_TIME, 0);
-		values.put(COLUMN_REMINDER_SOUND, "Quack");
-		values.put(COLUMN_START_SOUND, "Beep");
+		values.put(COLUMN_REMINDER_SOUND, 1);
+		values.put(COLUMN_START_SOUND, 2);
 		values.put(COLUMN_NUM_OVENS, 1);
 		values.put(COLUMN_NUM_MICROWAVES, 1);
 		values.put(COLUMN_NUM_BURNERS, 4);

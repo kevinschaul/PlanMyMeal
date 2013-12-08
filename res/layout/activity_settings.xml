@@ -61,7 +61,7 @@
                         android:textSize="20sp" />
 
                     <Spinner
-                        android:id="@+id/cooking_alerts_options1_spinner"
+                        android:id="@+id/cooking_alerts_reminderTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:entries="@array/settings_cooking_alerts_next_step_reminder_time"
@@ -83,7 +83,7 @@
                         android:textSize="20sp" />
 
                     <Spinner
-                        android:id="@+id/cooking_alerts_options2_spinner"
+                        android:id="@+id/cooking_alerts_reminderAlert"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:entries="@array/reminder_alarm_type" />
@@ -104,7 +104,7 @@
                         android:textSize="20sp" />
 
                     <Spinner
-                        android:id="@+id/cooking_alerts_options3_spinner"
+                        android:id="@+id/cooking_alerts_mainAlert"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:entries="@array/start_step_alarm_type" />
@@ -142,7 +142,7 @@
                         android:textSize="20sp" />
 
                     <Spinner
-                        android:id="@+id/my_kitchen_options1_spinner"
+                        android:id="@+id/my_kitchen_numOvens"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:entries="@array/number_appliances" />
@@ -155,7 +155,7 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/my_kitchen_options2"
+                        android:id="@+id/my_kitchen_text2"
                         android:layout_width="425dp"
                         android1:layout_height="wrap_content"
                         android:text="Number of Microwaves:"
@@ -163,7 +163,7 @@
                         android:textSize="20sp" />
 
                     <Spinner
-                        android:id="@+id/my_kitchen_options2_spinner"
+                        android:id="@+id/my_kitchen_numMicrowaves"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:entries="@array/number_appliances" />
@@ -184,7 +184,7 @@
                         android:textSize="20sp" />
 
                     <Spinner
-                        android:id="@+id/my_kitchen_options3_spinner"
+                        android:id="@+id/my_kitchen_numBurners"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:entries="@array/number_appliances" />

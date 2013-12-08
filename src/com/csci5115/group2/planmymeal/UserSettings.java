@@ -4,11 +4,12 @@ public class UserSettings
 {
 	private long id;
 	private double reminderTime;
-	private String reminderSound;
-	private String startSound;
+	private int reminderSound;
+	private int startSound;
 	private int numOvens;
 	private int numMicrowaves;
 	private int numBurners;
+	
 	public long getId()
 	{
 		return id;
@@ -25,19 +26,19 @@ public class UserSettings
 	{
 		this.reminderTime = d;
 	}
-	public String getReminderSound()
+	public int getReminderSound()
 	{
 		return reminderSound;
 	}
-	public void setReminderSound(String reminderSound)
+	public void setReminderSound(int reminderSound)
 	{
 		this.reminderSound = reminderSound;
 	}
-	public String getStartSound()
+	public int getStartSound()
 	{
 		return startSound;
 	}
-	public void setStartSound(String startSound)
+	public void setStartSound(int startSound)
 	{
 		this.startSound = startSound;
 	}
