@@ -829,6 +829,7 @@ public class DataSourceManager
 				null);
 		System.out.println("Recipe Ingredient " + i.getName()
 				+ " deleted from recipe with id: " + recipeId);
+		database.delete(TABLE_INGREDIENT, COLUMN_ID + " = " + id, null);
 	}
 
 	public Ingredient getIngredientById(long id)

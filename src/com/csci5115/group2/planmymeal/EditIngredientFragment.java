@@ -1,5 +1,6 @@
 package com.csci5115.group2.planmymeal;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -81,7 +82,8 @@ public class EditIngredientFragment extends Fragment
 			} else
 			{
 				// Create new ingredient & add to recipe
-				ingredient = datasource.addIngredientToRecipe("", 0.0, "", recipeId);
+				ingredient = datasource.addIngredientToRecipe("", 0.0, "",
+						recipeId);
 				ingredientId = ingredient.getId();
 				newIngredient = true;
 			}
@@ -116,8 +118,7 @@ public class EditIngredientFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				// TODO: Check if valid
-
+				Context iContext = v.getContext();
 				// Save state
 				final String iName = ((EditText) rootView
 						.findViewById(R.id.edit_recipe_ingredient_name))
@@ -128,30 +129,105 @@ public class EditIngredientFragment extends Fragment
 				final String iUnit = ((EditText) rootView
 						.findViewById(R.id.edit_recipe_ingredient_unit))
 						.getText().toString();
-				double amountLong = Double.parseDouble(iAmount);
-				long recipeId = recipe.getId();
-				final Ingredient addedOrUpdatedIngredient;
-				// Save to db
-				addedOrUpdatedIngredient = datasource.updateRecipeIngredient(
-						ingredientId, iName, amountLong, iUnit, recipeId);
-				if(newIngredient)
+				if (checkIfValidIngredient(iName, iAmount, iUnit, iContext))
 				{
-					Toast toast = Toast.makeText(rootView.getContext(),
-							"New Ingredient Saved!", Toast.LENGTH_SHORT);
-					toast.show();
+				double amountLong = Double.parseDouble(iAmount);
+					long recipeId = recipe.getId();
+					final Ingredient addedOrUpdatedIngredient;
+					// Save to db
+					addedOrUpdatedIngredient = datasource
+							.updateRecipeIngredient(ingredientId, iName,
+									amountLong, iUnit, recipeId);
+					if (newIngredient)
+					{
+						Toast toast = Toast.makeText(rootView.getContext(),
+								"New Ingredient Saved!", Toast.LENGTH_SHORT);
+						toast.show();
+					} else
+					{
+						Toast toast = Toast.makeText(rootView.getContext(),
+								"Ingredient Updated!", Toast.LENGTH_SHORT);
+						toast.show();
+					}
+
+					// Restart Edit Recipe Activity
+					Intent intent = new Intent(rootView.getContext(),
+							EditRecipeActivity.class);
+					intent.putExtra(HomeActivity.EXTRA_RECIPE, recipeId);
+					startActivity(intent);
+				}
+			}
+
+			private boolean checkIfValidIngredient(String iName,
+					String iAmount, String iUnit, Context iContext)
+			{
+				String errors = "";
+				boolean error = false;
+				if (iName == null || iName.isEmpty())
+				{
+					errors += "Must fill out Ingredient Name!\n\n";
+					error = true;
+				}
+				if (iUnit == null || iUnit.isEmpty())
+				{
+					errors += "Must fill out Ingredient Unit!\n\n";
+					error = true;
+				}
+
+				if (iAmount == null || iAmount.isEmpty())
+				{
+					errors += "Must fill out Ingredient Time!\n\n";
+					error = true;
 				}
 				else
 				{
-					Toast toast = Toast.makeText(rootView.getContext(),
-							"Ingredient Updated!", Toast.LENGTH_SHORT);
-					toast.show();
+					try
+					{
+						double num = Double.parseDouble(iAmount);
+						if(num < 0.0)
+						{
+							errors += "Ingredient Amount must be greater than 0!  ";
+							error = true;
+						}
+					}
+					catch(NumberFormatException  e)
+					{
+						errors += "Must enter valid Ingredient Amount!  ";
+						error = true;
+					}
 				}
-				
+				if(error)
+				{
+					AlertDialog.Builder builder = new AlertDialog.Builder(iContext);
+					builder.setTitle("Please fix form errors");
+					builder.setMessage(errors);
+					builder.setPositiveButton("OK", null);
+					AlertDialog dialog = builder.create();
+					dialog.show();
+					return false;
+				}
+				return true;
+			}
+		});
+
+		// Save ingredient Button
+		Button cancelChanges = (Button) rootView
+				.findViewById(R.id.edit_recipe_ingredient_cancel);
+		cancelChanges.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				if (newIngredient)
+				{
+					datasource.deleteRecipeIngredient(ingredient, recipeId);
+				}
 
 				// Restart Edit Recipe Activity
-				Intent intent = new Intent(rootView.getContext(), EditRecipeActivity.class);
+				Intent intent = new Intent(rootView.getContext(),
+						EditRecipeActivity.class);
 				intent.putExtra(HomeActivity.EXTRA_RECIPE, recipeId);
-	    		startActivity(intent);
+				startActivity(intent);
 			}
 		});
 		return rootView;

@@ -3,7 +3,9 @@ package com.csci5115.group2.planmymeal;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -151,8 +153,7 @@ public class EditStepFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				// TODO: Check if valid
-
+				Context context = v.getContext();
 				// Save Values
 				final String iName = ((EditText) rootView
 						.findViewById(R.id.edit_recipe_step_name)).getText()
@@ -181,31 +182,81 @@ public class EditStepFragment extends Fragment
 						.findViewById(R.id.radio_step_active_group))
 						.getCheckedRadioButtonId();
 				final boolean isActiveStep = selectedId == R.id.step_active;
-				double timeLong = Double.parseDouble(iTime);
-				long recipeId = recipe.getId();
-				// Save to db
-				final RecipeStep addedOrUpdatedStep;
-				addedOrUpdatedStep = datasource.updateRecipeStep(stepId, iName,
-						timeLong, isActiveStep, appliancesUsed, recipeId);
-				if(newStep)
+				if(checkIfValidStep(iName, iTime, context))
 				{
-					Toast toast = Toast.makeText(rootView.getContext(),
-							"New Step Saved!", Toast.LENGTH_SHORT);
-					toast.show();
+				double timeLong = Double.parseDouble(iTime);
+				// Check if valid
+				
+					long recipeId = recipe.getId();
+					// Save to db
+					datasource.updateRecipeStep(stepId, iName,
+							timeLong, isActiveStep, appliancesUsed, recipeId);
+					if(newStep)
+					{
+						Toast toast = Toast.makeText(rootView.getContext(),
+								"New Step Saved!", Toast.LENGTH_SHORT);
+						toast.show();
+					}
+					else
+					{
+						Toast toast = Toast.makeText(rootView.getContext(),
+								"Recipe Step Updated!", Toast.LENGTH_SHORT);
+						toast.show();
+					}
+					
+
+					// Restart Edit Recipe Activity
+					Intent intent = new Intent(rootView.getContext(),
+							EditRecipeActivity.class);
+					intent.putExtra(HomeActivity.EXTRA_RECIPE, recipeId);
+					startActivity(intent);
+				}
+				
+				
+			}
+
+			private boolean checkIfValidStep(String iName, String iTime, Context icontext)
+			{
+				String errors = "";
+				boolean error = false;
+				if(iName == null || iName.isEmpty())
+				{
+					errors += "Must fill out Step instructions!\n\n";
+					error = true;
+				}
+				if(iTime == null || iTime.isEmpty())
+				{
+					errors += "Step time must be longer than 1 minute!\n\n";
+					error = true;
 				}
 				else
 				{
-					Toast toast = Toast.makeText(rootView.getContext(),
-							"Recipe Step Updated!", Toast.LENGTH_SHORT);
-					toast.show();
+					try
+					{
+						double num = Double.parseDouble(iTime);
+						if(num < 1.0)
+						{
+							errors += "Step Time must be at least 1!\n\n";
+							error = true;
+						}
+					}
+					catch(NumberFormatException  e)
+					{
+						errors += "Must enter valid Step Time!\n\n";
+						error = true;
+					}
 				}
-				
-
-				// Restart Edit Recipe Activity
-				Intent intent = new Intent(rootView.getContext(),
-						EditRecipeActivity.class);
-				intent.putExtra(HomeActivity.EXTRA_RECIPE, recipeId);
-				startActivity(intent);
+				if(error)
+				{
+					AlertDialog.Builder builder = new AlertDialog.Builder(icontext);
+					builder.setTitle("Please fix form errors");
+					builder.setMessage(errors);
+					builder.setPositiveButton("OK", null);
+					AlertDialog dialog = builder.create();
+					dialog.show();
+					return false;
+				}
+				return true;
 			}
 		});
 		return rootView;

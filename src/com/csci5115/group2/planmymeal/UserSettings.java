@@ -11,6 +11,20 @@ public class UserSettings
 	private int numBurners;
 	
 	// Conversion methods - converts indexs of dropdown menus to actual values that we need.
+	public static int indexToAlarmType(int index)
+	{
+		switch(index)
+		{
+		case 0:
+			return 7;
+		case 1:
+			return 2;
+		case 2: 
+			return 4;
+		default:
+			return 1;
+		}
+	}
 	public double getReminderTimeInSeconds()
 	{
 		switch(reminderTime)

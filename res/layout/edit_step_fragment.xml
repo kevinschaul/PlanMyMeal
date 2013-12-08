@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.65"
-            android:text="Time step takes"
+            android:text="Time step takes (in Minutes)"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.12"
             android:ems="10"
-            android:hint="Numerical values only"
+            android:hint="Time in Minutes"
             android:inputType="numberDecimal" />
     </LinearLayout>
 
@@ -123,11 +123,27 @@
         </RadioGroup>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/edit_recipe_step_save"
+    <LinearLayout
+        android:id="@+id/edit_recipe_ingredient_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Save New Step" />
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/edit_recipe_ingredient_cancel"
+            style="@style/BadButton"
+            android:layout_width="217dp"
+            android:layout_height="wrap_content"
+            android:text="Undo Changes" />
+
+        <Button
+            android:id="@+id/edit_recipe_step_save"
+            style="@style/ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Save New Step" />
+    </LinearLayout>
 
 </LinearLayout>

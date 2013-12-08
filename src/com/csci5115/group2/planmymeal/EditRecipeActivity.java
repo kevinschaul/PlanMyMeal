@@ -3,7 +3,9 @@ package com.csci5115.group2.planmymeal;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,6 +37,10 @@ public class EditRecipeActivity extends FragmentActivity
 	public LinearLayout steps_wrapper;
 	private DataSourceManager datasource;
 	private Typeface fontAwesome;
+	private boolean showingIngredient = false;
+	private boolean showingStep = false;
+	private long selectedIngredient = 0;
+	private long selectedStep = 0;
 
 	// private boolean newIngredient = true;
 	// private long currentIngredientId = 0;
@@ -179,6 +186,14 @@ public class EditRecipeActivity extends FragmentActivity
 				@Override
 				public void onClick(View v)
 				{
+					if (showingStep)
+					{
+						// clear edit step form
+						FrameLayout fm = ((FrameLayout) findViewById(R.id.edit_recipe_new_step_container));
+						fm.removeAllViews();
+					}
+					showingIngredient = true;
+					selectedIngredient = ingredient.getId();
 					Bundle arguments = new Bundle();
 					arguments.putLong(EditIngredientFragment.ARG_INGREDIENT_ID,
 							ingredient.getId());
@@ -216,6 +231,13 @@ public class EditRecipeActivity extends FragmentActivity
 				@Override
 				public void onClick(View v)
 				{
+					if (selectedIngredient != 0
+							&& selectedIngredient == ingredient.getId())
+					{
+						// clear edit ingredient form
+						FrameLayout fm = ((FrameLayout) findViewById(R.id.edit_recipe_new_i_container));
+						fm.removeAllViews();
+					}
 
 					ingredientView.setVisibility(View.GONE);
 					datasource.deleteRecipeIngredient(ingredient,
@@ -240,6 +262,16 @@ public class EditRecipeActivity extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
+				if (showingStep)
+				{
+					// Dialog, would you like to save ingredient save changes
+					// Yes - Save ; No - Undo Changes
+
+					// clear edit step form
+					FrameLayout fm = ((FrameLayout) findViewById(R.id.edit_recipe_new_step_container));
+					fm.removeAllViews();
+				}
+				showingIngredient = true;
 				Bundle arguments = new Bundle();
 				arguments.putLong(EditIngredientFragment.ARG_INGREDIENT_ID, 0);
 				arguments.putLong(EditIngredientFragment.ARG_RECIPE_ID,
@@ -274,6 +306,18 @@ public class EditRecipeActivity extends FragmentActivity
 				@Override
 				public void onClick(View v)
 				{
+					if (showingIngredient)
+					{
+						// Dialog, would you like to save ingredient save
+						// changes
+						// Yes - Save ; No - Undo Changes
+
+						// clear edit ingredient form
+						FrameLayout fm = ((FrameLayout) findViewById(R.id.edit_recipe_new_i_container));
+						fm.removeAllViews();
+					}
+					showingStep = true;
+					selectedStep = step.getId();
 					// Start fragment
 					Bundle arguments = new Bundle();
 					arguments.putLong(EditStepFragment.ARG_STEP_ID,
@@ -298,6 +342,12 @@ public class EditRecipeActivity extends FragmentActivity
 				@Override
 				public void onClick(View v)
 				{
+					if (selectedStep != 0 && selectedStep == step.getId())
+					{
+						// clear edit step form
+						FrameLayout fm = ((FrameLayout) findViewById(R.id.edit_recipe_new_step_container));
+						fm.removeAllViews();
+					}
 					stepView.setVisibility(View.GONE);
 					datasource.deleteRecipeStep(step);
 				}
@@ -313,6 +363,16 @@ public class EditRecipeActivity extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
+				if (showingIngredient)
+				{
+					// Dialog, would you like to save ingredient save changes
+					// Yes - Save ; No - Undo Changes
+
+					// clear edit ingredient form
+					FrameLayout fm = ((FrameLayout) findViewById(R.id.edit_recipe_new_i_container));
+					fm.removeAllViews();
+				}
+				showingStep = true;
 				Bundle arguments = new Bundle();
 				arguments.putLong(EditStepFragment.ARG_STEP_ID, 0);
 				arguments.putLong(EditStepFragment.ARG_RECIPE_ID,
@@ -333,27 +393,77 @@ public class EditRecipeActivity extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
+				Context iContext = v.getContext();
 				// Check if input is valid
 				String recipeName = ((EditText) findViewById(R.id.edit_recipe_recipeName))
 						.getText().toString();
+				String numServingsString = ((EditText) findViewById(R.id.edit_recipe_numServings))
+				.getText().toString();
+				if(checkIfValidRecipe(recipeName, numServingsString, iContext))
+				{
 				int numServings = Integer
-						.parseInt(((EditText) findViewById(R.id.edit_recipe_numServings))
-								.getText().toString());
+						.parseInt(numServingsString);
 				String recipeDescription = "";
 				double recipeTime = 5.5;
-
-				// Update in db
-				datasource.updateRecipe(recipe.getId(), recipeName, recipeTime,
-						recipeDescription, numServings);
-				// Pop up
-				Toast toast = Toast.makeText(getBaseContext(), "Recipe Saved",
-						Toast.LENGTH_SHORT);
-				toast.show();
-				// Go to home activity
-				Intent intent = new Intent(getBaseContext(), HomeActivity.class);
-				startActivity(intent);
+				
+					// Update in db
+					datasource.updateRecipe(recipe.getId(), recipeName, recipeTime,
+							recipeDescription, numServings);
+					// Pop up
+					Toast toast = Toast.makeText(getBaseContext(), "Recipe Saved",
+							Toast.LENGTH_SHORT);
+					toast.show();
+					// Go to home activity
+					Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+					startActivity(intent);
+				}
 			}
 		});
+	}
+	
+	private boolean checkIfValidRecipe(String iName, String numServings, Context icontext)
+	{
+		String errors = "";
+		boolean error = false;
+		if(iName == null || iName.isEmpty())
+		{
+			errors += "Must fill out Recipe Name!\n\n";
+			error = true;
+		}
+		if(numServings == null || numServings.isEmpty())
+		{
+			errors += "Must fill out Number of Servings!\n\n";
+			error = true;
+		}
+		else
+		{
+			try
+			{
+				int num = Integer.parseInt(numServings);
+				if(num < 1)
+				{
+					errors += "Number of Servings must be at least 1!  ";
+					error = true;
+				}
+			}
+			catch(NumberFormatException  e)
+			{
+				errors += "Must enter valid Number of Servings!  ";
+				error = true;
+			}
+		}
+		
+		if(error)
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(icontext);
+			builder.setTitle("Please fix form errors");
+			builder.setMessage(errors);
+			builder.setPositiveButton("OK", null);
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
