@@ -943,7 +943,7 @@ public class DataSourceManager
 	}
 
 	// RECIPE STEP DATA ACCESS METHODS
-	public RecipeStep createRecipeStep(String instructions, long time,
+	public RecipeStep createRecipeStep(String instructions, double time,
 			Boolean isActive, List<String> appliancesUsed)
 	{
 		ContentValues values = new ContentValues();
@@ -960,7 +960,7 @@ public class DataSourceManager
 		return newStep;
 	}
 
-	public RecipeStep addStepToRecipe(String instructions, long time,
+	public RecipeStep addStepToRecipe(String instructions, double time,
 			Boolean isActive, List<String> appliancesUsed, long recipeId)
 	{
 		RecipeStep newStep = createRecipeStep(instructions, time, isActive,
@@ -975,7 +975,7 @@ public class DataSourceManager
 	}
 
 	public RecipeStep updateRecipeStep(long stepId, String instructions,
-			long time, Boolean isActive, List<String> appliancesUsed,
+			double time, Boolean isActive, List<String> appliancesUsed,
 			long recipeId)
 	{
 		// Update RecipeStep
@@ -1094,11 +1094,11 @@ public class DataSourceManager
 	private String createApplianceString(List<String> appliances)
 	{
 		String applianceString = "";
-		for (int i = 1; i < appliances.size(); i++)
+		for (int i = 0; i < appliances.size(); i++)
 		{
 			applianceString += appliances.get(i) + ";";
 		}
-		if (appliances.size() > 1)
+		if (appliances.size() >= 1)
 		{
 			applianceString += appliances.get(appliances.size() - 1);
 		}
@@ -1677,6 +1677,19 @@ public class DataSourceManager
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_STEP_REL);
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_SETTINGS);
 		onCreate(database);
+	}
+
+	public RecipeStep getRecipeStepById(long stepId)
+	{
+		Cursor cursor = database.query(TABLE_RECIPE_STEP, allRecipeStepColumns,
+				COLUMN_ID + " = " + stepId, null, null, null, null);
+
+		cursor.moveToFirst();
+		RecipeStep newStep = cursorToRecipeStep(cursor);
+
+		// make sure to close the cursor
+		cursor.close();
+		return newStep;
 	}
 
 }

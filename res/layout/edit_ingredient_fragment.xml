@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EditIngredientFragment" >
+
+        <TextView
+            android:id="@+id/edit_recipe_addNewIngredient_title"
+            style="@style/CookableTitle"
+            android:layout_alignParentLeft="true"
+            android:text="New Ingredient Information" />
+
+        <LinearLayout
+            android:id="@+id/edit_recipe_ingredient_name_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/edit_recipe_ingredient_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.65"
+                android:text="Ingredient Name"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <EditText
+                android:id="@+id/edit_recipe_ingredient_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.09"
+                android:ems="10"
+                android:hint="Type Ingredient Name" >
+
+                
+            </EditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/edit_recipe_ingredient_amount_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/edit_recipe_ingredient_amount_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.65"
+                android:text="Ingredient Amount"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <EditText
+                android:id="@+id/edit_recipe_ingredient_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.12"
+                android:ems="10"
+                android:hint="Numerical values only"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/edit_recipe_ingredient_unit_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/edit_recipe_ingredient_unit_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.81"
+                android:text="Ingredient Units"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <EditText
+                android:id="@+id/edit_recipe_ingredient_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.28"
+                android:ems="10"
+                android:hint="oz, lbs, tbsp, etc (optional)" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/edit_recipe_ingredient_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Save Ingredient" />
+
+</LinearLayout>

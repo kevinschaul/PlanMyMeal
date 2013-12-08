@@ -142,10 +142,16 @@
 
                         <LinearLayout
                             android:id="@+id/edit_recipe_ingredientsList"
-                            android:layout_width="498dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical" >
                         </LinearLayout>
+
+                        <Button
+                            android:id="@+id/addIngredientButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Add Ingredient" />
 
                         <TextView
                             android:id="@+id/edit_recipe_directionsTitle"
@@ -156,11 +162,16 @@
 
                         <LinearLayout
                             android:id="@+id/edit_recipe_directionsList"
-                            android:layout_width="498dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical" >
                         </LinearLayout>
 
+                        <Button
+                            android:id="@+id/addStepButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Add Step" />
                     </LinearLayout>
 
                     <Button
@@ -179,233 +190,44 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true" >
-            
+
             <ScrollView
                 android:id="@+id/edit_recipe_newStuffScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true" >
-            
-            <LinearLayout
-                android:id="@+id/edit_recipe_new_stuff_wrapper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
 
                 <LinearLayout
-                    android:id="@+id/edit_recipe_new_i_wrapper"
+                    android:id="@+id/edit_recipe_new_stuff_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
                     <LinearLayout
-                        android:id="@+id/edit_recipe_ingredient_name_wrapper"
+                        android:id="@+id/edit_recipe_new_i_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal"
-                        android:weightSum="2" >
-
-                        <TextView
-                            android:id="@+id/edit_recipe_ingredient_name_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.76"
-                            android:text="Ingredient Name"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <EditText
-                            android:id="@+id/edit_recipe_ingredient_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.09"
-                            android:ems="10"
-                            android:hint="Type Ingredient Name" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/edit_recipe_ingredient_amount_wrapper"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal" >
-
-                        <TextView
-                            android:id="@+id/edit_recipe_ingredient_amount_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.65"
-                            android:text="Ingredient Amount"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <EditText
-                            android:id="@+id/edit_recipe_ingredient_amount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.12"
-                            android:ems="10"
-                            android:hint="Numerical values only"
-                            android:inputType="numberDecimal" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/edit_recipe_ingredient_unit_wrapper"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal" >
-
-                        <TextView
-                            android:id="@+id/edit_recipe_ingredient_unit_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.81"
-                            android:text="Ingredient Units"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <EditText
-                            android:id="@+id/edit_recipe_ingredient_unit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.28"
-                            android:ems="10"
-                            android:hint="oz, lbs, tbsp, etc (optional)" />
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/edit_recipe_ingredient_save"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="Save Ingredient" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/edit_recipe_new_step_wrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <LinearLayout
-                        android:id="@+id/edit_recipe_step_name_wrapper"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal"
-                        android:weightSum="2" >
-
-                        <TextView
-                            android:id="@+id/edit_recipe_step_name_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.76"
-                            android:text="Step Name"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <EditText
-                            android:id="@+id/edit_recipe_step_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.09"
-                            android:ems="10"
-                            android:hint="Type Step Name" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/edit_recipe_step_time_wrapper"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal" >
-
-                        <TextView
-                            android:id="@+id/edit_recipe_step_time_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.65"
-                            android:text="Time step takes"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <EditText
-                            android:id="@+id/edit_recipe_step_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.12"
-                            android:ems="10"
-                            android:hint="Numerical values only"
-                            android:inputType="numberDecimal" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/edit_recipe_step_appliances_wrapper"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
                         android:orientation="vertical" >
 
-                        <TextView
-                            android:id="@+id/edit_recipe_appliances_used_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Appliances Used"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <CheckBox
-                            android:id="@+id/oven_used_chk_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Oven" />
-
-                        <CheckBox
-                            android:id="@+id/burner_used_chk_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Burner" />
-
-                        <CheckBox
-                            android:id="@+id/microwave_used_chk_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Microwave" />
+                        <FrameLayout
+                            android:id="@+id/edit_recipe_new_i_container"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/edit_recipe_step_active_wrapper"
+                        android:id="@+id/edit_recipe_new_step_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal" >
-                         <RadioGroup
-        					android:id="@+id/radio_step_active_group"
-        					android:layout_width="wrap_content"
-       						android:layout_height="wrap_content" >
+                        android:orientation="vertical" >
 
-                        <RadioButton
-                            android:id="@+id/step_active"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Active Step"
-                            android:checked="true"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <RadioButton
-                            android:id="@+id/step_inactive"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Non-Active Step"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-                        </RadioGroup>
+                        <FrameLayout
+                            android:id="@+id/edit_recipe_new_step_container"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent" />
                     </LinearLayout>
-
-                    <Button
-                        android:id="@+id/edit_recipe_step_save"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="Save New Step" />
                 </LinearLayout>
-            </LinearLayout>
             </ScrollView>
         </RelativeLayout>
     </RelativeLayout>
