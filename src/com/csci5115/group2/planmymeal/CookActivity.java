@@ -202,8 +202,7 @@ public class CookActivity extends Activity implements OnClickListener {
 		setCurrentStep();
 		
 		//currentStepTimer = createTimer();
-		//currentStepTimer.start();
-				
+		//currentStepTimer.start()			
 				/*) new CountDownTimer(60000, 1000) {
 			public void onTick(long millisUntilFinished) {
 				currentStepTime.setText(makeTimeString(millisUntilFinished));
