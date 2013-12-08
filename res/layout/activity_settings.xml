@@ -8,302 +8,199 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SettingsActivity" >
-	
-    <TextView
-        android:id="@+id/settings_textTitle"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:text="@string/action_settings"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="42sp" />
-    
-    <View android:id="@+id/strut"
-        android:layout_width="0dp"
-        android:layout_height="0dp" 
-        android:layout_centerHorizontal="true"/>
+        android1:layout_alignParentBottom="true"
+        android1:layout_alignParentTop="true"
+        android:orientation="vertical" >
 
-		
-            
-            
-           <RelativeLayout
-	            android:id="@+id/cooking_alerts_options"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_below="@id/settings_textTitle"
-		        android:layout_alignRight="@id/strut"
-		        android:layout_alignParentLeft="true"
-		        android:layout_toLeftOf="@+id/my_tags_options"
-		        android:paddingRight="60dp"
-	       		>
-	       		
-               <TextView
-		        android:id="@+id/cooking_alerts_textTitle"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerHorizontal="true"
-		        android:text="COOKING ALERTS"
-		        android:textAppearance="?android:attr/textAppearanceMedium"
-		        
-		        
-		        android:textSize="30sp" />
-               
-                <TextView
-			        android:id="@+id/cooking_alerts_options1"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="Next step reminder time"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        android:textSize="20sp"
-			        android:layout_below="@id/cooking_alerts_textTitle"
-			         />
-                <Spinner
-                    android:id="@+id/cooking_alerts_options1_spinner"
-                    android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_alignParentRight="true"
-			        android:entries="@array/settings_cooking_alerts_next_step_reminder_time"
-			        android:prompt="@string/settings_cooking_alerts_next_step_reminder_time_text" 
-               		android:layout_below="@id/cooking_alerts_textTitle"
-                />
-                
-                <TextView
-			        android:id="@+id/cooking_alerts_options2"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="Remainder Alarm Sound"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        android:textSize="20sp"
-			        android:layout_weight="1" 
-			        android:layout_below="@id/cooking_alerts_options1"/>
-                
-                
-                <Spinner
-                    android:id="@+id/cooking_alerts_options2_spinner"
-                    android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_alignParentRight="true"
-			        android:entries="@array/reminder_alarm_type"
-			        android:layout_below="@id/cooking_alerts_options1_spinner"			         
-                />
-                
-                <TextView
-			        android:id="@+id/cooking_alerts_options3"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:gravity="center_horizontal"
-			        android:text="Start Step Alarm Sound"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        android:textSize="20sp"
-			        
-			        android:layout_below="@id/cooking_alerts_options2"/>
-                <Spinner
-                    android:id="@+id/cooking_alerts_options3_spinner"
-                    android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_alignParentRight="true"
-			        android:entries="@array/start_step_alarm_type"
-			        android:layout_below="@id/cooking_alerts_options2_spinner"
-			         
-                />
+        <TextView
+            android:id="@+id/settings_textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/action_settings"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="42sp" />
 
-            </RelativeLayout>
-            
-     
-           
-            <RelativeLayout
-	            android:id="@+id/my_kitchen_options"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:orientation="vertical"
-		        android:layout_below="@id/cooking_alerts_options"
-		        android:layout_alignRight="@id/strut"
-		        android:layout_alignParentLeft="true"
-		        android:layout_toLeftOf="@id/my_tags_options"
-		        android:paddingRight="60dp"
-		        
-	       		>
-	       		<TextView
-			        android:id="@+id/my_kitchen"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:gravity="center_horizontal"
-			        android:text="MY KITCHEN"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        android:layout_centerHorizontal="true"
-			        android:textSize="30sp" />
-                <TextView
-			        android:id="@+id/my_kitchen_options1"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:gravity="center_horizontal"
-			        android:text="Number of Ovens"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        android:textSize="20sp"
-			        android:layout_below="@id/my_kitchen" />
-                <Spinner
-                    android:id="@+id/my_kitchen_options1_spinner"
-                    android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_alignParentRight="true"
-			        android:entries="@array/number_appliances"
-			        android:layout_below="@id/my_kitchen"
-			        
-                />
-                
-                <TextView
-			        android:id="@+id/my_kitchen_options2"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:gravity="center_horizontal"
-			        android:text="Number of Microwaves:"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        android:textSize="20sp"
-			        android:layout_weight="1" 
-			        android:layout_below="@id/my_kitchen_options1"/>
-                <Spinner
-                    android:id="@+id/my_kitchen_options2_spinner"
-                    android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_alignParentRight="true"
-			        android:entries="@array/number_appliances"
-			        android:layout_below="@id/my_kitchen_options1_spinner"			         
-                />
-                
-                <TextView
-			        android:id="@+id/my_kitchen_options3"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:gravity="center_horizontal"
-			        android:text="Number of Burners:"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        android:textSize="20sp"
-			        android:layout_weight="1" 
-			        android:layout_below="@id/my_kitchen_options2"/>
-                <Spinner
-                    android:id="@+id/my_kitchen_options3_spinner"
-                    android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_alignParentRight="true"
-			        android:entries="@array/number_appliances"
-			        android:layout_below="@id/my_kitchen_options2_spinner"
-			         
-                />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal" >
 
-            </RelativeLayout>
-            
-            
-           <RelativeLayout
-	            android:id="@id/my_tags_options"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_below="@id/settings_textTitle"
-		        android:layout_alignLeft="@id/strut"
-		        android:layout_weight="1"
-		        android:layout_alignParentRight="true"
-		        android:paddingLeft="100dp"
-	       		>
-                
-               
- <!--               <ListView
-			        android:id="@+id/settings_tags"
-			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
-			        android:layout_marginTop="42dp" >
+            <LinearLayout
+                android:layout_width="523dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:orientation="vertical" >
 
-				</ListView> -->
-	      		<TextView
-			        android:id="@+id/my_tags"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_centerHorizontal="true"
-			        android:text="MY TAGS"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        
-			        android:textSize="30sp" />
-		
                 <TextView
-			        android:id="@+id/my_tags_options1"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:gravity="center_horizontal"
-			        android:text="Tag 1"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        android:layout_below="@id/my_tags"
-			        android:textSize="25sp"></TextView>
-			        
-                <Button
-                    android:id="@+id/my_tags_options1_button"
+                    android:id="@+id/cooking_alerts_textTitle"
                     android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_toRightOf="@id/my_tags_options1"
-			        android:layout_below="@id/my_tags"
-			        android:text="@string/icon_delete"
-                />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="COOKING ALERTS"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="30sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/cooking_alerts_options1"
+                        android:layout_width="425dp"
+                        android:layout_height="wrap_content"
+                        android:text="Next step reminder time"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/cooking_alerts_options1_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/settings_cooking_alerts_next_step_reminder_time"
+                        android:prompt="@string/settings_cooking_alerts_next_step_reminder_time_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/cooking_alerts_options2"
+                        android:layout_width="425dp"
+                        android1:layout_height="wrap_content"
+                        android:text="Remainder Alarm Sound"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/cooking_alerts_options2_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/reminder_alarm_type" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/cooking_alerts_options3"
+                        android:layout_width="425dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start Step Alarm Sound"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/cooking_alerts_options3_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/start_step_alarm_type" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/my_kitchen_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:orientation="vertical" >
+
                 <TextView
-			        android:id="@+id/my_tags_options2"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:gravity="center"
-			        android:text="Tag 2"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        android:layout_below="@id/my_tags"
-			        android:layout_toRightOf="@id/my_tags_options1_button"
-			        android:paddingLeft="100dp"
-			        android:textSize="25sp"></TextView>
-			        
-                <Button
-                    android:id="@+id/my_tags_options2_button"
+                    android:id="@+id/my_kitchen"
                     android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_toRightOf="@id/my_tags_options2"
-			        android:layout_below="@id/my_tags"
-			        android:text="@string/icon_delete"
-			       
-                />
-                
-                <EditText android:id="@+id/add_tag"
-			        android:layout_width="275dp"
-			        android:layout_height="wrap_content"
-			        android:hint="New Tag Name" 
-			        android:layout_below="@id/my_tags_options2_button"
-			        android:paddingTop="50dp"
-			        android:gravity="center"
-			        />
-                
-               <Button
-                    android:id="@+id/my_tags_add_button"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="MY KITCHEN"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="30sp" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_toRightOf="@id/add_tag"
-			        android:layout_below="@id/my_tags_options2_button"
-			        android:text="ADD"
-			       android:paddingTop="50dp"
-                />
-			        
-               
-	        
-                </RelativeLayout>
- 
-            
-         <Button
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/my_kitchen_options1"
+                        android:layout_width="425dp"
+                        android:layout_height="wrap_content"
+                        android:text="Number of Ovens"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/my_kitchen_options1_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/number_appliances" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/my_kitchen_options2"
+                        android:layout_width="425dp"
+                        android1:layout_height="wrap_content"
+                        android:text="Number of Microwaves:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/my_kitchen_options2_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/number_appliances" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/my_kitchen_options3"
+                        android:layout_width="425dp"
+                        android:layout_height="wrap_content"
+                        android:text="Number of Burners:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/my_kitchen_options3_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/number_appliances" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
             android:id="@+id/save_settings_button"
             android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        
-	        android:layout_below="@id/my_kitchen_options"
-	        android:text="SAVE SETTINGS"
-	        android:paddingLeft="200dp"
-	        android:paddingRight="200dp"
-	        android:gravity="center"
-	        
-			       
-                /> 
-        
-        
-    
-    
-	
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:paddingLeft="200dp"
+            android:paddingRight="200dp"
+            android:text="SAVE SETTINGS" />
+    </LinearLayout>
+
 </RelativeLayout>
