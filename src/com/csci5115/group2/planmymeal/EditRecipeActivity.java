@@ -42,13 +42,6 @@ public class EditRecipeActivity extends FragmentActivity
 	private long selectedIngredient = 0;
 	private long selectedStep = 0;
 
-	// private boolean newIngredient = true;
-	// private long currentIngredientId = 0;
-	// private View currentIngredientView = null;
-	// private boolean newStep = true;
-	// private long currentStepId = 0;
-	// private View currentStepView = null;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -175,7 +168,8 @@ public class EditRecipeActivity extends FragmentActivity
 
 			TextView ingredientName = (TextView) ingredientView
 					.findViewById(R.id.row_edit_ingredient_name);
-			ingredientName.setText(ingredient.getName());
+			
+			ingredientName.setText(ingredient.getName() + "   ( " + ingredient.getAmount() + " - " + ingredient.getUnit() + " )");
 
 			Button editButton = (Button) ingredientView
 					.findViewById(R.id.row_edit_ingredient_buttonEdit);
@@ -205,20 +199,6 @@ public class EditRecipeActivity extends FragmentActivity
 							.beginTransaction()
 							.replace(R.id.edit_recipe_new_i_container, fragment)
 							.commit();
-
-					// Populate ingredient shtuff
-					// ((EditText)
-					// findViewById(R.id.edit_recipe_ingredient_name))
-					// .setText(ingredient.getName());
-					// ((EditText)
-					// findViewById(R.id.edit_recipe_ingredient_amount))
-					// .setText(Double.toString(ingredient.getAmount()));
-					// ((EditText)
-					// findViewById(R.id.edit_recipe_ingredient_unit))
-					// .setText(ingredient.getUnit());
-					// newIngredient = false;
-					// currentIngredientId = ingredient.getId();
-					// currentIngredientView = ingredientView;
 				}
 			});
 
