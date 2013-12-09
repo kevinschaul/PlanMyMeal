@@ -3,10 +3,7 @@ package com.csci5115.group2.planmymeal;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.csci5115.group2.planmymeal.database.DataSourceManager;
-
 import android.R.string;
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,28 +11,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
+
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
 public class CookActivity extends Activity implements OnClickListener {
 	
@@ -747,6 +739,9 @@ public class CookActivity extends Activity implements OnClickListener {
 	
 	public void populateFirstRecipe(){
 		TextView myText0 = new TextView(this);
+		myText0.setTypeface(Typeface.DEFAULT_BOLD);
+		myText0.setTextSize(34);
+		myText0.setTextColor(Color.BLACK);
 		myText0.setText(recipe0.getName());
 		IngredientArrayAdapter ingredientsAdapter0 = new IngredientArrayAdapter(this, (LinkedList)recipe0.getIngredients());
 		GridView recipeIngredients0 = new GridView(this);
@@ -778,6 +773,9 @@ public class CookActivity extends Activity implements OnClickListener {
 	
 	public void populateSecondRecipe(){
 		TextView myText1 = new TextView(this);
+		myText1.setTypeface(Typeface.DEFAULT_BOLD);
+		myText1.setTextSize(34);
+		myText1.setTextColor(Color.BLACK);
 		myText1.setText(recipe1.getName());
 		IngredientArrayAdapter ingredientsAdapter1 = new IngredientArrayAdapter(this, (LinkedList)recipe1.getIngredients());
 		GridView recipeIngredients1 = new GridView(this);
@@ -806,6 +804,9 @@ public class CookActivity extends Activity implements OnClickListener {
 
 	public void populateThirdRecipe(){
 		TextView myText2 = new TextView(this);
+		myText2.setTypeface(Typeface.DEFAULT_BOLD);
+		myText2.setTextSize(34);
+		myText2.setTextColor(Color.BLACK);
 		myText2.setText(recipe2.getName());
 		IngredientArrayAdapter ingredientsAdapter2 = new IngredientArrayAdapter(this, (LinkedList)recipe2.getIngredients());
 		GridView recipeIngredients2 = new GridView(this);
@@ -830,6 +831,9 @@ public class CookActivity extends Activity implements OnClickListener {
 	
 	public void populateFourthRecipe(){
 		TextView myText3 = new TextView(this);
+		myText3.setTypeface(Typeface.DEFAULT_BOLD);
+		myText3.setTextSize(34);
+		myText3.setTextColor(Color.BLACK);
 		myText3.setText(recipe3.getName());
 		IngredientArrayAdapter ingredientsAdapter3 = new IngredientArrayAdapter(this, (LinkedList)recipe3.getIngredients());
 		GridView recipeIngredients3 = new GridView(this);

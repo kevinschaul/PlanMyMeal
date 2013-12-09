@@ -11,6 +11,6 @@
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
         android:text="Meal name"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        style="@style/DetailItem" />
 
 </RelativeLayout>
