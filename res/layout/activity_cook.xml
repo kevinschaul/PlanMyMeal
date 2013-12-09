@@ -63,53 +63,58 @@
     </HorizontalScrollView>
 
 
-    <Button
-        android:id="@+id/nextStepButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/timelineButton"
-        android:layout_toRightOf="@+id/timelineButton"
-        android:text="Next Step"
-        style="@style/ActionButton" />
-    
-    <TextView
-        android:id="@+id/currentStepDescription"
-        android:layout_width="600dip"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/timelineButton"
-        android:layout_alignBottom="@+id/timelineButton"
-        android:layout_marginLeft="32dip"
-        android:layout_toRightOf="@+id/nextStepButton"
-        android:text="Large Text"
-        style="@style/ActiveStep" />
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+	    <Button
+	        android:id="@+id/nextStepButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBottom="@+id/timelineButton"
+	        android:layout_toRightOf="@+id/timelineButton"
+	        android:text="Next Step"
+	        style="@style/ActionButton" />
+	    
+	    <TextView
+	        android:id="@+id/currentStepDescription"
+	        android:layout_width="600dip"
+	        android:layout_height="75dip"
+	        android:layout_alignBaseline="@+id/timelineButton"
+	        android:layout_alignBottom="@+id/timelineButton"
+	        android:layout_marginLeft="32dip"
+	        android:layout_toRightOf="@+id/nextStepButton"
+	        android:text="Large Text"
+	        style="@style/ActiveStep" />
+	
+	    <TextView
+	        android:id="@+id/currentStepTime"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBaseline="@+id/currentStepDescription"
+	        android:layout_alignTop="@+id/currentStepDescription"
+	        android:layout_toRightOf="@+id/currentStepDescription"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	    
+	    <Button
+	        android:id="@+id/addTime"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBaseline="@+id/nextStepButton"
+	        android:layout_alignBottom="@+id/nextStepButton"
+	        android:layout_alignRight="@+id/include1"
+	        android:text="+30 sec"
+	        style="@style/MehButton" />
+	
+	    <Button
+	        android:id="@+id/timelineButton"
+	        android:layout_width="120dip"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/myListView"
+	        android:layout_below="@+id/myListView"
+	        android:text="Timeline"
+	        style="@style/MehButton" />
 
-    <TextView
-        android:id="@+id/currentStepTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/currentStepDescription"
-        android:layout_alignBottom="@+id/currentStepDescription"
-        android:layout_toRightOf="@+id/currentStepDescription"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    
-    <Button
-        android:id="@+id/addTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/nextStepButton"
-        android:layout_alignBottom="@+id/nextStepButton"
-        android:layout_alignRight="@+id/include1"
-        android:text="+30 sec"
-        style="@style/MehButton" />
-
-    <Button
-        android:id="@+id/timelineButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/myListView"
-        android:layout_below="@+id/myListView"
-        android:text="Timeline"
-        style="@style/MehButton" />
-
+    </LinearLayout>
 </RelativeLayout>

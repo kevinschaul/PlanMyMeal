@@ -635,7 +635,7 @@ public class CookActivity extends Activity implements OnClickListener {
 		
 		
 		currentStepDescription.setText(currentStep.getInstructions());
-		currentStepTime.setText(Double.toString(currentStep.getTime()));
+		//currentStepTime.setText(Double.toString(currentStep.getTime()));
 		//currentStepTime.setEnabled(false);
 		//currentStepTime.setClickable(false);
 		currentStepDescription.refreshDrawableState();
@@ -841,19 +841,21 @@ public static CountDownTimer createTimerHome(long time)
 		public void onTick(long millisUntilFinished) {
 			if(currentStepTime.equals(currentStepDescription))
 			{
-				currentStepDescription.setText(currentStepDescription.getText().toString() + '\n' + makeTimeString(millisUntilFinished));
+				currentStepDescription.setText(currentStep.getInstructions().toString());// + '\n' + makeTimeString(millisUntilFinished));
 				currentStepDescription.refreshDrawableState();
 				
 			}
 			else
 			{
+				currentStepDescription.setText(currentStep.getInstructions().toString());// + makeTimeString(millisUntilFinished));
+				currentStepDescription.refreshDrawableState();
 				currentStepTime.setText(makeTimeString(millisUntilFinished));
 			
 			}
 			
 			timeTilFinished = millisUntilFinished;
-			currentStepTime.setBackgroundColor(getColor(millisUntilFinished));
-			currentStepDescription.setBackgroundColor(getColor(millisUntilFinished));				
+			//currentStepTime.setBackgroundColor(getColor(millisUntilFinished));
+			currentStepTime.setBackgroundColor(getColor(millisUntilFinished));				
 		}
 		
 		public int getColor(long millisUntilFinished) {
