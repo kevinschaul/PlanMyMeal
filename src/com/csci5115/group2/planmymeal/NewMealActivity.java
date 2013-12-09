@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.csci5115.group2.planmymeal.database.DataSourceManager;
 
@@ -225,16 +226,12 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 						datasource.addMealRecipe(newMeal.getId(), recipe.getId());
 					}
 				}
-				AlertDialog.Builder builder = new AlertDialog.Builder(context);
-				builder.setTitle("Meal Saved");
-				builder.setMessage("Meal: " + newMeal.getName() +" Saved");
-				builder.setNeutralButton("Okay",  new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {   
-						//add meal
-					}
-				});
-				AlertDialog dialog = builder.create();
-				dialog.show();
+				
+				Context context = getApplicationContext();
+				int duration = Toast.LENGTH_SHORT;
+				Toast toast = Toast.makeText(context, "Meal saved", duration);
+				toast.show();
+				finish();
 			}
 		}
 		);
