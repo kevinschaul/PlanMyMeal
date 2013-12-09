@@ -127,7 +127,7 @@ public class RecipeDetailFragment extends Fragment {
 			}
 			
 			LinearLayout tags_wrapper = (LinearLayout) rootView.findViewById(R.id.fragment_recipe_tags_wrapper);
-			List<Tag> tags = recipe.getTags();
+			List<Tag> tags = datasource.getRecipeTags(recipeId);
 			for (Tag tag : tags) {
 				final View tagView = inflater.inflate(R.layout.tag, null);
 				
