@@ -86,6 +86,7 @@ public class CookActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cook);
+		setTitle("Cook");
 		allRecipes = (HorizontalScrollView) findViewById(R.id.myListView);
 		Intent intent = getIntent();
 		
