@@ -68,11 +68,9 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 		final EditText newMealNameView = (EditText) findViewById(R.id.new_meal_mealName);
 		newMealNameView.setHint("New Meal Name");
 		
-		final EditText newMealTimeView = (EditText) findViewById(R.id.new_meal_mealTime);
-		newMealTimeView.setHint("Meal Time (in minutes)");
+		//final EditText newMealTimeView = (EditText) findViewById(R.id.new_meal_mealTime);
+		//newMealTimeView.setHint("Meal Time (in minutes)");
 		
-		final EditText newMealDescriptionView = (EditText) findViewById(R.id.new_meal_mealDescription);
-		newMealDescriptionView.setHint("Meal Decription");
 		        
 		// Set up recipes in meal list
 		//TODO:Populate all 						
@@ -143,6 +141,20 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 				
 				EditText newTagText = (EditText) findViewById(R.id.new_meal_newTagName);
 				String tagText = newTagText.getText().toString();
+				
+				if (tagText.length() == 0) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					builder.setTitle("Oops!");
+					builder.setMessage("Please enter a tag name.");
+					builder.setNeutralButton("Okay",  new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {   
+							//add meal
+						}
+					});
+					AlertDialog dialog = builder.create();
+					dialog.show();
+					return;
+				}
 				newTagText.setText("");
 				newTagText.setHint("New Tag Name");
 				
@@ -177,9 +189,24 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 			{
 				//TODO: save new name of meal
 				String mealNameText = newMealNameView.getText().toString();
-				String mealTimeText = newMealTimeView.getText().toString();
-				String mealDescriptionText = newMealDescriptionView.getText().toString();
+				//String mealTimeText = newMealTimeView.getText().toString();
+				String mealTimeText = "10";
+				//String mealDescriptionText = newMealDescriptionView.getText().toString();
+				String mealDescriptionText = "";
 				Double mealTimeDouble;
+				if (mealNameText.length() == 0) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					builder.setTitle("Oops!");
+					builder.setMessage("Please enter a meal title.");
+					builder.setNeutralButton("Okay",  new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {   
+							//add meal
+						}
+					});
+					AlertDialog dialog = builder.create();
+					dialog.show();
+					return;
+				}
 				try 
 				{
 					mealTimeDouble = Double.parseDouble(mealTimeText);
@@ -187,8 +214,8 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 				catch (NumberFormatException e) 
 				{
 					AlertDialog.Builder builder = new AlertDialog.Builder(context);
-					builder.setTitle("Error");
-					builder.setMessage("Meal Time must be a number!");
+					builder.setTitle("Oops!");
+					builder.setMessage("Meal time must be a number!");
 					builder.setNeutralButton("Okay",  new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {   
 							//add meal
