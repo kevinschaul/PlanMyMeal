@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
@@ -7,10 +7,16 @@
     
     		<TextView
 	            android:id="@+id/recipeCookName"
-	            android:layout_width="match_parent"
-	            android:layout_height="30dip"
-	            android:textAppearance="?android:attr/textAppearanceLarge" >
+	            style="@style/CookableTitle" >
 	        </TextView>
+	        
+    		<TextView
+		        android:id="@+id/recipeCookIngredientsLabel"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Ingredients"
+		        style="@style/DetailLabel" />
+    
 			<GridView
 			    android:id="@+id/recipeCookIngredients"
 			    android:layout_width="300dip"
@@ -20,7 +26,14 @@
 			    android:layout_marginBottom="0dp"
 			    android:numColumns="2" 
 			    android:verticalSpacing="0dp">
-			</GridView>    
+			</GridView>
+	
+    		<TextView
+		        android:id="@+id/recipeCookStepsLabel"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Steps"
+		        style="@style/DetailLabel" />	    
 	        <ListView
 	            android:id="@+id/recipeCookSteps"
 	            android:layout_width="300dip"
@@ -28,4 +41,4 @@
 	            android:layout_marginLeft="0dip"
 	            android:layout_marginTop="0dip">
 	        </ListView>  
-</RelativeLayout>
+</LinearLayout>

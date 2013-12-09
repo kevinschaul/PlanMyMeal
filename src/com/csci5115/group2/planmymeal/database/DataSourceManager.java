@@ -218,6 +218,24 @@ public class DataSourceManager
 		return newMeal;
 	}
 
+	public Meal updateMeal(long newMealId, String mealNameText, Double mealTimeDouble, String mealDescriptionText) 
+	{
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_NAME, mealNameText);
+		values.put(COLUMN_TIME, mealTimeDouble);
+		values.put(COLUMN_DESCRIPTION, mealDescriptionText);
+		values.put(COLUMN_USER, 1);
+		values.put(COLUMN_CC, 0);
+		database.update(TABLE_MEAL, values, COLUMN_ID + "="
+				+ newMealId, null);
+		Cursor cursor = database.query(TABLE_MEAL, allMealColumns,
+				COLUMN_ID + " = " + newMealId, null, null, null, null);
+		cursor.moveToFirst();
+		Meal newMeal = cursorToMeal(cursor);
+		cursor.close();
+		return newMeal;
+	}
+	
 	public Meal importMeal(long mealId)
 	{
 		ContentValues values = new ContentValues();
@@ -1692,5 +1710,7 @@ public class DataSourceManager
 		cursor.close();
 		return newStep;
 	}
+
+	
 
 }

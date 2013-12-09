@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/row_recipe_recipeName"
         android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/row_recipe_recipeName"
         android:layout_marginLeft="10dp"
         android:text="Add to Meal" />
 
@@ -29,6 +30,7 @@
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_toLeftOf="@+id/row_recipe_time"
         android:gravity="center_vertical"
         android:text="Recipe Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
