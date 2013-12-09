@@ -186,7 +186,7 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 					//notifyDataSetChanged:not sure how to do this for prev page
 				}
 				else{
-					// Update meal if anything has changed
+					newMeal = datasource.updateMeal(newMeal.getId(), mealNameText, mealTimeDouble, mealDescriptionText);
 				}
 				
 				//TODO: save added Tags
