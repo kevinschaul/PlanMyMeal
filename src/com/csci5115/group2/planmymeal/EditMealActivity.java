@@ -125,7 +125,6 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 			tagDelete.setTypeface(fontAwesome);
 			
 			tagDelete.setOnClickListener(new View.OnClickListener() {
-				
 				@Override
 				public void onClick(View v) {
 					tagHolder.setVisibility(View.GONE);
