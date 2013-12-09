@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
     android:focusableInTouchMode="true"
-    android:padding="8dp" >
+    android:padding="24dp" >
 
     <LinearLayout
         android:id="@+id/home_mainWrapper"
