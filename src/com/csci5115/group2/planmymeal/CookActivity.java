@@ -75,6 +75,10 @@ public class CookActivity extends Activity implements OnClickListener {
 	public int currentRecipeStep;
 	public LinkedList<RecipeStep> allInactiveSteps;
 	
+	public static int RED = Color.rgb(231, 123, 117);
+	public static int YELLOW = Color.rgb(231, 231, 117);
+	public static int GREEN = Color.rgb(117, 231, 117);
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -853,20 +857,20 @@ public static CountDownTimer createTimerHome(long time)
 			
 			timeTilFinished = millisUntilFinished;
 			currentStepTime.setBackgroundColor(getColor(millisUntilFinished));
-			currentStepDescription.setBackgroundColor(getColor(millisUntilFinished));				
+			//currentStepDescription.setBackgroundColor(getColor(millisUntilFinished));				
 		}
 		
 		public int getColor(long millisUntilFinished) {
 			if(millisUntilFinished <= 30000)
 			{
-				return Color.RED;
+				return RED;
 			}
 			else if(millisUntilFinished <= 60000)
 			{
-				return Color.YELLOW;
+				return YELLOW;
 			}
 			
-			return Color.GREEN;
+			return GREEN;
 		}
 
 		@Override

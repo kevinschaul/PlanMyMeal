@@ -187,7 +187,7 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 				{
 					AlertDialog.Builder builder = new AlertDialog.Builder(context);
 					builder.setTitle("Error");
-					builder.setMessage("Meal Time must be entered as a double!");
+					builder.setMessage("Meal Time must be a number!");
 					builder.setNeutralButton("Okay",  new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {   
 							//add meal

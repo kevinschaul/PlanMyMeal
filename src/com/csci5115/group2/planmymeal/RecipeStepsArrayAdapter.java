@@ -129,7 +129,7 @@ public class RecipeStepsArrayAdapter extends ArrayAdapter<RecipeStep> {
 	    	isPreviousCompleted = true;
 	    	
     		//values.set(position, recipeStep);
-	    	stepDescription.setBackgroundColor(Color.GREEN);
+	    	stepDescription.setBackgroundColor(CookActivity.GREEN);
 	    }
 	    else  if(position == 0 && isCurrentRecipe){
 	    		//stepDescription.setBackgroundColor(Color.RED);
