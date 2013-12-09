@@ -13,7 +13,7 @@
     <HorizontalScrollView
         android:id="@+id/myListView"
         android:layout_width="wrap_content"
-        android:layout_height="550dip"
+        android:layout_height="500dip"
         android:layout_alignParentTop="true"
         android:layout_marginRight="0dp"
         android:layout_marginTop="0dp"
@@ -66,30 +66,56 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="125dip"
-        android:layout_alignParentBottom="true"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/myListView"
         android:orientation="horizontal" >
+        
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:orientation="vertical" >
+            
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/DetailLabel"
+                android:text="Current Step" />
 	    
-	    <TextView
-	        android:id="@+id/currentStepDescription"
-	        android:layout_width="0dip"
-	        android:layout_height="75dip"
-	        android:layout_alignBaseline="@+id/timelineButton"
-	        android:layout_alignBottom="@+id/timelineButton"
-	        android:layout_toRightOf="@+id/nextStepButton"
-	        android:text="Large Text"
-	        style="@style/ActiveStep"
-	        android:layout_weight="3" />
+		    <TextView
+		        android:id="@+id/currentStepDescription"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:layout_alignBaseline="@+id/timelineButton"
+		        android:layout_alignBottom="@+id/timelineButton"
+		        android:layout_toRightOf="@+id/nextStepButton"
+		        android:padding="16dp"
+		        android:text="Large Text"
+		        style="@style/ActiveStep" />
+	    </LinearLayout>
 	
-	    <TextView
-	        android:id="@+id/currentStepTime"
-	        android:layout_width="0dip"
-	        android:layout_height="wrap_content"
-	        android:layout_alignBaseline="@+id/currentStepDescription"
-	        android:layout_alignTop="@+id/currentStepDescription"
-	        android:layout_toRightOf="@+id/currentStepDescription"
-	        android:textAppearance="?android:attr/textAppearanceLarge"
-	        android:layout_weight="1" />
+		<LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+		    
+	      	<TextView 
+	               android:layout_width="wrap_content"
+	               android:layout_height="wrap_content"
+	               style="@style/DetailLabel"
+	               android:text="Time remaining" />
+		    <TextView
+		        android:id="@+id/currentStepTime"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:layout_alignBaseline="@+id/currentStepDescription"
+		        android:layout_alignTop="@+id/currentStepDescription"
+		        android:layout_toRightOf="@+id/currentStepDescription"
+		        android:padding="16dp"
+		        android:text="00:00:30"
+		        android:textAppearance="?android:attr/textAppearanceLarge" />
+	    </LinearLayout>
 	    
    	    <Button
 	        android:id="@+id/nextStepButton"
@@ -97,32 +123,49 @@
 	        android:layout_height="fill_parent"
 	        android:layout_alignBottom="@+id/timelineButton"
 	        android:layout_toRightOf="@+id/timelineButton"
+	        android:gravity="center"
 	        android:text="Next Step"
 	        style="@style/ActionButton"
+	        android:layout_marginTop="0dip"
+	        android:layout_marginBottom="0dip"
+	        android:padding="0dip"
 	        android:layout_weight="1" />
    	    
    	    <LinearLayout
    	        android:layout_width="0dip"
    	        android:layout_height="fill_parent"
    	        android:orientation="vertical"
+   	        android:gravity="center"
    	        android:layout_weight="1" >
 	    
 		    <Button
 		        android:id="@+id/addTime"
 		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_height="0dip"
+		        android:layout_weight="1"
 		        android:layout_alignBaseline="@+id/nextStepButton"
 		        android:layout_alignBottom="@+id/nextStepButton"
 		        android:layout_alignRight="@+id/include1"
+       	        android:layout_marginTop="0dip"
+		        android:layout_marginBottom="6dip"
+		        android:layout_marginLeft="0dip"
+		        android:layout_marginRight="0dip"
+		        android:padding="0dip"	
 		        android:text="+30 sec"
 		        style="@style/MehButton" />
 		
 		    <Button
 		        android:id="@+id/timelineButton"
 		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_height="0dip"
+		        android:layout_weight="1"
 		        android:layout_alignLeft="@+id/myListView"
 		        android:layout_below="@+id/myListView"
+       	        android:layout_marginTop="6dip"
+		        android:layout_marginBottom="0dip"
+		        android:layout_marginLeft="0dip"
+		        android:layout_marginRight="0dip"
+		        android:padding="0dip"	
 		        android:text="Timeline"
 		        style="@style/MehButton" />
 	    </LinearLayout>
