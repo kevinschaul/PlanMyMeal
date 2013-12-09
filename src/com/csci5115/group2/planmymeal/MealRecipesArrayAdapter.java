@@ -27,16 +27,18 @@ public class MealRecipesArrayAdapter extends ArrayAdapter<Recipe>
 {
 	private final Context context;
 	private final List<Recipe> recipeValues;
+	private final List<Recipe> mealRecipeValues;
 	private final Meal meal;
 	private DataSourceManager datasource;
 	private MealRecipeDetailArrayAdapter recipeDetailArrayAdapter;
 	private Filter filter;
 	private List<Cookable> allCookables;
 
-	public MealRecipesArrayAdapter(Context context, List<Recipe> allUserRecipes, Meal currentMeal, MealRecipeDetailArrayAdapter recipeDetailAdapter) {
+	public MealRecipesArrayAdapter(Context context, List<Recipe> allUserRecipes, List<Recipe> mealRecipes, Meal currentMeal, MealRecipeDetailArrayAdapter recipeDetailAdapter) {
 		super(context, R.layout.row_recipe, allUserRecipes);
 		this.context = context;
 		this.recipeValues = allUserRecipes;
+		this.mealRecipeValues = mealRecipes;
 		this.meal = currentMeal;
 		this.recipeDetailArrayAdapter = recipeDetailAdapter;
 		this.allCookables = new LinkedList<Cookable>();
@@ -62,8 +64,15 @@ public class MealRecipesArrayAdapter extends ArrayAdapter<Recipe>
 	    recipeTime.setText(recipe.getReadableTime());
 	    
 		CheckBox addRecipeToMeal = (CheckBox) rowView.findViewById(R.id.add_recipe_to_meal);
-		addRecipeToMeal.setOnClickListener(new RowAddRecipeToMealListener(recipe, meal));		
-
+		
+		for(Recipe mealRecipe : mealRecipeValues){
+			if(recipe.getName().equals(mealRecipe.getName())){
+				addRecipeToMeal.setChecked(true);
+			}
+		}
+		
+		addRecipeToMeal.setOnClickListener(new RowAddRecipeToMealListener(recipe, meal));	
+		
 	    return rowView;
 	}
 	
@@ -98,6 +107,8 @@ public class MealRecipesArrayAdapter extends ArrayAdapter<Recipe>
 				recipeDetailArrayAdapter.remove(recipe);
 				recipeDetailArrayAdapter.notifyDataSetChanged();
 			}
+			//Intent intent = new Intent(context, EditMealActivity.class);
+    		//context.startActivity(intent);
 		}
 	}
 	

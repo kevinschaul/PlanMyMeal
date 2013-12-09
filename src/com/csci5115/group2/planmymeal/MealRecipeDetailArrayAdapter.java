@@ -2,6 +2,8 @@ package com.csci5115.group2.planmymeal;
 
 import java.util.List;
 
+import com.csci5115.group2.planmymeal.database.DataSourceManager;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;

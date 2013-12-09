@@ -87,7 +87,7 @@ public class EditMealActivity extends Activity implements TextWatcher, OnFocusCh
 		// Set up all user recipes
 		List<Recipe> allUserRecipesList = datasource.getAllRecipes();
 				
-		recipeAdapter = new MealRecipesArrayAdapter(this, allUserRecipesList, meal, mealRecipesAdapter);
+		recipeAdapter = new MealRecipesArrayAdapter(this, allUserRecipesList, recipes, meal, mealRecipesAdapter);
 		ListView allUserListView = (ListView) findViewById(R.id.edit_meal_all_recipes);
 		allUserListView.setAdapter(recipeAdapter);
 				
