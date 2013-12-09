@@ -5,12 +5,14 @@ import java.util.List;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.CountDownTimer;
 
 public class Recipe extends Cookable {
 	private Integer numServings;
 	private List<Ingredient> ingredients;
 	List<Tag> tags;
 	private List<RecipeStep> steps;
+	public CountDownTimer stepTimer;
 	// TODO Don't use String to represent time
 	
 	public Recipe(){
@@ -136,6 +138,18 @@ public class Recipe extends Cookable {
 			clones.add(curStep);
 		}
 		return clones;
+	}
+	
+	public void setStepTimer(StepTimer s){
+		//stepTimer = s;
+	}
+
+	public void setCurrentStepToWatch() {
+		RecipeStep rs = getFirstUncompletedStep();
+		if(!rs.isActiveStep())
+		{
+			rs.setToWatch(true);
+		}
 	}
 
 }

@@ -6,8 +6,8 @@
 
     <TextView
         android:id="@+id/row_step_text"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
         android:text="Meal name"
