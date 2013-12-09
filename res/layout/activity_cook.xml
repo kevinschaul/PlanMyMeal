@@ -126,6 +126,6 @@
 		        android:text="Timeline"
 		        style="@style/MehButton" />
 	    </LinearLayout>
-
     </LinearLayout>
+
 </RelativeLayout>

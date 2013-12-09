@@ -60,7 +60,7 @@ public class StepTimer implements OnClickListener {
 			public void onTick(long millisUntilFinished) {
 				if(currentStepTime.equals(currentStepDescription))
 				{
-					currentStepDescription.setText(currentStepText + " (" + makeTimeString(millisUntilFinished) + ')');
+					currentStepDescription.setText(currentStepText + '\n' + makeTimeString(millisUntilFinished));
 					currentStepDescription.refreshDrawableState();
 					
 				}
