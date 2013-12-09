@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    android:padding="8dp"
+    android:padding="24dp"
     tools:context=".EditRecipeActivity" >
 
     <RelativeLayout
@@ -215,7 +215,8 @@
                         <FrameLayout
                             android:id="@+id/edit_recipe_new_i_container"
                             android:layout_width="fill_parent"
-                            android:layout_height="fill_parent" />
+                            android:layout_height="fill_parent"
+                            android:layout_marginLeft="16dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -227,7 +228,8 @@
                         <FrameLayout
                             android:id="@+id/edit_recipe_new_step_container"
                             android:layout_width="fill_parent"
-                            android:layout_height="fill_parent" />
+                            android:layout_height="fill_parent"
+                            android:layout_marginLeft="16dp" />
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>

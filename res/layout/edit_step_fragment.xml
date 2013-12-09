@@ -9,7 +9,7 @@
         android:id="@+id/edit_recipe_addNewStep_title"
         style="@style/CookableTitle"
         android:layout_alignParentLeft="true"
-        android:text="New Step Information" />
+        android:text="Step Information" />
 
     <LinearLayout
         android:id="@+id/edit_recipe_step_name_wrapper"
