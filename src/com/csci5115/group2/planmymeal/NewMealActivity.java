@@ -178,7 +178,25 @@ public class NewMealActivity extends Activity implements TextWatcher, OnFocusCha
 				String mealNameText = newMealNameView.getText().toString();
 				String mealTimeText = newMealTimeView.getText().toString();
 				String mealDescriptionText = newMealDescriptionView.getText().toString();
-				Double mealTimeDouble = Double.parseDouble(mealTimeText);
+				Double mealTimeDouble;
+				try 
+				{
+					mealTimeDouble = Double.parseDouble(mealTimeText);
+				} 
+				catch (NumberFormatException e) 
+				{
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					builder.setTitle("Error");
+					builder.setMessage("Meal Time must be entered as a double!");
+					builder.setNeutralButton("Okay",  new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {   
+							//add meal
+						}
+					});
+					AlertDialog dialog = builder.create();
+					dialog.show();
+					return;
+			    }
 					
 				if(newMeal == null)
 				{

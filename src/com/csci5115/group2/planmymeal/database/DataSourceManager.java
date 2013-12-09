@@ -226,10 +226,10 @@ public class DataSourceManager
 		values.put(COLUMN_DESCRIPTION, mealDescriptionText);
 		values.put(COLUMN_USER, 1);
 		values.put(COLUMN_CC, 0);
-		long insertId = database.update(TABLE_MEAL, values, COLUMN_ID + "="
+		database.update(TABLE_MEAL, values, COLUMN_ID + "="
 				+ newMealId, null);
 		Cursor cursor = database.query(TABLE_MEAL, allMealColumns,
-				COLUMN_ID + " = " + insertId, null, null, null, null);
+				COLUMN_ID + " = " + newMealId, null, null, null, null);
 		cursor.moveToFirst();
 		Meal newMeal = cursorToMeal(cursor);
 		cursor.close();
